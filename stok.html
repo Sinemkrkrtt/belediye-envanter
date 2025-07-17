@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Stok Durumu</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #f4f6f8;
+  color: #333;
+  padding-top: 60px;
+}
+
+header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 60px;
+  background: linear-gradient(90deg, #b31217, #e52d27);
+  box-shadow: 0 4px 20px rgba(179, 18, 23, 0.5);
+  padding: 0 30px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  z-index: 100;
+}
+
+#backBtn {
+  background: #ffffff;
+  color: #b31217;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.8rem;
+  cursor: pointer;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+#backBtn:hover {
+  background: #b31217;
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0 0 12px #fff;
+}
+
+header h1 {
+  margin: 0;
+  font-weight: 700;
+  font-size: 1.7rem;
+  color: white;
+  letter-spacing: 1.5px;
+  flex-grow: 1;
+  text-align: center;
+}
+
+.search-container {
+  max-width: 600px;
+  margin: 80px auto 0;
+  padding: 0 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.search-container input {
+  width: 100%;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.3s ease;
+}
+
+.search-container input:focus {
+  outline: none;
+  box-shadow: 0 0 8px #b31217aa;
+  border: 2px solid #b31217;
+}
+
+main {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.stok-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  padding: 24px 22px;
+  transition: transform 0.25s ease, box-shadow 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.stok-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(179, 18, 23, 0.25);
+}
+
+.stok-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, #b31217, #e52d27);
+  border-radius: 16px 16px 0 0;
+}
+
+.stok-card h3 {
+  margin-top: 10px;
+  color: #b31217;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.stok-card p {
+  font-size: 15px;
+  margin: 8px 0;
+  color: #555;
+}
+
+.no-data {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-size: 18px;
+  color: #999;
+  margin-top: 50px;
+  font-style: italic;
+}
+
+  </style>
+</head>
+<body>
+
+ <header>
+  <button id="backBtn" title="Geri dön" onclick="history.back()">←</button>
+  <h1>STOK DURUMU</h1>
+</header>
+
+  <!-- 🔍 Arama çubuğu -->
+  <div class="search-container">
+    <input type="text" id="searchInput" placeholder="Ürün ara..." />
+  </div>
+
+  <!-- 🧾 Stok kartları -->
+  <main id="stok-listesi">
+    <div class="no-data">Yükleniyor...</div>
+  </main>
+
+  <!-- Firebase Script -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC6G7JfaTCSpvwkX4PXTTJ6I92LIpzkkxk",
+      authDomain: "belediyeenvanter.firebaseapp.com",
+      projectId: "belediyeenvanter",
+      storageBucket: "belediyeenvanter.appspot.com",
+      messagingSenderId: "1088833874170",
+      appId: "1:1088833874170:web:2e2c1c069a9880917b8143"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const stokListesi = document.getElementById('stok-listesi');
+    const searchInput = document.getElementById('searchInput');
+    let tumUrunler = [];
+
+    async function stoklariGetir() {
+      const stokRef = collection(db, "products");
+      const snapshot = await getDocs(stokRef);
+
+      stokListesi.innerHTML = '';
+      tumUrunler = [];
+
+      if (snapshot.empty) {
+        stokListesi.innerHTML = `<div class="no-data">Stok verisi bulunamadı.</div>`;
+        return;
+      }
+
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        tumUrunler.push({
+          name: data.name || '',
+          quantity: data.quantity || 0,
+          createdAt: data.createdAt?.toDate() || null
+        });
+      });
+
+      urunleriGoster(tumUrunler);
+    }
+
+    function urunleriGoster(liste) {
+      stokListesi.innerHTML = '';
+
+      if (liste.length === 0) {
+        stokListesi.innerHTML = `<div class="no-data">Aradığınız kriterde ürün bulunamadı.</div>`;
+        return;
+      }
+
+      liste.forEach(data => {
+        const kart = document.createElement('div');
+        kart.className = 'stok-card';
+
+        kart.innerHTML = `
+          <h3>${data.name}</h3>
+          <p><strong>Miktar:</strong> ${data.quantity}</p>
+          <p><strong>Eklenme:</strong> ${data.createdAt?.toLocaleDateString('tr-TR') || '-'}</p>
+        `;
+
+        stokListesi.appendChild(kart);
+      });
+    }
+
+    // 🔍 Arama filtreleme
+    searchInput.addEventListener('input', () => {
+      const kelime = searchInput.value.toLowerCase();
+      const filtrelenmis = tumUrunler.filter(urun =>
+        urun.name.toLowerCase().includes(kelime)
+      );
+      urunleriGoster(filtrelenmis);
+    });
+
+    stoklariGetir();
+  </script>
+
+</body>
+</html>

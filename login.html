@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Giriş Sayfası</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #c7161c, #e52d27);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    .login-container {
+    background: #fff;
+    padding: 50px 45px 45px;
+    border-radius: 24px;
+    border: 4px solid #fff; /* KIRMIZI KENARLAR */
+    box-shadow: 0 0 25px 8px  #fff; /* PARLAK KIRMIZI IŞIK */
+    width: 100%;
+    max-width: 430px;
+    text-align: center;
+    transition: box-shadow 0.3s ease;
+    position: relative;
+  }
+
+  .login-container:hover {
+     box-shadow:
+    0 0 30px 10px rgba(179, 18, 23, 1),
+    0 0 60px 18px rgba(179, 18, 23, 0.85);
+  }
+
+    .login-logo {
+      width: 190px;
+      height: 190px;
+      margin: 0 auto 0px;
+      padding: 22px;
+      border-radius: 24px;
+      box-shadow:
+        0 0 18px 5px rgba(255, 255, 255, 0.9),
+        0 0 30px 10px rgba(255, 255, 255, 0.4);
+      display: block;
+      object-fit: contain;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .login-logo:hover {
+      box-shadow:
+        0 0 28px 8px rgba(255, 255, 255, 1),
+        0 0 40px 15px rgba(255, 255, 255, 0.6);
+    }
+
+    h2 {
+      margin-bottom: 30px;
+      color: #b31217;
+      font-weight: 700;
+      font-size: 30px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      user-select: none;
+    }
+
+    input {
+      width: 90%;
+      padding: 16px 20px;
+      margin: 10px 0 24px;
+      border: 2px solid #ddd;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 500;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+      box-shadow: inset 0 2px 4px rgb(0 0 0 / 0.05);
+      outline-offset: 2px;
+    }
+
+    input::placeholder {
+      color: #bbb;
+      font-weight: 400;
+    }
+
+    input:focus {
+      border-color: #b31217;
+      box-shadow: 0 0 10px 3px rgba(179, 18, 23, 0.35);
+      outline: none;
+      background: #fff7f7;
+    }
+
+    button {
+      width: 45%;
+      padding: 16px;
+      margin-top: 20px; 
+      background-color: #b31217;
+      color: white;
+      border: none;
+      border-radius: 16px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(179, 18, 23, 0.45);
+      text-transform: uppercase;
+      letter-spacing: 1.1px;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
+    }
+
+    button:hover,
+    button:focus {
+      background-color: #8c0f13;
+      box-shadow: 0 8px 28px rgba(140, 15, 19, 0.65);
+      outline: none;
+    }
+
+    .message {
+      margin-top: 30px;
+      font-size: 16px;
+      font-weight: 600;
+      min-height: 22px;
+      user-select: none;
+    }
+
+    /* Yeni kısım: kayıt linki */
+    .register-text {
+      margin-top: 24px;
+      font-size: 14px;
+      color: #555;
+      user-select: none;
+    }
+
+    .register-row {
+  margin-top: 2px;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  user-select: none;
+}
+
+.register-link {
+  font-weight: 600;
+  color: #b31217;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.register-link:hover {
+  color: #8c0f13;
+}
+
+
+    @media (max-width: 520px) {
+      .login-container {
+        padding: 40px 30px 35px;
+        max-width: 95%;
+      }
+
+      .login-logo {
+        width: 90px;
+        height: 90px;
+        padding: 18px;
+        margin-bottom: 28px;
+      }
+
+      h2 {
+        font-size: 26px;
+        letter-spacing: 1px;
+      }
+
+      input {
+        padding: 14px 16px;
+        font-size: 15px;
+      }
+
+      button {
+        padding: 14px;
+        font-size: 16px;
+      }
+
+      .register-text {
+        font-size: 13px;
+      }
+
+      .register-link {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <img src="assets/login.png" alt="Logo" class="login-logo" />
+    <input type="email" id="email" placeholder="E-mail" required />
+    <input type="password" id="password" placeholder="Şifre" required />
+    <button onclick="login()">Giriş Yap</button>
+    
+    <p class="message" id="message"></p>
+
+    <div class="register-row">
+  <span>Hesabın yok mu?</span>
+  <a href="register.html" class="register-link">Kayıt Ol</a>
+</div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC6G7JfaTCSpvwkX4PXTTJ6I92LIpzkkxk",
+      authDomain: "belediyeenvanter.firebaseapp.com",
+      projectId: "belediyeenvanter",
+      storageBucket: "belediyeenvanter.appspot.com",
+      messagingSenderId: "1088833874170",
+      appId: "1:1088833874170:web:2e2c1c069a9880917b8143"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    window.login = async function () {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const messageEl = document.getElementById("message");
+
+      if (!email || !password) {
+        messageEl.style.color = 'red';
+        messageEl.innerText = 'Lütfen tüm alanları doldurun.';
+        return;
+      }
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        messageEl.style.color = "green";
+        messageEl.innerText = "Giriş başarılı! Yönlendiriliyorsunuz...";
+        setTimeout(() => {
+          window.location.href = "home.html"; 
+        }, 2000);
+      } catch (error) {
+        messageEl.style.color = "red";
+        messageEl.innerText = "Giriş başarısız: " + error.message;
+      }
+    }
+  </script>
+</body>
+</html>

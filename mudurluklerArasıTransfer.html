@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Müdürlükler Arası Transfer</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      max-width: 1000px;
+      margin: 30px auto;
+      background: #fafafa;
+      color: #333;
+      padding: 0 20px;
+    padding-top: 70px; 
+    }
+    header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 60px;
+  background: linear-gradient(90deg, #b31217, #e52d27);
+  box-shadow: 0 4px 20px rgba(179, 18, 23, 0.7);
+  padding: 0 30px;
+  display: flex;
+  align-items: center;
+justify-content: flex-start;
+  gap: 20px;
+  z-index: 100;
+  user-select: none;
+}
+
+#backBtn {
+  background:  #b31217;
+  color: #ffffff;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.9rem;
+  cursor: pointer;
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  user-select: none;
+}
+
+#backBtn:hover {
+  background: white;
+  color: #b31217;
+  box-shadow: 0 0 15px #b31217;
+  transform: scale(1.1);
+}
+
+header h1 {
+  margin: 0;
+  font-weight: 900;
+  font-size: 1.85rem;
+  color: white;
+  letter-spacing: 2.2px;
+  user-select: none;
+
+  text-align: left;
+  flex-grow: 0;
+
+  margin-left: 200px; /* Burayı istediğin kadar artırıp azaltabilirsin */
+}
+    h1 {
+      text-align: center;
+      color: #b31217;
+      margin-bottom: 30px;
+    }
+    form {
+      background: white;
+      padding: 25px 30px;
+      border-radius: 18px;
+      box-shadow: 0 6px 25px rgba(179,18,23,0.15);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+    select, input[type=text], input[type=number], button {
+      padding: 12px 18px;
+      border-radius: 12px;
+      border: 2px solid #b31217;
+      font-weight: 600;
+      font-size: 1rem;
+      outline: none;
+      min-width: 220px;
+      box-sizing: border-box;
+      transition: border-color 0.3s ease;
+    }
+    select:focus, input:focus {
+      border-color: #e52d27;
+      box-shadow: 0 0 10px #e52d27aa;
+    }
+    button {
+      background: linear-gradient(135deg, #b31217, #e52d27);
+      color: white;
+      cursor: pointer;
+      border: none;
+      font-weight: 700;
+      min-width: 150px;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: linear-gradient(135deg, #e52d27, #b31217);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 6px 30px rgba(179,18,23,0.1);
+    }
+    th, td {
+      padding: 14px 20px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+      font-weight: 600;
+      color: #b31217;
+    }
+    th {
+      background: #b31217;
+      color: white;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    tbody tr:hover {
+      background: #ffe5e5;
+    }
+    .no-data {
+      text-align: center;
+      padding: 30px 0;
+      color: #999;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <button id="backBtn" title="Geri dön" onclick="history.back()">←</button>
+  <h1>MÜDÜRLÜKLER ARASI ÜRÜN TRANSFERİ</h1>
+</header>
+
+<form id="transferForm">
+  <select id="fromDepartment" required>
+    <option value="" disabled selected>Gönderen Müdürlük</option>
+  </select>
+
+  <select id="toDepartment" required>
+    <option value="" disabled selected>Alıcı Müdürlük</option>
+  </select>
+
+  <input type="text" id="productName" placeholder="Ürün Adı" required autocomplete="off" />
+
+  <input type="number" id="quantity" placeholder="Miktar" min="1" required />
+
+  <button type="submit">Transfer Et</button>
+</form>
+
+<table>
+  <thead>
+    <tr>
+      <th>Tarih</th>
+      <th>Gönderen Müdürlük</th>
+      <th>Alıcı Müdürlük</th>
+      <th>Ürün</th>
+      <th>Miktar</th>
+    </tr>
+  </thead>
+  <tbody id="transferTableBody">
+    <tr><td colspan="5" class="no-data">Transfer kaydı bulunamadı.</td></tr>
+  </tbody>
+</table>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyC6G7JfaTCSpvwkX4PXTTJ6I92LIpzkkxk",
+    authDomain: "belediyeenvanter.firebaseapp.com",
+    projectId: "belediyeenvanter",
+    storageBucket: "belediyeenvanter.appspot.com",
+    messagingSenderId: "1088833874170",
+    appId: "1:1088833874170:web:2c2c1c069a9880917b8143"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  const departments = [
+    "AFET İŞLERİ",
+    "BASIN YAYIN VE HALKLA İLİŞKİLER",
+    "ÇEVRE KORUMA VE KONTROL",
+    "DESTEK HİZMETLERİ",
+    "EMLAK VE İSTİMLAK",
+    "FEN İŞLERİ",
+    "HUKUK İŞLERİ",
+    "İMAR VE ŞEHİRCİLİK",
+    "İNSAN KAYNAKLARI",
+    "KÜLTÜR VE SOSYAL İŞLER",
+    "MALİ HİZMETLER",
+    "ÖZEL KALEM",
+    "SPOR İŞLERİ",
+    "TEFTİŞ KURULU",
+    "TESİSLER",
+    "VETERİNER İŞLERİ",
+    "YAZI İŞLERİ",
+    "ZABITA"
+  ];
+
+  const fromSelect = document.getElementById("fromDepartment");
+  const toSelect = document.getElementById("toDepartment");
+  const transferForm = document.getElementById("transferForm");
+  const transferTableBody = document.getElementById("transferTableBody");
+
+  async function transferProductBetweenDepartments(productName, fromDepartment, toDepartment, quantity) {
+  if (fromDepartment === toDepartment) {
+    alert("Gönderen ve alan müdürlük aynı olamaz.");
+    return;
+  }
+
+  // Doküman ID'leri oluşturuluyor
+  const fromDocId = `${fromDepartment}_${productName}`;
+  const toDocId = `${toDepartment}_${productName}`;
+
+  const fromRef = doc(db, "products", fromDocId);
+  const toRef = doc(db, "products", toDocId);
+
+  // Gönderen müdürlük stok kontrolü
+  const fromSnap = await getDoc(fromRef);
+  if (!fromSnap.exists()) {
+    alert(`${fromDepartment} müdürlüğünde ürün bulunamadı.`);
+    return;
+  }
+  const fromData = fromSnap.data();
+
+  if (fromData.quantity < quantity) {
+    alert(`${fromDepartment} müdürlüğünde yeterli stok yok.`);
+    return;
+  }
+
+  // Transfer kaydı ekle
+  await addDoc(collection(db, "transfers"), {
+    productName,
+    quantity,
+    fromDepartment,
+    toDepartment,
+    date: new Date()
+  });
+
+  // Gönderen stok azaltılıyor
+  const newFromQty = fromData.quantity - quantity;
+  if (newFromQty > 0) {
+    await updateDoc(fromRef, { quantity: newFromQty });
+  } else {
+    await deleteDoc(fromRef);
+  }
+
+  // Alan müdürlük stok artıyor veya yeni ürün ekleniyor
+  const toSnap = await getDoc(toRef);
+  if (toSnap.exists()) {
+    const toData = toSnap.data();
+    await updateDoc(toRef, { quantity: toData.quantity + quantity });
+  } else {
+    await setDoc(toRef, {
+      name: productName,
+      quantity: quantity,
+      department: toDepartment,
+      createdAt: new Date()
+    });
+  }
+
+  alert("Transfer başarılı.");
+}
+  function populateDepartments() {
+    departments.forEach(dep => {
+      const opt1 = document.createElement("option");
+      opt1.value = dep;
+      opt1.textContent = dep;
+      fromSelect.appendChild(opt1);
+
+      const opt2 = document.createElement("option");
+      opt2.value = dep;
+      opt2.textContent = dep;
+      toSelect.appendChild(opt2);
+    });
+  }
+
+  async function loadTransfers() {
+    transferTableBody.innerHTML = `<tr><td colspan="5" class="no-data">Yükleniyor...</td></tr>`;
+    const colRef = collection(db, "department_transfers");
+    const q = query(colRef, orderBy("date", "desc"));
+    const querySnapshot = await getDocs(q);
+
+    if (querySnapshot.empty) {
+      transferTableBody.innerHTML = `<tr><td colspan="5" class="no-data">Transfer kaydı bulunamadı.</td></tr>`;
+      return;
+    }
+
+    transferTableBody.innerHTML = "";
+    querySnapshot.forEach(docSnap => {
+      const data = docSnap.data();
+      transferTableBody.innerHTML += `
+        <tr>
+          <td>${data.date.toDate().toLocaleString("tr-TR")}</td>
+          <td>${data.fromDepartment}</td>
+          <td>${data.toDepartment}</td>
+          <td>${data.productName}</td>
+          <td>${data.quantity}</td>
+        </tr>
+      `;
+    });
+  }
+transferForm.addEventListener("submit", async e => {
+  e.preventDefault();
+
+  const fromDepartment = fromSelect.value;
+  const toDepartment = toSelect.value;
+  const productName = document.getElementById("productName").value.trim();
+  const quantity = parseInt(document.getElementById("quantity").value);
+
+  if (!fromDepartment || !toDepartment || fromDepartment === toDepartment || !productName || !quantity || quantity < 1) {
+    alert("Lütfen tüm alanları doğru ve eksiksiz doldurun. Gönderen ve alıcı müdürlük farklı olmalıdır.");
+    return;
+  }
+
+  // 🔄 Stoğu kontrol et
+  const movementsSnapshot = await getDocs(collection(db, "department_movements"));
+  const transfersSnapshot = await getDocs(collection(db, "department_transfers"));
+
+  let totalIn = 0;
+  let totalOut = 0;
+
+  // department_movements içindeki giriş/çıkışları kontrol et
+  movementsSnapshot.forEach(doc => {
+    const data = doc.data();
+    if (data.department === fromDepartment && data.productName === productName) {
+      if (data.type === "in") {
+        totalIn += data.quantity;
+      } else if (data.type === "out") {
+        totalOut += data.quantity;
+      }
+    }
+  });
+
+  // transferlerdeki çıkışları kontrol et
+  transfersSnapshot.forEach(doc => {
+    const data = doc.data();
+    if (data.fromDepartment === fromDepartment && data.productName === productName) {
+      totalOut += data.quantity;
+    }
+  });
+
+  const currentStock = totalIn - totalOut;
+
+  if (quantity > currentStock) {
+    alert(`Bu ürün stokta yeterli miktarda yok.\nİstenen miktar: ${quantity} adet\nStoktaki miktar: ${currentStock} adet`);
+    return;
+  }
+
+  // 🔄 Eğer stok yeterliyse transferi gerçekleştir
+  try {
+    await addDoc(collection(db, "department_transfers"), {
+      fromDepartment,
+      toDepartment,
+      productName,
+      quantity,
+      date: new Date()
+    });
+
+    alert("Transfer başarılı!");
+    transferForm.reset();
+    loadTransfers();
+  } catch (err) {
+    alert("Hata oluştu: " + err.message);
+    console.error(err);
+  }
+});
+populateDepartments();
+  loadTransfers();
+</script>
+
+</body>
+</html>

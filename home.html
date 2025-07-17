@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Envanter Sistemi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom right, #fefefe, #f1f1f1);
+      color: #333;
+    }
+
+    header {
+      background: linear-gradient(135deg, #b31217, #e52d27);
+      padding: 22px 40px;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    main {
+      max-width: 1280px;
+      margin: 50px auto;
+      padding: 0 30px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 35px;
+      animation: fadeIn 1.2s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      padding: 45px 30px;
+      text-align: center;
+      transition: all 0.35s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: -60%;
+      left: -60%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+      transform: rotate(25deg);
+      animation: shine 6s infinite linear;
+      pointer-events: none;
+    }
+
+    @keyframes shine {
+      0% { transform: translate(-100%, -100%) rotate(25deg); }
+      100% { transform: translate(100%, 100%) rotate(25deg); }
+    }
+
+    .card:hover {
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 16px 40px rgba(179, 18, 23, 0.4);
+    }
+
+    .card i {
+      font-size: 50px;
+      color: #b31217;
+      margin-bottom: 20px;
+    }
+
+    .card h2 {
+      font-size: 24px;
+      color: #b31217;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .card p {
+      font-size: 15px;
+      color: #666;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #999;
+      font-size: 14px;
+      background: #f2f2f2;
+      border-top: 1px solid #e1e1e1;
+      margin-top: 50px;
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>BELEDİYE ENVANTER YÖNETİM SİSTEMİ</h1>
+  </header>
+
+  <main>
+    <div class="card" onclick="window.location.href='depo.html'">
+      <i class="fas fa-boxes-stacked"></i>
+      <h2>Envanter Giriş/Çıkış</h2>
+      <p>Depo stoklarına giriş ve çıkış işlemlerini burada yönetin.</p>
+    </div>
+
+    <div class="card" onclick="window.location.href='stok.html'">
+      <i class="fas fa-warehouse"></i>
+      <h2>Stok Durumu</h2>
+      <p>Mevcut stok seviyelerini ve detaylarını görüntüleyin.</p>
+    </div>
+
+    <div class="card" onclick="window.location.href='mudurluk.html'">
+      <i class="fas fa-truck-loading"></i>
+      <h2>Müdürlük Gönderimi</h2>
+      <p>Stoktan müdürlüklere ürün aktarımı yapın.</p>
+    </div>
+
+    <div class="card" onclick="window.location.href='mudurluklerArasıTransfer.html'">
+      <i class="fas fa-exchange-alt"></i>
+      <h2>Müdürlükler Arası Transfer</h2>
+      <p>Müdûrlükler arası stok transferlerini takip edin ve yönetin.</p>
+    </div>
+
+    <div class="card" onclick="window.location.href='mudurlukStok.html'">
+   <i class="fas fa-box" ></i>
+      <h2>Müdürlük Stokları</h2>
+      <p>Müdûrlüklere ürün aktarımını ve stokları takip edin .</p>
+    </div>
+  </main>
+
+  <footer>
+    © 2025 Belediye Envanter Sistemi
+  </footer>
+</body>
+</html>
