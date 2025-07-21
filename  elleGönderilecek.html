@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Elle Ürün Girişi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(120deg, #f6f9fc, #e5eaf5);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 60px 20px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 24px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      padding: 40px;
+      width: 100%;
+      max-width: 800px;
+      animation: fadeIn 0.5s ease;
+    }
+
+    h1 {
+      text-align: center;
+      color: #cc0000;
+      margin-bottom: 30px;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .main-container {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .left-column,
+    .right-column {
+      flex: 1;
+      min-width: 280px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-weight: 600;
+      margin-top: 18px;
+      font-size: 14px;
+      color: #333;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 12px 14px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      font-size: 15px;
+      background-color: #fff;
+      transition: border-color 0.3s ease;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: #cc0000;
+      outline: none;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .features-container {
+      margin-top: 30px;
+    }
+
+    button {
+      margin-top: 30px;
+      background-color: #e60000;
+      color: #fff;
+      border: none;
+      padding: 15px;
+      width: 100%;
+      font-size: 16px;
+      border-radius: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(230, 0, 0, 0.3);
+    }
+
+    button:hover {
+      background-color: #c40000;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 720px) {
+      .main-container {
+        flex-direction: column;
+      }
+
+      .card {
+        padding: 30px 20px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>Elle Ürün Girişi</h1>
+
+    <div class="main-container">
+      <div class="left-column">
+        <label for="product">Ürün Adı</label>
+        <input type="text" id="product" placeholder="Örnek: Mouse, Monitor, Klavye, Bilgisayar" />
+
+        <label for="brand">Marka</label>
+        <input type="text" id="brand" placeholder="Marka adını giriniz" />
+
+        <label for="model">Model</label>
+        <input type="text" id="model" placeholder="Model adını giriniz" />
+
+        <label for="ip">IP Adresi</label>
+        <input type="text" id="ip" placeholder="Örnek: 192.168.1.10" />
+      </div>
+
+      <div class="right-column">
+        <label for="department">Müdürlük</label>
+        <input type="text" id="department" placeholder="Müdürlük adını giriniz" />
+
+        <label for="unit">Şeflik</label>
+        <input type="text" id="unit" placeholder="Şeflik adını giriniz" />
+
+        <label for="person">Kişi</label>
+        <input type="text" id="person" placeholder="İlgili kişinin adı" />
+      </div>
+    </div>
+
+    <div class="features-container">
+      <label for="features">Ürün Özellikleri</label>
+      <textarea id="features" placeholder="Kablosuz, RGB, USB-C..." rows="4"></textarea>
+      <button onclick="submitManualForm()">Kaydet</button>
+    </div>
+  </div>
+
+  <script>
+    function submitManualForm() {
+      alert("Form başarıyla gönderildi!");
+    }
+  </script>
+
+  <!-- MODÜLER Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC6G7JfaTCSpvwkX4PXTTJ6I92LIpzkkxk",
+      authDomain: "belediyeenvanter.firebaseapp.com",
+      projectId: "belediyeenvanter",
+      storageBucket: "belediyeenvanter.appspot.com",
+      messagingSenderId: "1088833874170",
+      appId: "1:1088833874170:web:2c2c1c069a9880917b8143"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    window.submitManualForm = async function () {
+      const data = {
+        product: document.getElementById("product").value.trim(),
+        brand: document.getElementById("brand").value.trim(),
+        model: document.getElementById("model").value.trim(),
+        ip: document.getElementById("ip").value.trim(),
+        department: document.getElementById("department").value.trim(),
+        unit: document.getElementById("unit").value.trim(),
+        person: document.getElementById("person").value.trim(),
+        features: document.getElementById("features").value.trim(),
+        createdAt: serverTimestamp()
+      };
+
+      try {
+        await addDoc(collection(db, "urun_girisi"), data);
+        alert("Ürün başarıyla kaydedildi!");
+        document.querySelectorAll("input, textarea").forEach(e => e.value = "");
+      } catch (error) {
+        console.error("Kayıt hatası:", error);
+        alert("Kayıt sırasında bir hata oluştu.");
+      }
+    };
+  </script>
+</body>
+</html>

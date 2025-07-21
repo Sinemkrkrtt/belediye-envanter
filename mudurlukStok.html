@@ -405,108 +405,112 @@ h1 {
       departmentsGrid.appendChild(box);
     });
   }
+async function openStockModal(department) {
+  modalTitle.textContent = `${department} - Stok Durumu`;
+  productsContainer.innerHTML = `<p style="text-align:center; padding: 40px 0;">Yükleniyor...</p>`;
+  stockModal.classList.add('active');
+  stockModal.setAttribute('aria-hidden', 'false');
+  document.getElementById('modalContent').focus();
 
-  async function openStockModal(department) {
-    modalTitle.textContent = `${department} - Stok Durumu`;
-    productsContainer.innerHTML = `<p style="text-align:center; padding: 40px 0;">Yükleniyor...</p>`;
-    stockModal.classList.add('active');
-    stockModal.setAttribute('aria-hidden', 'false');
-    document.getElementById('modalContent').focus();
+  const getDate = (data) => {
+    if (data?.date?.toDate) return data.date.toDate();
+    return new Date(data.date || Date.now());
+  };
 
-    const movementsRef = collection(db, "department_movements");
-    const movementsSnapshot = await getDocs(query(movementsRef, orderBy("date", "desc")));
+  const movementsRef = collection(db, "department_movements");
+  const movementsSnapshot = await getDocs(query(movementsRef, orderBy("date", "desc")));
 
-    const transfersRef = collection(db, "department_transfers");
-    const transfersSnapshot = await getDocs(query(transfersRef, orderBy("date", "desc")));
+  // Burada "transfers" koleksiyonu olmalı
+  const transfersRef = collection(db, "transfers");
+  const transfersSnapshot = await getDocs(query(transfersRef, orderBy("date", "desc")));
 
-    const productStocks = {};
+  const productStocks = {};
 
-    movementsSnapshot.forEach(doc => {
-      const data = doc.data();
-      if (data.department === department) {
-        if (!productStocks[data.productName]) {
-          productStocks[data.productName] = {
-            totalIn: 0,
-            totalOut: 0,
-            lastDate: data.date.toDate(),
-            lastType: data.type
-          };
-        }
-        if (data.type === "in") {
-          productStocks[data.productName].totalIn += data.quantity;
-        } else if (data.type === "out") {
-          productStocks[data.productName].totalOut += data.quantity;
-        }
-        if (data.date.toDate() > productStocks[data.productName].lastDate) {
-          productStocks[data.productName].lastDate = data.date.toDate();
-          productStocks[data.productName].lastType = data.type;
-        }
+  movementsSnapshot.forEach(doc => {
+    const data = doc.data();
+    if (data.department === department) {
+      if (!productStocks[data.productName]) {
+        productStocks[data.productName] = {
+          totalIn: 0,
+          totalOut: 0,
+          lastDate: getDate(data),
+          lastType: data.type
+        };
       }
-    });
+      if (data.type === "in") productStocks[data.productName].totalIn += data.quantity;
+      else if (data.type === "out") productStocks[data.productName].totalOut += data.quantity;
 
-    transfersSnapshot.forEach(doc => {
-      const data = doc.data();
-      if (data.fromDepartment === department) {
-        if (!productStocks[data.productName]) {
-          productStocks[data.productName] = {
-            totalIn: 0,
-            totalOut: 0,
-            lastDate: data.date.toDate(),
-            lastType: "transfer_out"
-          };
-        }
-        productStocks[data.productName].totalOut += data.quantity;
-        if (data.date.toDate() > productStocks[data.productName].lastDate) {
-          productStocks[data.productName].lastDate = data.date.toDate();
-          productStocks[data.productName].lastType = "transfer_out";
-        }
+      if (getDate(data) > productStocks[data.productName].lastDate) {
+        productStocks[data.productName].lastDate = getDate(data);
+        productStocks[data.productName].lastType = data.type;
       }
-      if (data.toDepartment === department) {
-        if (!productStocks[data.productName]) {
-          productStocks[data.productName] = {
-            totalIn: 0,
-            totalOut: 0,
-            lastDate: data.date.toDate(),
-            lastType: "transfer_in"
-          };
-        }
-        productStocks[data.productName].totalIn += data.quantity;
-        if (data.date.toDate() > productStocks[data.productName].lastDate) {
-          productStocks[data.productName].lastDate = data.date.toDate();
-          productStocks[data.productName].lastType = "transfer_in";
-        }
-      }
-    });
-
-    if (Object.keys(productStocks).length === 0) {
-      productsContainer.innerHTML = `<p style="text-align:center; padding: 40px 0; font-weight:600;">Bu müdürlükte hiç ürün bulunmamaktadır.</p>`;
-      return;
     }
+  });
 
-    productsContainer.innerHTML = "";
-    for (const [productName, stockInfo] of Object.entries(productStocks)) {
-      const netStock = stockInfo.totalIn - stockInfo.totalOut;
-      if (netStock <= 0) continue;
-
-      let lastTypeText = "";
-      switch (stockInfo.lastType) {
-        case "in": lastTypeText = "Giriş"; break;
-        case "out": lastTypeText = "Çıkış"; break;
-        case "transfer_in": lastTypeText = "Transfer (Giriş)"; break;
-        case "transfer_out": lastTypeText = "Transfer (Çıkış)"; break;
-        default: lastTypeText = stockInfo.lastType; break;
+  transfersSnapshot.forEach(doc => {
+    const data = doc.data();
+    if (data.fromDepartment === department) {
+      if (!productStocks[data.productName]) {
+        productStocks[data.productName] = {
+          totalIn: 0,
+          totalOut: 0,
+          lastDate: getDate(data),
+          lastType: "transfer_out"
+        };
       }
-
-      const card = document.createElement('div');
-      card.classList.add('productCard');
-      card.innerHTML = `
-        <div class="productName">${productName}</div>
-        <div class="stockAmount">${netStock}</div>
-        <div class="lastMovement">Son Hareket: ${stockInfo.lastDate.toLocaleString('tr-TR')} (${lastTypeText})</div>
-      `;
-      productsContainer.appendChild(card);
+      productStocks[data.productName].totalOut += data.quantity;
+      if (getDate(data) > productStocks[data.productName].lastDate) {
+        productStocks[data.productName].lastDate = getDate(data);
+        productStocks[data.productName].lastType = "transfer_out";
+      }
     }
+    if (data.toDepartment === department) {
+      if (!productStocks[data.productName]) {
+        productStocks[data.productName] = {
+          totalIn: 0,
+          totalOut: 0,
+          lastDate: getDate(data),
+          lastType: "transfer_in"
+        };
+      }
+      productStocks[data.productName].totalIn += data.quantity;
+      if (getDate(data) > productStocks[data.productName].lastDate) {
+        productStocks[data.productName].lastDate = getDate(data);
+        productStocks[data.productName].lastType = "transfer_in";
+      }
+    }
+  });
+
+  if (Object.keys(productStocks).length === 0) {
+    productsContainer.innerHTML = `<p style="text-align:center; padding: 40px 0; font-weight:600;">Bu müdürlükte hiç ürün bulunmamaktadır.</p>`;
+    return;
   }
+
+  productsContainer.innerHTML = "";
+  for (const [productName, stockInfo] of Object.entries(productStocks)) {
+    const netStock = stockInfo.totalIn - stockInfo.totalOut;
+    if (netStock <= 0) continue;
+
+    let lastTypeText = "";
+    switch (stockInfo.lastType) {
+      case "in": lastTypeText = "Giriş"; break;
+      case "out": lastTypeText = "Çıkış"; break;
+      case "transfer_in": lastTypeText = "Transfer (Giriş)"; break;
+      case "transfer_out": lastTypeText = "Transfer (Çıkış)"; break;
+      default: lastTypeText = stockInfo.lastType; break;
+    }
+
+    const card = document.createElement('div');
+    card.classList.add('productCard');
+    card.innerHTML = `
+      <div class="productName">${productName}</div>
+      <div class="stockAmount">${netStock}</div>
+      <div class="lastMovement">Son Hareket: ${stockInfo.lastDate.toLocaleString('tr-TR')} (${lastTypeText})</div>
+    `;
+    productsContainer.appendChild(card);
+  }
+}
+
 
   closeBtn.addEventListener('click', () => {
     stockModal.classList.remove('active');

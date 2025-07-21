@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Ürün Giriş Sayfası</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(120deg, #f6f9fc, #e5eaf5);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 60px 20px;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 24px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      padding: 40px;
+      width: 100%;
+      max-width: 900px;
+      animation: fadeIn 0.5s ease;
+    }
+
+    h1 {
+      text-align: center;
+      color: #cc0000;
+      font-size: 28px;
+      margin-bottom: 40px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .left-column, .right-column {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    label {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 6px;
+      display: block;
+      color: #444;
+      margin-top: 20px;
+    }
+
+    select, input[type="text"] {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1.5px solid #ccc;
+      border-radius: 14px;
+      font-size: 15px;
+      transition: border 0.3s ease, box-shadow 0.3s ease;
+      background-color: #fff;
+    }
+
+    select:focus, input[type="text"]:focus {
+      border-color: #cc0000;
+      box-shadow: 0 0 6px rgba(204, 0, 0, 0.3);
+      outline: none;
+    }
+
+    .features-container {
+      margin-top: 30px;
+    }
+
+    .bottom {
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .bottom button {
+      background: #e60000;
+      color: white;
+      padding: 15px 40px;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 12px rgba(230, 0, 0, 0.3);
+    }
+
+    .bottom button:hover {
+      background-color: #c40000;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+      .form-row {
+        flex-direction: column;
+      }
+
+      .container {
+        padding: 30px 20px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Ürün Giriş Sayfası</h1>
+
+    <div class="form-row">
+      <div class="left-column">
+        <label for="product">Ürün Adı</label>
+        <select id="product" onchange="updateBrands()">
+          <option value="">Seçiniz</option>
+          <option value="mouse">Mouse</option>
+          <option value="monitor">Monitör</option>
+          <option value="klavye">Klavye</option>
+          <option value="pc">Bilgisayar</option>
+        </select>
+
+        <label for="brand">Marka</label>
+        <select id="brand" onchange="updateModels()">
+          <option value="">Seçiniz</option>
+        </select>
+
+        <label for="model">Model</label>
+        <select id="model" onchange="updateIPs()">
+          <option value="">Model Seçiniz</option>
+        </select>
+
+        <label for="ip">IP Adresi</label>
+        <select id="ip">
+          <option value="">IP Seçiniz</option>
+        </select>
+      </div>
+
+      <div class="right-column">
+        <label for="department">Müdürlük</label>
+        <select id="department" onchange="updateUnits()">
+          <option value="">Yükleniyor...</option>
+        </select>
+
+        <label for="unit">Şeflik</label>
+        <select id="unit" onchange="updatePersons()" disabled>
+          <option>Önce müdürlük seçin</option>
+        </select>
+
+        <label for="person">Kişi</label>
+        <select id="person" disabled>
+          <option>Önce şeflik seçin</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="features-container">
+      <label for="features">Ürün Özellikleri</label>
+      <input type="text" id="features" placeholder="örn. Kablosuz, RGB, USB-C..." />
+    </div>
+
+    <div class="bottom">
+      <button onclick="submitForm()">Kaydet</button>
+    </div>
+  </div>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { setDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  // Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyC6G7JfaTCSpvwkX4PXTTJ6I92LIpzkkxk",
+    authDomain: "belediyeenvanter.firebaseapp.com",
+    projectId: "belediyeenvanter",
+    storageBucket: "belediyeenvanter.appspot.com",
+    messagingSenderId: "1088833874170",
+    appId: "1:1088833874170:web:2c2c1c069a9880917b8143"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  let personelData = {};
+
+  const productBrandMap = {
+  mouse: ["Logitech", "Razer", "Microsoft"],
+  monitor: ["Samsung", "LG", "Acer"],
+  klavye: ["Corsair", "SteelSeries", "Logitech"],
+  pc: ["Dell", "HP", "Asus"]
+};
+const brandModelMap = {
+  Logitech: ["M185", "MX Master 3", "G Pro"],
+  Razer: ["DeathAdder", "Naga", "Basilisk"],
+  Microsoft: ["Sculpt", "Arc", "Basic Optical"],
+  Samsung: ["U28E590", "Odyssey G7", "Smart Monitor M8"],
+  LG: ["27GN950", "Ultrafine", "32UN880"],
+  Acer: ["Nitro VG270", "Predator XB3", "R240HY"],
+  Corsair: ["K70", "K95", "Strafe"],
+  SteelSeries: ["Apex Pro", "Apex 7", "Apex 3"],
+  Dell: ["XPS 8930", "Inspiron 3880", "OptiPlex 7080"],
+  HP: ["Pavilion", "EliteDesk", "Omen 30L"],
+  Asus: ["ROG Strix", "TUF Gaming", "VivoPC"]
+};
+const modelIpMap = {
+  "M185": ["192.168.1.101", "192.168.1.102"],
+  "MX Master 3": ["192.168.1.103"],
+  "DeathAdder": ["192.168.1.104", "192.168.1.105"],
+  "U28E590": ["192.168.1.201"],
+  "27GN950": ["192.168.1.202"],
+  "K70": ["192.168.1.301"],
+  "XPS 8930": ["192.168.1.401"],
+  // Geri kalanları ekleyebilirsin...
+};
+
+const featuresInput = document.getElementById("features");
+
+featuresInput.addEventListener("input", async () => {
+  const featureText = featuresInput.value;
+  try {
+    await setDoc(doc(db, "features_temp", "currentFeature"), {
+      features: featureText,
+      updatedAt: new Date()
+    });
+    console.log("Features güncellendi:", featureText);
+  } catch (e) {
+    console.error("Features güncellenirken hata:", e);
+  }
+});
+
+  async function loadPersonelData() {
+    try {
+      const snapshot = await getDocs(collection(db, "personeller"));
+      personelData = {};
+
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        console.log("Personel verisi:", data);
+        const mudurluk = (data.mudurluk || "Bilinmiyor").trim();
+        const seflik = (data.seflik || "Bilinmiyor").trim();
+        const kisi = (data.isimSoyisim || "").trim();
+
+        if (!kisi) return;
+
+        if (!personelData[mudurluk]) personelData[mudurluk] = {};
+        if (!personelData[mudurluk][seflik]) personelData[mudurluk][seflik] = [];
+
+        personelData[mudurluk][seflik].push(kisi);
+      });
+
+      console.log("Personel verisi objesi:", personelData);
+      populateDepartments();
+
+    } catch (e) {
+      alert("Personel verisi yüklenirken hata oluştu: " + e.message);
+    }
+  }
+
+  function populateDepartments() {
+    const deptSelect = document.getElementById("department");
+    deptSelect.innerHTML = '<option value="">Seçiniz</option>';
+    Object.keys(personelData).forEach(mudurluk => {
+      const option = document.createElement("option");
+      option.value = mudurluk;
+      option.textContent = mudurluk;
+      deptSelect.appendChild(option);
+    });
+
+    resetUnitPerson();
+  }
+
+  function resetUnitPerson() {
+    const unitSelect = document.getElementById("unit");
+    const personSelect = document.getElementById("person");
+    unitSelect.innerHTML = '<option>Önce müdürlük seçin</option>';
+    personSelect.innerHTML = '<option>Önce şeflik seçin</option>';
+    unitSelect.disabled = true;
+    personSelect.disabled = true;
+  }
+
+  window.updateUnits = function () {
+    const dept = document.getElementById("department").value;
+    const unitSelect = document.getElementById("unit");
+    const personSelect = document.getElementById("person");
+
+    unitSelect.innerHTML = "";
+    personSelect.innerHTML = '<option>Önce şeflik seçin</option>';
+    personSelect.disabled = true;
+
+    if (!dept || !personelData[dept]) {
+      unitSelect.innerHTML = '<option>Önce müdürlük seçin</option>';
+      unitSelect.disabled = true;
+      return;
+    }
+
+    Object.keys(personelData[dept]).forEach(unit => {
+      const option = document.createElement("option");
+      option.value = unit;
+      option.textContent = unit;
+      unitSelect.appendChild(option);
+    });
+
+    unitSelect.disabled = false;
+  };
+
+  window.updatePersons = function () {
+    const dept = document.getElementById("department").value;
+    const unit = document.getElementById("unit").value;
+    const personSelect = document.getElementById("person");
+
+    personSelect.innerHTML = "";
+
+    if (!dept || !unit || !personelData[dept] || !personelData[dept][unit]) {
+      personSelect.innerHTML = '<option>Önce şeflik seçin</option>';
+      personSelect.disabled = true;
+      return;
+    }
+
+    personelData[dept][unit].forEach(kisi => {
+      const option = document.createElement("option");
+      option.value = kisi;
+      option.textContent = kisi;
+      personSelect.appendChild(option);
+    });
+
+    personSelect.disabled = false;
+  };
+
+  window.submitForm = async function () {
+    const data = {
+      product: document.getElementById("product").value,
+      brand: document.getElementById("brand").value,
+      model: document.getElementById("model").value,
+      ip: document.getElementById("ip").value,
+      department: document.getElementById("department").value,
+      unit: document.getElementById("unit").value,
+      kisi: document.getElementById("person").value,
+      features: document.getElementById("features").value,
+      timestamp: new Date()
+    };
+
+    if (!data.product || !data.brand || !data.model) {
+      alert("Lütfen tüm zorunlu alanları doldurun.");
+      return;
+    }
+
+    if (!data.ip) {
+      alert("Lütfen geçerli bir IP adresi seçin veya girin.");
+      return;
+    }
+
+    try {
+      await addDoc(collection(db, "urun_girisi"), data);
+      alert("Ürün başarıyla kaydedildi!");
+      location.reload();
+    } catch (e) {
+      alert("Hata oluştu: " + e.message);
+    }
+  };
+  function updateBrands() {
+  const productSelect = document.getElementById("product");
+  const brandSelect = document.getElementById("brand");
+  const modelSelect = document.getElementById("model");
+  const ipSelect = document.getElementById("ip");
+
+  const product = productSelect.value;
+  brandSelect.innerHTML = "";
+  modelSelect.innerHTML = '<option value="">Model Seçiniz</option>';
+  ipSelect.innerHTML = '<option value="">IP Seçiniz</option>';
+
+  if (!product || !productBrandMap[product]) {
+    brandSelect.innerHTML = '<option>Önce ürün seçin</option>';
+    brandSelect.disabled = true;
+    modelSelect.disabled = true;
+    ipSelect.disabled = true;
+    return;
+  }
+
+  brandSelect.disabled = false;
+  modelSelect.disabled = true;
+  ipSelect.disabled = true;
+
+  productBrandMap[product].forEach(brand => {
+    const option = document.createElement("option");
+    option.value = brand;
+    option.textContent = brand;
+    brandSelect.appendChild(option);
+  });
+}
+
+function updateModels() {
+  const brandSelect = document.getElementById("brand");
+  const modelSelect = document.getElementById("model");
+  const ipSelect = document.getElementById("ip");
+
+  const brand = brandSelect.value;
+  modelSelect.innerHTML = "";
+  ipSelect.innerHTML = '<option value="">IP Seçiniz</option>';
+
+  if (!brand || !brandModelMap[brand]) {
+    modelSelect.innerHTML = '<option value="">Model Seçiniz</option>';
+    modelSelect.disabled = true;
+    ipSelect.disabled = true;
+    return;
+  }
+
+  modelSelect.disabled = false;
+  ipSelect.disabled = true;
+
+  brandModelMap[brand].forEach(model => {
+    const option = document.createElement("option");
+    option.value = model;
+    option.textContent = model;
+    modelSelect.appendChild(option);
+  });
+}
+
+function updateIPs() {
+  const modelSelect = document.getElementById("model");
+  const ipSelect = document.getElementById("ip");
+
+  const model = modelSelect.value;
+  ipSelect.innerHTML = "";
+
+  if (!model || !modelIpMap[model]) {
+    ipSelect.innerHTML = '<option value="">IP Seçiniz</option>';
+    ipSelect.disabled = true;
+    return;
+  }
+
+  ipSelect.disabled = false;
+
+  modelIpMap[model].forEach(ip => {
+    const option = document.createElement("option");
+    option.value = ip;
+    option.textContent = ip;
+    ipSelect.appendChild(option);
+  });
+}
+
+
+  // Sayfa yüklendiğinde personel verisini yükle
+  loadPersonelData();
+
+  document.getElementById("product").addEventListener("change", updateBrands);
+document.getElementById("brand").addEventListener("change", updateModels);
+document.getElementById("model").addEventListener("change", updateIPs);
+</script>
+</body>
+</html>

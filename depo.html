@@ -1,64 +1,286 @@
+
 <!DOCTYPE html>
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
   <title>Depo Yönetimi Paneli</title>
+
+  <!-- FontAwesome CDN -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+
   <style>
-    /* Basit stil örneği */
-    table, th, td { border: 1px solid #ccc; border-collapse: collapse; padding: 8px; }
-    th { background-color: #b31217; color: white; }
-    .no-data { text-align: center; color: #999; padding: 15px; }
-  </style>
+    /* Reset ve Temel */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Poppins', Arial, sans-serif;
+      background: #fff;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+   /* Header - Sade ve Naif Tasarım */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: #f8f9fa; /* Açık gri ton */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); /* Hafif gölge */
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 100;
+  user-select: none;
+  border-bottom: 1px solid #e0e0e0; /* İnce alt çizgi */
+}
+
+  header h1 {
+  margin: 0;
+  font-weight: 700;
+  font-size: 2.2rem;
+  color: transparent;
+  background: linear-gradient(90deg, #b31217, #e52d27); /* Kırmızı tonlarda geçişli yazı */
+  -webkit-background-clip: text;
+  background-clip: text;
+  letter-spacing: 2.5px;
+  font-family: 'Segoe UI', 'Poppins', sans-serif; /* Modern, şık fontlar */
+  user-select: none;
+  flex-grow: 1;
+  text-align: center;
+
+}
+
+    /* Ana içerik container */
+    main.container {
+      flex-grow: 1;
+      margin-top: 150px; /* header alanı bırak */
+      width: 100%;
+      max-width: 1800px;
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 50px;
+      padding: 0 20px 40px;
+      box-sizing: border-box;
+      min-height: calc(100vh - 80px);
+    }
+
+    /* Kartlar üstte */
+    .cards-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  user-select: none;
+}
+
+.cards-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Ortalar */
+  gap: 20px; /* Kartlar arası boşluk */
+  margin-top: 30px;
+}
+
+.card {
+  background: #ffffff;
+  border: 1.5px solid #f3f4f6;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  padding: 40px 30px;
+  width: 23%; /* Dörtlü düzene uygun */
+  min-width: 250px;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 1100px) {
+  .card {
+    width: 45%;
+  }
+}
+
+@media (max-width: 600px) {
+  .card {
+    width: 90%;
+  }
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(179, 18, 23, 0.12);
+  border-color: #fca5a5;
+  background-color: #fffafa;
+}
+
+.card i {
+  font-size: 38px;
+  color: #dc2626;
+  margin-bottom: 18px;
+}
+
+.card h2 {
+  margin: 0;
+  font-weight: 600;
+  font-size: 20px;
+  color: #b91c1c;
+  letter-spacing: 0.4px;
+}
+
+.card:hover i {
+  color: #991b1b;
+}
+
+  /* Tablo */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  background: transparent;
+  font-size: 1rem;
+  user-select: none;
+  table-layout: fixed;
+}
+
+thead tr {
+  background: #f3f4f6;
+  color: #374151;
+  font-weight: 600;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+thead th {
+  padding: 16px 20px;
+  text-align: left;
+  word-break: break-word;
+}
+
+tbody tr {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  cursor: default;
+}
+
+tbody tr:hover {
+  background: #fef2f2;
+  transform: scale(1.005);
+}
+
+tbody td {
+  padding: 16px 20px;
+  vertical-align: middle;
+  color: #374151;
+  font-weight: 500;
+  word-break: break-word;
+}
+
+tbody tr:hover td:first-child {
+  border-left: 4px solid #ef4444;
+}
+
+/* Zarif buton */
+.btn-cikis {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  font-weight: 600;
+  font-size: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  user-select: none;
+}
+
+.btn-cikis:hover {
+  background-color: #dc2626;
+  transform: translateY(-1px);
+}
+</style>
 </head>
 <body>
   <header>
-  <button id="backBtn" title="Geri dön" onclick="history.back()">←</button>
-  <h1>DEPO YÖNETİMİ</h1>
-</header>
-
+    <h1>DEPO YÖNETİMİ</h1>
+  </header>
 
   <main class="container">
-    <form class="product-form" onsubmit="event.preventDefault(); addProduct();">
-      <input type="text" id="productName" placeholder="Ürün Adı" autocomplete="off" />
-      <input type="number" id="productQty" placeholder="Miktar" min="1" />
-      <button type="submit">Ekle</button>
-    </form>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Ürün Adı</th>
-          <th>Stok Miktarı</th>
-          <th>İşlemler</th>
-        </tr>
-      </thead>
-      <tbody id="productTable">
-        <!-- Ürünler buraya gelecek -->
+    <!-- Üstte 4 kart -->
+    <div class="cards-row">
+      <div class="card" onclick="window.location.href='ürün.html'">
+        <i class="fas fa-boxes-stacked"></i>
+        <h2>Ürün Girişi</h2>
+      </div>
+
+      <div class="card" onclick="window.location.href='elleUrunGirme.html'">
+        <i class="fas fa-warehouse"></i>
+        <h2>Elle Ürün Girme</h2>
+      </div>
+
+      <div class="card" onclick="window.location.href='personelEkle.html'">
+        <i class="fas fa-user-plus"></i>
+        <h2>Personel Ekle</h2>
+      </div>
+
+      <div class="card" onclick="window.location.href='personelSil.html'">
+        <i class="fas fa-user-minus"></i>
+        <h2>Personel Sil</h2>
+      </div>
+    </div>
+
+    <!-- Ürün Tablosu -->
+   <table>
+  <thead>
+  <tr>
+    <th>Ürün Adı</th>
+    <th>Marka</th>
+    <th>Model</th>
+    <th>IP</th>
+    <th>Adet</th>
+
+    <th>Kayıt Tarihi</th> <!-- ✅ Yeni kolon -->
+    
+    <th style="width: 130px;">Sil</th>
+  </tr>
+</thead>
+  <tbody id="productTable">
       </tbody>
     </table>
+
   </main>
-</body>
-</html>
-<h2>Hareketler</h2>
-<table>
-  <thead>
-    <tr>
-      <th>Tarih</th>
-      <th>Müdürlük</th>
-      <th>Ürün</th>
-      <th>Miktar</th>
-      <th>Tür</th>
-    </tr>
-  </thead>
-  <tbody id="movementTableBody">
-    <tr><td colspan="5" class="no-data">Kayıt bulunamadı.</td></tr>
-  </tbody>
-</table>
 
 <script type="module">
 import { updateDoc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
-import { setDoc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+import { setDoc,serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+  import { getDoc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+  
+
   import { 
     getFirestore, collection, addDoc, getDocs, deleteDoc, doc, 
     query, orderBy, limit 
@@ -72,6 +294,52 @@ import { setDoc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-fires
     messagingSenderId: "1088833874170",
     appId: "1:1088833874170:web:2c2c1c069a9880917b8143"
   };
+
+    function toggleForm(type) {
+  const formEkle = document.getElementById('formEkle');
+  const formSil = document.getElementById('formSil');
+  const ekleIcon = document.getElementById('ekleIcon');
+  const silIcon = document.getElementById('silIcon');
+
+  if (type === 'ekle') {
+    const visible = formEkle.style.display === 'block';
+    formEkle.style.display = visible ? 'none' : 'block';
+    formSil.style.display = 'none';
+    ekleIcon.textContent = visible ? '+' : '-';
+    silIcon.textContent = '+';
+  } else if (type === 'sil') {
+    const visible = formSil.style.display === 'block';
+    formSil.style.display = visible ? 'none' : 'block';
+    formEkle.style.display = 'none';
+    silIcon.textContent = visible ? '+' : '-';
+    ekleIcon.textContent = '+';
+  }
+}
+
+  function personelEkle() {
+    const ad = document.getElementById('personelAdi').value.trim();
+    const soyad = document.getElementById('personelSoyadi').value.trim();
+
+    if (!ad || !soyad) {
+      alert("Ad ve soyad girilmelidir.");
+      return;
+    }
+
+    alert(`Personel eklendi: ${ad} ${soyad}`);
+    document.getElementById('personelAdi').value = '';
+    document.getElementById('personelSoyadi').value = '';
+  }
+
+  function personelSil() {
+    const id = document.getElementById('personelIdSil').value.trim();
+    if (!id) {
+      alert("Lütfen ID veya ad giriniz.");
+      return;
+    }
+
+    alert(`Personel silindi: ${id}`);
+    document.getElementById('personelIdSil').value = '';
+  }
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
@@ -89,14 +357,13 @@ import { setDoc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-fires
   }
 
   try {
-    // Aynı isimde ürün var mı kontrol et
-    const productsRef = collection(db, "products");
-    const querySnapshot = await getDocs(productsRef);
+    const urunGirisiRef = collection(db, "urun_girisi");
+    const querySnapshot = await getDocs(urunGirisiRef);
     let existingProductDoc = null;
 
     querySnapshot.forEach((docSnap) => {
       const data = docSnap.data();
-      if (data.name.toLowerCase() === name.toLowerCase()) {
+      if (data.product && data.product.toLowerCase() === name.toLowerCase()) {
         existingProductDoc = { id: docSnap.id, data };
       }
     });
@@ -104,17 +371,17 @@ import { setDoc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-fires
     if (existingProductDoc) {
       // Ürün zaten varsa, miktarını artır
       const updatedQty = existingProductDoc.data.quantity + quantity;
-      await setDoc(doc(db, "products", existingProductDoc.id), {
-        name: existingProductDoc.data.name,
+      await setDoc(doc(db, "urun_girisi", existingProductDoc.id), {
+        ...existingProductDoc.data,
         quantity: updatedQty,
         createdAt: existingProductDoc.data.createdAt || new Date()
       });
     } else {
       // Yoksa yeni ürün olarak ekle
-      await addDoc(collection(db, "products"), {
-        name,
-        quantity,
-        createdAt: new Date()
+      await addDoc(urunGirisiRef, {
+        product: name,
+        quantity: quantity,
+       createdAt: serverTimestamp()
       });
     }
 
@@ -130,40 +397,85 @@ import { setDoc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-fires
   }
 };
 
-  async function loadProducts() {
-    const querySnapshot = await getDocs(collection(db, "products"));
+async function loadProducts() {
+  try {
+    const querySnapshot = await getDocs(collection(db, "urun_girisi"));
     productTable.innerHTML = "";
 
     if (querySnapshot.empty) {
-      productTable.innerHTML = `<tr><td colspan="3" class="no-data">Henüz ürün eklenmemiş.</td></tr>`;
+      productTable.innerHTML = `<tr><td colspan="8" class="no-data">Henüz ürün eklenmemiş.</td></tr>`;
       return;
     }
 
     querySnapshot.forEach((docSnap) => {
       const data = docSnap.data();
+
+      let kayitTarihi = "";
+      const timestampField = data.createdAt || data.timestamp;
+
+      if (timestampField) {
+        kayitTarihi = timestampField.toDate 
+          ? timestampField.toDate().toLocaleDateString("tr-TR") 
+          : new Date(timestampField).toLocaleDateString("tr-TR");
+      }
+
       const row = document.createElement("tr");
       row.innerHTML = `
-        <td>${data.name}</td>
-        <td>${data.quantity}</td>
+        <td>${data.product || "-"}</td>
+        <td>${data.brand || "-"}</td>
+        <td>${data.model || "-"}</td>
+        <td>${data.ip || "-"}</td>
+        <td>${data.adet || data.quantity || "-"}</td>
+        <td>${kayitTarihi}</td>
         <td class="actions">
-  <button class="btn btn-remove" onclick="removeProduct('${docSnap.id}')">Çıkış Yap</button>
-  <button class="btn btn-transfer" onclick="transferProduct('${docSnap.id}', '${data.name}', ${data.quantity})">Müdürlüğe Gönder</button>
-</td>
+          <button class="btn-cikis" onclick="removeProduct('${docSnap.id}')">Çıkış Yap</button>
+        </td>
       `;
       productTable.appendChild(row);
     });
+  } catch (error) {
+    console.error("loadProducts hatası:", error);
   }
+}
 
-  window.removeProduct = async function(id) {
-    try {
-      await deleteDoc(doc(db, "products", id));
-      alert("Ürün çıkarıldı.");
-      loadProducts();
-      loadMovements();
-    } catch (error) {
-      alert("Hata oluştu: " + error.message);
+window.removeProduct = async function(id) {
+  try {
+    const productRef = doc(db, "urun_girisi", id);
+    const productSnap = await getDoc(productRef);
+
+    if (!productSnap.exists()) {
+      alert("Ürün bulunamadı.");
+      return;
     }
-  };
+
+    const productData = productSnap.data();
+
+    // Ürün adı ve miktar doğru alanlardan alınmalı, Firestore alan isimlerine göre
+    const productName = productData.product || productData.name || "İsimsiz Ürün";
+    const quantity = productData.quantity || 1;
+
+    // Hareket kaydı ekle
+    await addDoc(collection(db, "department_movements"), {
+      department: "DEPO",
+      productName: productName,
+      quantity: quantity,
+      type: "out",
+      date: new Date()
+      
+    });
+
+    // Ürünü sil
+    await deleteDoc(productRef);
+
+    alert("Ürün çıkarıldı.");
+    loadProducts();
+    loadMovements();
+  } catch (error) {
+    alert("Hata oluştu: " + error.message);
+    console.error(error);
+  }
+};
+
 
 
 window.transferProduct = async function(id, name, quantity) {
@@ -219,424 +531,69 @@ window.transferProduct = async function(id, name, quantity) {
     const transfersSnapshot = await getDocs(q2);
 
     let combined = [];
+const getDate = (data) => {
+  if (data?.date?.toDate) return data.date.toDate();
+  return new Date(data.date || Date.now());
+};
 
-    movementsSnapshot.forEach(docSnap => {
-      const d = docSnap.data();
-      combined.push({
-        date: d.date.toDate(),
-        department: d.department,
-        productName: d.productName,
-        quantity: d.quantity,
-        type: d.type,
-        toDepartment: null
-      });
-    });
-
-    transfersSnapshot.forEach(docSnap => {
-      const d = docSnap.data();
-      combined.push({
-        date: d.date.toDate(),
-        department: d.fromDepartment,
-        productName: d.productName,
-        quantity: d.quantity,
-        type: "transfer",
-        toDepartment: d.toDepartment
-      });
-    });
-
-    combined.sort((a,b) => b.date - a.date);
-
-    if (combined.length === 0) {
-      movementTableBody.innerHTML = `<tr><td colspan="5" class="no-data">Kayıt bulunamadı.</td></tr>`;
-      return;
+movementsSnapshot.forEach(doc => {
+  const data = doc.data();
+  if (data.department === department) {
+    if (!productStocks[data.productName]) {
+      productStocks[data.productName] = {
+        totalIn: 0,
+        totalOut: 0,
+        lastDate: getDate(data),
+        lastType: data.type
+      };
     }
+    if (data.type === "in") productStocks[data.productName].totalIn += data.quantity;
+    else if (data.type === "out") productStocks[data.productName].totalOut += data.quantity;
 
-    movementTableBody.innerHTML = "";
-    combined.forEach(item => {
-      let typeText = "";
-      if(item.type === "in") typeText = "Giriş";
-      else if(item.type === "out") typeText = "Çıkış";
-      else if(item.type === "transfer") typeText = `Transfer (→ ${item.toDepartment})`;
-
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${item.date.toLocaleString("tr-TR")}</td>
-        <td>${item.department}</td>
-        <td>${item.productName}</td>
-        <td>${item.quantity}</td>
-        <td>${typeText}</td>
-      `;
-      movementTableBody.appendChild(tr);
-    });
+    if (getDate(data) > productStocks[data.productName].lastDate) {
+      productStocks[data.productName].lastDate = getDate(data);
+      productStocks[data.productName].lastType = data.type;
+    }
   }
+});
 
+transfersSnapshot.forEach(doc => {
+  const data = doc.data();
+  if (data.fromDepartment === department) {
+    if (!productStocks[data.productName]) {
+      productStocks[data.productName] = {
+        totalIn: 0,
+        totalOut: 0,
+        lastDate: getDate(data),
+        lastType: "transfer_out"
+      };
+    }
+    productStocks[data.productName].totalOut += data.quantity;
+    if (getDate(data) > productStocks[data.productName].lastDate) {
+      productStocks[data.productName].lastDate = getDate(data);
+      productStocks[data.productName].lastType = "transfer_out";
+    }
+  }
+  if (data.toDepartment === department) {
+    if (!productStocks[data.productName]) {
+      productStocks[data.productName] = {
+        totalIn: 0,
+        totalOut: 0,
+        lastDate: getDate(data),
+        lastType: "transfer_in"
+      };
+    }
+    productStocks[data.productName].totalIn += data.quantity;
+    if (getDate(data) > productStocks[data.productName].lastDate) {
+      productStocks[data.productName].lastDate = getDate(data);
+      productStocks[data.productName].lastType = "transfer_in";
+    }
+}
+});
+
+  }
   // Sayfa açılır açılmaz verileri yükle
   loadProducts();
   loadMovements();
 
   </script>
-
-  <style>
-    /* Reset */
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: 'Poppins', Arial, sans-serif;
-      background: #fff;
-      color: #333;
-      padding: 40px 0 80px 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-    }
-
-    /* Üst bar */
-   /* Header iyileştirmesi */
-header {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  height: 60px;
-  background: linear-gradient(90deg, #b31217, #e52d27);
-  box-shadow: 0 4px 20px rgba(179, 18, 23, 0.7);
-  padding: 0 30px;
-  display: flex;
-  align-items: center;
-justify-content: flex-start;
-  gap: 20px;
-  z-index: 100;
-  user-select: none;
-}
-
-#backBtn {
-  background:  #b31217;
-  color: #ffffff;
-  border: none;
-  border-radius: 50%;
-  font-size: 1.9rem;
-  cursor: pointer;
-  width: 42px;
-  height: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-  user-select: none;
-}
-
-#backBtn:hover {
-  background: white;
-  color: #b31217;
-  box-shadow: 0 0 15px #b31217;
-  transform: scale(1.1);
-}
-
-header h1 {
-  margin: 0;
-  font-weight: 900;
-  font-size: 1.85rem;
-  color: white;
-  letter-spacing: 2.2px;
-  user-select: none;
-
-  text-align: left;
-  flex-grow: 0;
-
-  margin-left: 440px; /* Burayı istediğin kadar artırıp azaltabilirsin */
-}
-
-
-/* Responsive */
-@media (max-width: 480px) {
-  #backBtn {
-    width: 36px;
-    height: 36px;
-    font-size: 1.5rem;
-  }
-
-  header h1 {
-    font-size: 1.5rem;
-    letter-spacing: 1.5px;
-  }
-}
-
-
-    /* Sayfa içeriği container */
-    main.container {
-      width: 90%;
-      max-width: 1100px;
-      margin-top: 120px; /* header sabit olduğundan boşluk */
-      display: flex;
-      flex-direction: column;
-      gap: 50px;
-      align-items: center;
-    }
-
-    /* Form alanı genişliği artırıldı */
-    form.product-form {
-  width: 100%;
-  display: flex;
-  gap: 12px;
-  background: #fff6f6; /* Daha yumuşak açık pembe */
-  padding: 16px 24px;
-  border-radius: 18px;
-  box-shadow: 0 4px 15px rgba(179, 18, 23, 0.2);
-  border: 1.5px solid #b31217;
-  align-items: center; /* Dikey ortalama */
-  max-width: 600px; /* Formun genişliğini sınırladım */
-  margin: 0 auto; /* Ortala */
-}
-
-form.product-form input[type="text"],
-form.product-form input[type="number"] {
-  flex: 1;
-  padding: 10px 16px;
-  font-size: 1rem;
-  border-radius: 12px;
-  border: 1.8px solid #b31217;
-  background: #fff;
-  color: #b31217;
-  font-weight: 600;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-form.product-form input[type="text"]:focus,
-form.product-form input[type="number"]:focus {
-  outline: none;
-  border-color: #e52d27;
-  box-shadow: 0 0 10px #e52d27aa;
-  background: #fff;
-}
-
-form.product-form button {
-  background: linear-gradient(135deg, #b31217, #e52d27);
-  border: none;
-  border-radius: 16px;
-  color: white;
-  font-weight: 700;
-  font-size: 1rem;
-  padding: 12px 30px;
-  cursor: pointer;
-  box-shadow: 0 5px 20px rgba(179, 18, 23, 0.3);
-  transition: all 0.3s ease;
-  user-select: none;
-  letter-spacing: 1.1px;
-  text-transform: uppercase;
-  flex-shrink: 0;
-}
-
-form.product-form button:hover {
-  background: linear-gradient(135deg, #e52d27, #b31217);
-  box-shadow: 0 8px 30px rgba(229, 45, 39, 0.6);
-  transform: translateY(-2px);
-}
-
-/* Responsive için küçük düzenleme */
-@media (max-width: 480px) {
-  form.product-form {
-    flex-direction: column;
-    gap: 12px;
-    padding: 16px 20px;
-  }
-
-  form.product-form input[type="text"],
-  form.product-form input[type="number"] {
-    font-size: 0.95rem;
-    padding: 10px 14px;
-  }
-
-  form.product-form button {
-    width: 100%;
-    font-size: 1rem;
-    padding: 12px 0;
-  }
-}
-
-    /* Tablo genişliği artırıldı */
-    table {
-      width: 100%;
-      max-width: 1100px;
-      border-collapse: separate;
-      border-spacing: 0 14px;
-      background: #fff0f0;
-      border-radius: 24px;
-      box-shadow: 0 6px 35px rgba(179, 18, 23, 0.25);
-      overflow: hidden;
-      font-size: 1.1rem;
-      user-select: none;
-    }
-
-    thead tr {
-      background: #b31217;
-      color: white;
-      font-weight: 700;
-      font-size: 1.15rem;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      box-shadow: 0 4px 12px rgba(179, 18, 23, 0.7);
-    }
-
-    thead th {
-      padding: 24px 28px;
-      text-align: left;
-    }
-
-    tbody tr {
-      background: #fff;
-      transition: background-color 0.3s ease;
-      cursor: default;
-      box-shadow: 0 4px 18px rgba(179, 18, 23, 0.12);
-      border-radius: 18px;
-    }
-
-    tbody tr:hover {
-      background: #ffe5e5;
-      box-shadow: 0 7px 28px rgba(229, 45, 39, 0.4);
-    }
-
-    tbody td {
-      padding: 20px 28px;
-      vertical-align: middle;
-      color: #b31217;
-      font-weight: 600;
-      border-left: 4px solid transparent;
-      transition: border-color 0.3s ease;
-    }
-
-    tbody tr:hover td:first-child {
-      border-left-color: #e52d27;
-    }
-
-    /* Butonlar */
-    .actions {
-      display: flex;
-      gap: 18px;
-    }
-.btn {
-  padding: 12px 28px;
-  border-radius: 28px;
-  font-weight: 600;
-  font-size: 1rem;
-  border: none;
-  cursor: pointer;
-  user-select: none;
-  transition: all 0.3s ease;
-  font-family: 'Poppins', Arial, sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 1.3px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-  color: white;
-}
-
-/* Silme Butonu (Remove) - Mat Kırmızı, hafif gölge */
-.btn-remove {
-  background-color: #d32f2f; /* Koyu kırmızı */
-  box-shadow: 0 6px 12px rgba(211, 47, 47, 0.4);
-  border: 2px solid transparent;
-  font-weight: 700;
-}
-
-.btn-remove:hover {
-  background-color: #b71c1c; /* Daha koyu */
-  box-shadow: 0 8px 20px rgba(183, 28, 28, 0.6);
-  transform: translateY(-3px);
-  border-color: #7f0000;
-}
-
-/* Transfer Butonu - Modern Lacivert, degrade hafif efekt */
-.btn-transfer {
-  background: linear-gradient(135deg, #283593, #1a237e);
-  box-shadow: 0 6px 12px rgba(40, 53, 147, 0.45);
-  border: 2px solid transparent;
-  font-weight: 700;
-}
-
-.btn-transfer:hover {
-  background: linear-gradient(135deg, #1a237e, #0d1456);
-  box-shadow: 0 8px 20px rgba(26, 35, 126, 0.7);
-  transform: translateY(-3px);
-  border-color: #000a33;
-}
-
-
-    /* Responsive */
-    @media (max-width: 960px) {
-      main.container {
-        max-width: 95%;
-        margin-top: 100px;
-      }
-
-      form.product-form {
-        flex-direction: column;
-        gap: 18px;
-        padding: 20px 24px;
-      }
-
-      form.product-form input[type="text"],
-      form.product-form input[type="number"] {
-        font-size: 1.1rem;
-      }
-
-      form.product-form button {
-        width: 100%;
-        font-size: 1.2rem;
-        padding: 16px 0;
-      }
-
-      table {
-        font-size: 1rem;
-        border-radius: 18px;
-      }
-
-      thead th {
-        padding: 18px 16px;
-      }
-
-      tbody td {
-        padding: 16px 16px;
-      }
-
-      .actions {
-        gap: 14px;
-      }
-
-      .btn {
-        padding: 10px 14px;
-        font-size: 0.9rem;
-      }
-    }
-
-    @media (max-width: 480px) {
-      header h1 {
-        font-size: 1.8rem;
-        letter-spacing: 1.5px;
-      }
-
-      form.product-form input[type="text"],
-      form.product-form input[type="number"] {
-        font-size: 1rem;
-        padding: 14px 16px;
-      }
-
-      form.product-form button {
-        font-size: 1rem;
-        padding: 14px 0;
-      }
-
-      table {
-        font-size: 0.9rem;
-      }
-
-      .btn {
-        padding: 8px 12px;
-        font-size: 0.85rem;
-      }
-    }
-  

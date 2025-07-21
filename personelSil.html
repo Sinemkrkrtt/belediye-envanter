@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Personel Sil</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(120deg, #f6f9fc, #e5eaf5);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 60px 20px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 24px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      padding: 40px;
+      width: 100%;
+      max-width: 500px;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .card h1 {
+      text-align: center;
+      color: #d62828;
+      font-size: 28px;
+      margin-bottom: 30px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #444;
+      font-size: 15px;
+      margin-top: 20px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 14px 16px;
+      font-size: 15px;
+      border: 1.5px solid #ccc;
+      border-radius: 14px;
+      background: #fff;
+      transition: all 0.3s ease;
+    }
+
+    input:focus, select:focus {
+      border-color: #d62828;
+      box-shadow: 0 0 5px rgba(214, 40, 40, 0.3);
+      outline: none;
+    }
+
+    button {
+      margin-top: 30px;
+      width: 100%;
+      padding: 14px;
+      background: #d62828;
+      border: none;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #b81e1e;
+      transform: translateY(-1px);
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        padding: 30px 20px;
+      }
+
+      .card h1 {
+        font-size: 24px;
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>Personel Sil</h1>
+
+    <label for="adSoyad">Ad Soyad</label>
+    <input type="text" id="adSoyad" placeholder="Ad ve Soyadı birlikte girin" />
+
+    <label for="mudurluk">Müdürlük</label>
+    <select id="mudurluk" onchange="filtreleSeflik()">
+      <option value="">-- Müdürlük Seçin --</option>
+      <option value="İnsan Kaynakları">İnsan Kaynakları</option>
+      <option value="Teknik Hizmetler">Teknik Hizmetler</option>
+      <option value="Mali Hizmetler">Mali Hizmetler</option>
+    </select>
+
+    <label for="seflik">Şeflik</label>
+    <select id="seflik" disabled>
+      <option value="">-- Önce Müdürlük Seçin --</option>
+    </select>
+
+    <button onclick="getAndDeletePersonel()">Personeli Sil</button>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      query,
+      where,
+      getDocs,
+      deleteDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC6G7JfaTCSpvwkX4PXTTJ6I92LIpzkkxk",
+      authDomain: "belediyeenvanter.firebaseapp.com",
+      projectId: "belediyeenvanter",
+      storageBucket: "belediyeenvanter.appspot.com",
+      messagingSenderId: "1088833874170",
+      appId: "1:1088833874170:web:2c2c1c069a9880917b8143"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const seflikler = {
+      "İnsan Kaynakları": ["Personel Şefliği", "Eğitim Şefliği", "Sosyal İşler Şefliği"],
+      "Teknik Hizmetler": ["Bakım Şefliği", "İnşaat Şefliği", "Elektrik Şefliği"],
+      "Mali Hizmetler": ["Muhasebe Şefliği", "Bütçe Şefliği", "Satın Alma Şefliği"]
+    };
+
+    window.filtreleSeflik = function () {
+      const mudurluk = document.getElementById("mudurluk").value;
+      const seflikSelect = document.getElementById("seflik");
+      seflikSelect.innerHTML = "";
+
+      if (!mudurluk || !seflikler[mudurluk]) {
+        seflikSelect.disabled = true;
+        seflikSelect.innerHTML = `<option value="">Önce Müdürlük Seçin</option>`;
+        return;
+      }
+
+      seflikSelect.disabled = false;
+      seflikler[mudurluk].forEach(seflik => {
+        const option = document.createElement("option");
+        option.value = seflik;
+        option.textContent = seflik;
+        seflikSelect.appendChild(option);
+      });
+    };
+
+    window.getAndDeletePersonel = async function () {
+      const adSoyad = document.getElementById("adSoyad").value.trim();
+      const mudurluk = document.getElementById("mudurluk").value;
+      const seflik = document.getElementById("seflik").value;
+
+      if (!adSoyad || !mudurluk || !seflik) {
+        alert("Lütfen tüm alanları doldurun.");
+        return;
+      }
+
+      try {
+  const q = query(
+  collection(db, "personeller"),
+  where("isimSoyisim", "==", adSoyad),
+  where("mudurluk", "==", mudurluk),
+  where("seflik", "==", seflik)
+);
+
+
+
+        const querySnapshot = await getDocs(q);
+
+        if (querySnapshot.empty) {
+          alert("Eşleşen personel bulunamadı.");
+          return;
+        }
+
+        const docRef = querySnapshot.docs[0].ref;
+
+        if (!confirm(`"${adSoyad}" adlı personeli silmek istediğinize emin misiniz?`)) return;
+
+        await deleteDoc(docRef);
+
+        alert("Personel başarıyla silindi!");
+
+        document.getElementById("adSoyad").value = "";
+        document.getElementById("mudurluk").value = "";
+        document.getElementById("seflik").innerHTML = `<option value="">-- Önce Müdürlük Seçin --</option>`;
+        document.getElementById("seflik").disabled = true;
+
+      } catch (error) {
+        alert("Silme sırasında hata oluştu: " + error.message);
+      }
+    };
+  </script>
+</body>
+</html>
