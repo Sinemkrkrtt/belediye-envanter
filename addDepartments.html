@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Müdürlük Ekle</title>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+      import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+
+      const firebaseConfig = {
+      apiKey: "AIzaSyC6G7JfaTCSpvwkX4PXTTJ6I92LIpzkkxk",
+      authDomain: "belediyeenvanter.firebaseapp.com",
+      projectId: "belediyeenvanter",
+      storageBucket: "belediyeenvanter.appspot.com",
+      messagingSenderId: "1088833874170",
+      appId: "1:1088833874170:web:2e2c1c069a9880917b8143"
+    };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      const departments = [
+        "İnsan Kaynakları",
+        "Teknik Hizmetler",
+        "Bilgi İşlem",
+        "Satın Alma",
+        "Destek Hizmetleri"
+      ];
+
+      async function addDepartments() {
+        const colRef = collection(db, "departments");
+        for (const dept of departments) {
+          await addDoc(colRef, { name: dept });
+          console.log(`${dept} eklendi`);
+        }
+      }
+
+      // Sayfa yüklenince çalışsın
+      window.onload = addDepartments;
+    </script>
+  </head>
+  <body>
+    <h1>Müdürlükler Ekleniyor...</h1>
+  </body>
+</html>

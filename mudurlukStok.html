@@ -3,344 +3,154 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Müdürlük Stokları - Modern Tasarım</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<title>Müdürlük Stok Takip</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
-
-  /* Reset */
-  * {
-    box-sizing: border-box;
-  }
-
   body {
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-    margin: 0;
-    padding: 0;
-      padding-top: 80px;
-    color: #333;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 20px;
+    background:#ffffff;
+    color: #a80000;
+    margin-top: 140px;
   }
-  header {
+   /* Header - Sade ve Naif Tasarım */
+header {
   position: fixed;
-  top: 0; left: 0; right: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   height: 60px;
-  background: linear-gradient(90deg, #b31217, #e52d27);
-  box-shadow: 0 4px 20px rgba(179, 18, 23, 0.5);
+  background: #faf8f8; /* Açık gri ton */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); /* Hafif gölge */
+  padding: 0 24px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 0 60px; /* sağ-sol boşluk, geri buton için */
-  z-index: 9999;
+  gap: 16px;
+  z-index: 100;
   user-select: none;
-  box-sizing: border-box;
+  border-bottom: 1px solid #e0e0e0; /* İnce alt çizgi */
 }
 
-/* GERİ DÖN BUTONU */
-#backBtn {
-  position: absolute;
-  left: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: #b31217;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 42px;
-  height: 42px;
-  font-size: 1.9rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-  user-select: none;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
-}
-
-#backBtn:hover {
-  background: white;
-  color: #b31217;
-  box-shadow: 0 0 15px #b31217;
-  transform: translateY(-50%) scale(1.1);
-}
-
-/* Başlık */
-header h1 {
-  color: white;
-  font-weight: 700;
-  font-size: 1.6rem;
-  letter-spacing: 2px;
+  header h1 {
   margin: 0;
-  user-select: none;
-  text-align: center;
-  width: 100%;
-  max-width: 700px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-
-h1 {
-  color: #b31217;
-  text-align: center;
-  margin-bottom: 35px;
-  font-weight: 800;
+  font-weight: 700;
   font-size: 2.2rem;
-  letter-spacing: 1.5px;
+  color: transparent;
+  background: linear-gradient(90deg, #b31217, #e52d27); /* Kırmızı tonlarda geçişli yazı */
+  -webkit-background-clip: text;
+  background-clip: text;
+  letter-spacing: 2.5px;
+  font-family: 'Segoe UI', 'Poppins', sans-serif; /* Modern, şık fontlar */
+  user-select: none;
+  flex-grow: 1;
+  text-align: center;
+
+}
+  label {
+  display: block;
+  margin: 0 auto;
+  max-width: 600px;
+  font-weight: 500;
+  font-size: 1rem;
+  color: #5a5a5a;
 }
 
-  #departmentsGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
-    gap: 25px;
-    padding: 50px 30px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
+select {
+  display: block;
+  margin: 10px auto 25px;
+  width: 100%;
+  max-width: 600px;
+  padding: 10px 14px;
+  border: 1.5px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9eaea;
+  color: #333;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
 
-  .box {
-    background: #fff;
-    border-radius: 18px;
-    box-shadow:
-      0 8px 20px rgba(0,0,0,0.06),
-      0 2px 6px rgba(179,18,23,0.12);
-    padding: 40px 30px;
-    text-align: center;
-    cursor: pointer;
-    position: relative;
-    transition: 
-      transform 0.35s cubic-bezier(0.4,0,0.2,1),
-      box-shadow 0.35s cubic-bezier(0.4,0,0.2,1),
-      background-color 0.3s ease;
-    user-select: none;
-    overflow: hidden;
-  }
+select:hover,
+select:focus {
+  border-color: #ffeded;
+  background-color: #fcf1f1;
+  outline: none;
+}
 
-  /* Kırmızı alt vurgu çizgisi */
-  .box::after {
-    content: "";
-    position: absolute;
-    bottom: 0; left: 20px; right: 20px;
-    height: 5px;
-    background: linear-gradient(90deg, #b31217, #e52d27);
-    border-radius: 0 0 18px 18px;
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
-    transform-origin: left center;
-  }
+table {
+  border-collapse: collapse;
+  margin: 20px auto;
+  max-width: 90%; /* ✅ Daha geniş görünüm */
+  width: 100%;
+  display: none;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  font-size: 1.05rem;
+  margin-top: 100px;
+}
 
-  .box:hover::after {
-    transform: scaleX(1);
-  }
+thead {
+  background-color: #f9eaea;
+  color: #333;
+}
 
-  .box:hover {
-    background: #b31217;
-    color: #fff;
-    box-shadow:
-      0 15px 35px rgba(179,18,23,0.4),
-      0 6px 15px rgba(0,0,0,0.15);
-    transform: translateY(-10px) scale(1.03);
-    z-index: 2;
-  }
+thead th {
+  padding: 16px 14px; /* ✅ Daha fazla boşluk */
+  font-weight: 600;
+  font-size: 1rem;
+  text-align: left;
+}
 
-  .box i {
-    font-size: 48px;
-    margin-bottom: 18px;
-    color: #b31217;
-    transition: color 0.3s ease;
-  }
-  .box:hover i {
-    color: #fff;
-  }
+tbody tr {
+  background-color: #fff;
+  transition: background-color 0.25s ease;
+}
 
-  .box h3 {
-    font-weight: 700;
-    font-size: 20px;
-    letter-spacing: 0.8px;
-    line-height: 1.2;
-  }
+tbody tr:hover {
+  background-color: #f4f4f4;
+}
 
-  /* Modal Kart */
-  #stockModal {
-    display: none; /* gizli */
-    position: fixed;
-    top: 0; left: 0; right:0; bottom:0;
-    background: rgba(0,0,0,0.4);
-    backdrop-filter: blur(5px);
-    z-index: 9999;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-  }
-  #stockModal.active {
-    display: flex;
-    opacity: 1;
-    pointer-events: auto;
-  }
+tbody td {
+  padding: 14px 14px; /* ✅ Satır yüksekliği arttı */
+  color: #444;
+  font-size: 1.05rem;
+  font-weight: 500;
+  border-top: 1px solid #eee;
+}
 
-  #modalContent {
-    background: #fff;
-    border-radius: 24px;
-    max-width: 720px;
-    max-height: 85vh;
-    width: 100%;
-    overflow-y: auto;
-    padding: 30px 40px 40px;
-    box-shadow: 0 25px 60px rgba(179, 18, 23, 0.35);
-    position: relative;
-    transform: translateY(30px);
-    transition: transform 0.35s ease;
-  }
-  #stockModal.active #modalContent {
-    transform: translateY(0);
-  }
-
-  #modalHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-  }
-  #modalHeader h2 {
-    font-weight: 700;
-    font-size: 28px;
-    color: #b31217;
-    user-select: none;
-  }
-  #closeBtn {
-    font-size: 28px;
-    background: transparent;
-    border: none;
-    color: #b31217;
-    cursor: pointer;
-    transition: color 0.25s ease;
-    user-select: none;
-  }
-  #closeBtn:hover {
-    color: #7a0e10;
-  }
-
-  /* Ürün kartları */
-  #productsContainer {
-    display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(220px,1fr));
-    gap: 22px;
-  }
-  .productCard {
-    border-radius: 18px;
-    background: linear-gradient(145deg, #ffe8e8, #fff0f0);
-    box-shadow:
-      0 6px 14px rgba(179, 18, 23, 0.18),
-      0 2px 6px rgba(179, 18, 23, 0.1);
-    padding: 22px 25px;
-    display: flex;
-    flex-direction: column;
-    transition: 
-      transform 0.3s ease, 
-      box-shadow 0.3s ease;
-    cursor: default;
-  }
-  .productCard:hover {
-    box-shadow:
-      0 12px 35px rgba(179, 18, 23, 0.45),
-      0 5px 15px rgba(179, 18, 23, 0.25);
-    transform: translateY(-5px);
-  }
-  .productName {
-    font-weight: 700;
-    font-size: 19px;
-    margin-bottom: 12px;
-    color: #b31217;
-  }
-  .stockAmount {
-    font-size: 52px;
-    font-weight: 900;
-    color: #e52d27;
-    margin-bottom: 10px;
-    font-feature-settings: 'tnum';
-    letter-spacing: 1.2px;
-  }
-  .lastMovement {
-    font-size: 15px;
-    color: #555;
-    margin-top: auto;
-    font-style: italic;
-    user-select: none;
-  }
-
-  /* Responsive */
-  @media (max-width: 900px) {
-    #departmentsGrid {
-      grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
-      padding: 40px 20px;
-      gap: 18px;
-    }
-    .productCard {
-      padding: 18px 20px;
-    }
-  }
-
-  @media (max-width: 480px) {
-    #departmentsGrid {
-      grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
-      padding: 30px 15px;
-      gap: 14px;
-    }
-    .box {
-      padding: 30px 18px;
-    }
-    .box i {
-      font-size: 38px;
-      margin-bottom: 10px;
-    }
-    .box h3 {
-      font-size: 16px;
-    }
-    .productCard {
-      padding: 15px 16px;
-    }
-    .productName {
-      font-size: 16px;
-    }
-    .stockAmount {
-      font-size: 42px;
-    }
-    .lastMovement {
-      font-size: 13px;
-    }
-  }
 </style>
+
 </head>
 <body>
 <header>
-  <button id="backBtn" title="Geri dön" onclick="history.back()">←</button>
   <h1>MÜDÜRLÜK STOK TAKİP</h1>
 </header>
-<div id="departmentsGrid" aria-label="Müdürlük listesi"></div>
 
-<!-- Modal -->
-<div id="stockModal" aria-hidden="true" role="dialog" aria-labelledby="modalTitle" aria-modal="true">
-  <div id="modalContent" tabindex="0">
-    <div id="modalHeader">
-      <h2 id="modalTitle">Müdürlük Stokları</h2>
-      <button id="closeBtn" aria-label="Kapat">&times;</button>
-    </div>
-    <div id="productsContainer">
-      <!-- Ürün kartları buraya gelecek -->
-    </div>
-  </div>
-</div>
+<!-- Müdürlük seçimi -->
+
+<select id="departmentSelect">
+  <option value=""> Müdürlük seçiniz.</option>
+</select>
+
+<!-- Ürünlerin gösterileceği tablo -->
+<table id="productTable" aria-label="Müdürlük ürünleri">
+  <thead>
+    <tr>
+      <th>Ürün Adı</th>
+         <th>IP</th> 
+      <th>Gönderen Müdürlük</th>
+      <th>Şeflik</th>
+      <th>Kişi</th> <!-- Buraya IP sütunu eklendi -->
+      <th>İşlem</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-  import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, getDocs, query, where, doc, deleteDoc, updateDoc, getDoc, setDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyC6G7JfaTCSpvwkX4PXTTJ6I92LIpzkkxk",
@@ -348,186 +158,123 @@ h1 {
     projectId: "belediyeenvanter",
     storageBucket: "belediyeenvanter.appspot.com",
     messagingSenderId: "1088833874170",
-    appId: "1:1088833874170:web:2c2c1c069a9880917b8143"
+    appId: "1:1088833874170:web:2e2c1c069a9880917b8143"
   };
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  const departments = [
-    "AFET İŞLERİ",
-    "BASIN YAYIN VE HALKLA İLİŞKİLER",
-    "ÇEVRE KORUMA VE KONTROL",
-    "DESTEK HİZMETLERİ",
-    "EMLAK VE İSTİMLAK",
-    "FEN İŞLERİ",
-    "HUKUK İŞLERİ",
-    "İMAR VE ŞEHİRCİLİK",
-    "İNSAN KAYNAKLARI",
-    "KÜLTÜR VE SOSYAL İŞLER",
-    "MALİ HİZMETLER",
-    "ÖZEL KALEM",
-    "SPOR İŞLERİ",
-    "TEFTİŞ KURULU",
-    "TESİSLER",
-    "VETERİNER İŞLERİ",
-    "YAZI İŞLERİ",
-    "ZABITA"
-  ];
+  const departmentSelect = document.getElementById("departmentSelect");
+  const productTable = document.getElementById("productTable");
+  const tableBody = productTable.querySelector("tbody");
 
-  const departmentsGrid = document.getElementById('departmentsGrid');
-  const stockModal = document.getElementById('stockModal');
-  const closeBtn = document.getElementById('closeBtn');
-  const modalTitle = document.getElementById('modalTitle');
-  const productsContainer = document.getElementById('productsContainer');
+  async function loadDepartments() {
+    const q = query(collection(db, "hareketler"));
+    const snapshot = await getDocs(q);
+    const departments = new Set();
 
-  function createDepartmentBoxes() {
-    departmentsGrid.innerHTML = "";
-    departments.forEach(dep => {
-      const box = document.createElement('div');
-      box.classList.add('box');
-      box.setAttribute('role', 'button');
-      box.setAttribute('tabindex', '0');
-      box.setAttribute('aria-label', dep + " müdürlüğü stok bilgileri");
-      box.innerHTML = `
-        <i class="fas fa-building"></i>
-        <h3>${dep}</h3>
-      `;
-      box.addEventListener('click', () => {
-        openStockModal(dep);
-      });
-      box.addEventListener('keydown', e => {
-        if(e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          openStockModal(dep);
-        }
-      });
-      departmentsGrid.appendChild(box);
+    snapshot.forEach(doc => {
+      const data = doc.data();
+      if (data.toDepartment) {
+        departments.add(data.toDepartment);
+      }
+    });
+
+    [...departments].sort().forEach(dept => {
+      const option = document.createElement("option");
+      option.value = dept;
+      option.textContent = dept;
+      departmentSelect.appendChild(option);
     });
   }
-async function openStockModal(department) {
-  modalTitle.textContent = `${department} - Stok Durumu`;
-  productsContainer.innerHTML = `<p style="text-align:center; padding: 40px 0;">Yükleniyor...</p>`;
-  stockModal.classList.add('active');
-  stockModal.setAttribute('aria-hidden', 'false');
-  document.getElementById('modalContent').focus();
+async function loadProductsByDepartment(department) {
+    const q = query(collection(db, "hareketler"), where("toDepartment", "==", department));
+    const snapshot = await getDocs(q);
 
-  const getDate = (data) => {
-    if (data?.date?.toDate) return data.date.toDate();
-    return new Date(data.date || Date.now());
-  };
+    tableBody.innerHTML = "";
 
-  const movementsRef = collection(db, "department_movements");
-  const movementsSnapshot = await getDocs(query(movementsRef, orderBy("date", "desc")));
+    snapshot.forEach(docSnap => {
+      const data = docSnap.data();
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${data.productName || "-"}</td>
+        <td>${data.ip || "-"}</td>
+        <td>${data.fromDepartment || "-"}</td>
+        <td>${data.toBranch || "-"}</td>
+        <td>${data.toPerson || "-"}</td>
+        <td><button data-id="${docSnap.id}" class="deleteBtn">Sil</button></td>
+      `;
+      tableBody.appendChild(row);
+    });
 
-  // Burada "transfers" koleksiyonu olmalı
-  const transfersRef = collection(db, "transfers");
-  const transfersSnapshot = await getDocs(query(transfersRef, orderBy("date", "desc")));
+    productTable.style.display = snapshot.empty ? "none" : "table";
 
-  const productStocks = {};
+    // Sil butonlarına event listener ekle
+    document.querySelectorAll(".deleteBtn").forEach(button => {
+      button.addEventListener("click", async (e) => {
+        const docId = e.target.getAttribute("data-id");
+        if (confirm("Bu hareket kaydını silmek ve stoğa geri eklemek istediğinize emin misiniz?")) {
+          await deleteMovementAndRestoreStock(docId);
+          loadProductsByDepartment(departmentSelect.value);
+        }
+      });
+    });
+  }
+  
+  async function deleteMovementAndRestoreStock(docId) {
+    const hareketRef = doc(db, "hareketler", docId);
+    const hareketSnap = await getDoc(hareketRef);
 
-  movementsSnapshot.forEach(doc => {
-    const data = doc.data();
-    if (data.department === department) {
-      if (!productStocks[data.productName]) {
-        productStocks[data.productName] = {
-          totalIn: 0,
-          totalOut: 0,
-          lastDate: getDate(data),
-          lastType: data.type
-        };
-      }
-      if (data.type === "in") productStocks[data.productName].totalIn += data.quantity;
-      else if (data.type === "out") productStocks[data.productName].totalOut += data.quantity;
-
-      if (getDate(data) > productStocks[data.productName].lastDate) {
-        productStocks[data.productName].lastDate = getDate(data);
-        productStocks[data.productName].lastType = data.type;
-      }
+    if (!hareketSnap.exists()) {
+      alert("Silinecek kayıt bulunamadı.");
+      return;
     }
-  });
 
-  transfersSnapshot.forEach(doc => {
-    const data = doc.data();
-    if (data.fromDepartment === department) {
-      if (!productStocks[data.productName]) {
-        productStocks[data.productName] = {
-          totalIn: 0,
-          totalOut: 0,
-          lastDate: getDate(data),
-          lastType: "transfer_out"
-        };
-      }
-      productStocks[data.productName].totalOut += data.quantity;
-      if (getDate(data) > productStocks[data.productName].lastDate) {
-        productStocks[data.productName].lastDate = getDate(data);
-        productStocks[data.productName].lastType = "transfer_out";
-      }
-    }
-    if (data.toDepartment === department) {
-      if (!productStocks[data.productName]) {
-        productStocks[data.productName] = {
-          totalIn: 0,
-          totalOut: 0,
-          lastDate: getDate(data),
-          lastType: "transfer_in"
-        };
-      }
-      productStocks[data.productName].totalIn += data.quantity;
-      if (getDate(data) > productStocks[data.productName].lastDate) {
-        productStocks[data.productName].lastDate = getDate(data);
-        productStocks[data.productName].lastType = "transfer_in";
-      }
-    }
-  });
+    const hareketData = hareketSnap.data();
+    const productName = hareketData.productName;
+    const quantity = hareketData.quantity || 0;
+    const toDepartment = hareketData.toDepartment;
 
-  if (Object.keys(productStocks).length === 0) {
-    productsContainer.innerHTML = `<p style="text-align:center; padding: 40px 0; font-weight:600;">Bu müdürlükte hiç ürün bulunmamaktadır.</p>`;
-    return;
+    if (!productName || !toDepartment || quantity <= 0) {
+      alert("Eksik veya hatalı veri nedeniyle işlem yapılamıyor.");
+      return;
+    }
+
+    // Stoklar koleksiyonunda ilgili ürün + müdürlük için belge id'yi oluşturuyoruz
+    // Örnek: "Müdürlük_ÜrünAdı" gibi benzersiz id (dilersen farklı yapabilirsin)
+    const stokDocId = `${toDepartment}_${productName}`.replace(/\s+/g, "_").toLowerCase();
+    const stokRef = doc(db, "urun_girisi", stokDocId);
+    const stokSnap = await getDoc(stokRef);
+
+    if (stokSnap.exists()) {
+      // Var olan stok miktarını güncelle
+      await updateDoc(stokRef, {
+        quantity: increment(quantity)
+      });
+    } else {
+      // Yeni stok kaydı oluştur
+      await setDoc(stokRef, {
+        department: toDepartment,
+        productName: productName,
+        quantity: quantity
+      });
+    }
+
+    // Hareket kaydını sil
+    await deleteDoc(hareketRef);
+
+    alert("Kayıt silindi ve stoklara geri eklendi.");
   }
 
-  productsContainer.innerHTML = "";
-  for (const [productName, stockInfo] of Object.entries(productStocks)) {
-    const netStock = stockInfo.totalIn - stockInfo.totalOut;
-    if (netStock <= 0) continue;
+  loadDepartments();
 
-    let lastTypeText = "";
-    switch (stockInfo.lastType) {
-      case "in": lastTypeText = "Giriş"; break;
-      case "out": lastTypeText = "Çıkış"; break;
-      case "transfer_in": lastTypeText = "Transfer (Giriş)"; break;
-      case "transfer_out": lastTypeText = "Transfer (Çıkış)"; break;
-      default: lastTypeText = stockInfo.lastType; break;
+  departmentSelect.addEventListener("change", (e) => {
+    const selectedDepartment = e.target.value;
+    if (selectedDepartment) {
+      loadProductsByDepartment(selectedDepartment);
+    } else {
+      productTable.style.display = "none";
+      tableBody.innerHTML = "";
     }
-
-    const card = document.createElement('div');
-    card.classList.add('productCard');
-    card.innerHTML = `
-      <div class="productName">${productName}</div>
-      <div class="stockAmount">${netStock}</div>
-      <div class="lastMovement">Son Hareket: ${stockInfo.lastDate.toLocaleString('tr-TR')} (${lastTypeText})</div>
-    `;
-    productsContainer.appendChild(card);
-  }
-}
-
-
-  closeBtn.addEventListener('click', () => {
-    stockModal.classList.remove('active');
-    stockModal.setAttribute('aria-hidden', 'true');
-  });
-
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && stockModal.classList.contains('active')) {
-      stockModal.classList.remove('active');
-      stockModal.setAttribute('aria-hidden', 'true');
-    }
-  });
-
-  window.addEventListener('DOMContentLoaded', () => {
-    createDepartmentBoxes();
   });
 </script>
-
-</body>
-</html>

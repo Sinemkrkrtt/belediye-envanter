@@ -170,43 +170,44 @@ table thead {
 </header>
 
   <form id="movementForm">
-    <div class="left-side">
-      <select id="productType" required>
-        <option value="" disabled selected>Ürün Türü Seçiniz</option>
-        <option value="monitor">Monitor</option>
-        <option value="keyboard">Klavye</option>
-        <option value="mouse">Mouse</option>
-      </select>
+  <div class="left-side">
+    <select id="productType" required>
+      <option value="" disabled selected>Ürün Türü Seçiniz</option>
+      <option value="monitor">Monitor</option>
+      <option value="keyboard">Klavye</option>
+      <option value="mouse">Mouse</option>
+    </select>
 
-      <select id="brand" disabled required>
-        <option value="" disabled selected>Marka Seçiniz</option>
-      </select>
+    <select id="brand" disabled required>
+      <option value="" disabled selected>Marka Seçiniz</option>
+    </select>
 
-      <select id="model" disabled required>
-        <option value="" disabled selected>Model Seçiniz</option>
-      </select>
+    <select id="model" disabled required>
+      <option value="" disabled selected>Model Seçiniz</option>
+    </select>
 
-      <input type="text" id="ip" placeholder="IP" autocomplete="off" />
-    </div>
+    <input type="text" id="ip" placeholder="IP" autocomplete="off" required />
+  </div>
 
-    <div class="right-side">
-      <select id="department" required>
-        <option value="" disabled selected>Müdürlük Seçiniz</option>
-      </select>
+  <div class="right-side">
+    <select id="department" required>
+      <option value="" disabled selected>Müdürlük Seçiniz</option>
+    </select>
 
-      <select id="branch" disabled required>
-        <option value="" disabled selected>Şeflik Seçiniz</option>
-      </select>
+    <select id="branch" disabled required>
+      <option value="" disabled selected>Şeflik Seçiniz</option>
+    </select>
 
-      <select id="person" disabled required>
-        <option value="" disabled selected>Kişi Seçiniz</option>
-      </select>
+    <select id="person" disabled required>
+      <option value="" disabled selected>Kişi Seçiniz</option>
+    </select>
 
-      <input type="number" id="quantity" placeholder="Miktar" min="1" required />
+    <!-- Miktar inputu kaldırıldı -->
 
-      <button type="submit">Gönder</button>
-    </div>
-  </form>
+    <button type="submit">Gönder</button>
+  </div>
+</form>
+
 
   <div class="container">
   <h2>Gönderilen Ürün Listesi</h2>
@@ -217,7 +218,6 @@ table thead {
         <th>Marka</th>
         <th>Model</th>
         <th>IP</th>
-        <th>Miktar</th>
         <th>Tarih</th>
         <th>Müdürlük</th>
         <th>Şeflik</th>
@@ -242,6 +242,8 @@ table thead {
     collection,
     getDocs,
     addDoc,
+    doc,
+    updateDoc,
     Timestamp
   } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
@@ -331,7 +333,6 @@ table thead {
       <td>${brand || "-"}</td>
       <td>${model || "-"}</td>
       <td>${data.ip || "-"}</td>
-      <td>${data.quantity || "-"}</td>
       <td>${tarih}</td>
       <td>${data.toDepartment || "-"}</td>
       <td>${data.toBranch || "-"}</td>
@@ -443,44 +444,67 @@ table thead {
       modelSelect.disabled = true;
     }
   });
-
-  // Firestore'dan stok miktarını kontrol eden fonksiyon
 async function checkStock(productName, quantity) {
-  const stokRef = collection(db, "stoklar");
+  const stokRef = collection(db, "urun_girisi");
   const snapshot = await getDocs(stokRef);
 
-  for (const doc of snapshot.docs) {
-    const data = doc.data();
-    if (data.productName === productName) {
-      return data.quantity >= quantity;
+  const [productRaw, brandRaw, modelRaw] = productName.split(" - ");
+  const product = productRaw?.trim();
+  const brand = brandRaw?.trim();
+  const model = modelRaw?.trim();
+
+  for (const docSnap of snapshot.docs) {
+    const data = docSnap.data();
+
+    if (
+      data.product?.trim() === product &&
+      data.brand?.trim() === brand &&
+      data.model?.trim() === model
+    ) {
+      const stokAdet = Number(data.adet) || 0; // ✅ BURADA düzeltme yapıldı
+      return {
+        sufficient: stokAdet >= quantity,
+        docId: docSnap.id,
+        currentQuantity: stokAdet
+      };
     }
   }
 
-  return false; // stokta hiç bulunamadıysa
+  return {
+    sufficient: false,
+    docId: null,
+    currentQuantity: 0
+  };
 }
-
-// Form submit işlemi
 document.getElementById("movementForm").addEventListener("submit", async e => {
   e.preventDefault();
+
+  const ip = document.getElementById("ip").value.trim();
+  if (!ip) {
+    alert("⚠️ Lütfen IP alanını boş bırakmayınız.");
+    return;
+  }
 
   const productType = productTypeSelect.value;
   const brand = brandSelect.value;
   const model = modelSelect.value;
-  const quantity = parseInt(document.getElementById("quantity").value, 10);
   const toDepartment = departmentSelect.value;
   const toBranch = branchSelect.value;
   const toPerson = personSelect.value;
   const productName = `${productType} - ${brand} - ${model}`;
 
-  // ✅ Önce stok kontrolü
-  const stokVarMi = await checkStock(productName, quantity);
+  const quantity = 1; // Miktar sabit 1
 
-  if (!stokVarMi) {
-    alert("Yeterli stok yok veya ürün bulunamadı. Gönderim yapılamaz.");
+  // Stok kontrolü
+  const stokDurumu = await checkStock(productName, quantity);
+
+  if (!stokDurumu.sufficient) {
+    alert("❌ Yeterli stok yok veya ürün bulunamadı. Gönderim yapılamaz.");
     return;
   }
 
   try {
+    // Hareketi kaydet
     await addDoc(collection(db, "hareketler"), {
       date: Timestamp.now(),
       fromDepartment: "DEPO",
@@ -488,60 +512,51 @@ document.getElementById("movementForm").addEventListener("submit", async e => {
       toBranch,
       toPerson,
       productName,
-      quantity
+      quantity,
+      ip  // IP burada kayıt altına alınacak
     });
 
-    alert("Ürün başarıyla gönderildi!");
+    // Stok güncelleme
+    const urunGirisRef = collection(db, "urun_girisi");
+    const snapshot = await getDocs(urunGirisRef);
+
+    for (const docSnap of snapshot.docs) {
+      const data = docSnap.data();
+
+      if (
+        data.product === productType &&
+        data.brand === brand &&
+        data.model === model
+      ) {
+        const yeniStok = (Number(data.adet) || 0) - quantity;
+
+        if (yeniStok < 0) {
+          alert("⚠️ Beklenmeyen stok hatası.");
+          return;
+        }
+
+        const docRef = doc(db, "urun_girisi", docSnap.id);
+        await updateDoc(docRef, { adet: yeniStok });
+        break;
+      }
+    }
+
+    alert("✅ Ürün başarıyla gönderildi ve stok güncellendi!");
     e.target.reset();
+
     brandSelect.disabled = true;
     modelSelect.disabled = true;
     branchSelect.disabled = true;
     personSelect.disabled = true;
+
   } catch (error) {
     console.error("Gönderim hatası:", error);
-    alert("Gönderim sırasında hata oluştu.");
+    alert("⚠️ Gönderim sırasında hata oluştu.");
   }
 });
 
-
-  // Form submit işlemi
-  document.getElementById("movementForm").addEventListener("submit", async e => {
-    e.preventDefault();
-
-    const productType = productTypeSelect.value;
-    const brand = brandSelect.value;
-    const model = modelSelect.value;
-    const quantity = parseInt(document.getElementById("quantity").value, 10);
-    const toDepartment = departmentSelect.value;
-    const toBranch = branchSelect.value;
-    const toPerson = personSelect.value;
-    const productName = `${productType} - ${brand} - ${model}`;
-
-    try {
-      await addDoc(collection(db, "hareketler"), {
-        date: Timestamp.now(),
-        fromDepartment: "DEPO",
-        toDepartment,
-        toBranch,
-        toPerson,
-        productName,
-        quantity
-      });
-
-      alert("Ürün başarıyla gönderildi!");
-      e.target.reset();
-      brandSelect.disabled = true;
-      modelSelect.disabled = true;
-      branchSelect.disabled = true;
-      personSelect.disabled = true;
-    } catch (error) {
-      console.error("Gönderim hatası:", error);
-      alert("Gönderim sırasında hata oluştu.");
-    }
-  });
-
-  // Sayfa yüklendiğinde personel verisini Firestore'dan çek
-  loadPersonData();
-  listeleHareketler();
+// Sayfa yüklenince diğer verileri çek
+loadPersonData();
+listeleHareketler();
 
 </script>

@@ -169,16 +169,19 @@
 
         <label for="brand">Marka</label>
         <select id="brand" onchange="updateModels()">
+                     <option value="">Seçiniz</option>
           <option value="">Seçiniz</option>
         </select>
 
         <label for="model">Model</label>
         <select id="model" onchange="updateIPs()">
+                     <option value="">Seçiniz</option>
           <option value="">Model Seçiniz</option>
         </select>
 
         <label for="ip">IP Adresi</label>
         <select id="ip">
+                     <option value="">Seçiniz</option>
           <option value="">IP Seçiniz</option>
         </select>
         <div class="adet-container">
@@ -198,6 +201,7 @@
       <button onclick="submitForm()">Kaydet</button>
     </div>
   </div>
+<!-- FIREBASE JS -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getFirestore, collection, addDoc, setDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -247,7 +251,6 @@
   };
 
   const featuresInput = document.getElementById("features");
-
   featuresInput.addEventListener("input", async () => {
     const featureText = featuresInput.value;
     try {
@@ -255,9 +258,8 @@
         features: featureText,
         updatedAt: new Date()
       });
-      console.log("Features güncellendi:", featureText);
     } catch (e) {
-      console.error("Features güncellenirken hata:", e);
+      console.error("Özellik güncellenemedi:", e);
     }
   });
 
@@ -267,28 +269,22 @@
     const modelSelect = document.getElementById("model");
     const ipSelect = document.getElementById("ip");
 
-    brandSelect.innerHTML = "";
-    modelSelect.innerHTML = '<option value="">Model Seçiniz</option>';
-    ipSelect.innerHTML = '<option value="">IP Seçiniz</option>';
-
-    if (!product || !productBrandMap[product]) {
-      brandSelect.innerHTML = '<option>Önce ürün seçin</option>';
-      brandSelect.disabled = true;
-      modelSelect.disabled = true;
-      ipSelect.disabled = true;
-      return;
-    }
-
-    brandSelect.disabled = false;
+    brandSelect.innerHTML = '<option value="">Seçiniz</option>';
+    modelSelect.innerHTML = '<option value="">Seçiniz</option>';
+    ipSelect.innerHTML = '<option value="">Seçiniz</option>';
+    brandSelect.disabled = true;
     modelSelect.disabled = true;
     ipSelect.disabled = true;
 
-    productBrandMap[product].forEach(brand => {
-      const option = document.createElement("option");
-      option.value = brand;
-      option.textContent = brand;
-      brandSelect.appendChild(option);
-    });
+    if (product && productBrandMap[product]) {
+      productBrandMap[product].forEach(brand => {
+        const option = document.createElement("option");
+        option.value = brand;
+        option.textContent = brand;
+        brandSelect.appendChild(option);
+      });
+      brandSelect.disabled = false;
+    }
   };
 
   window.updateModels = function () {
@@ -296,110 +292,97 @@
     const modelSelect = document.getElementById("model");
     const ipSelect = document.getElementById("ip");
 
-    modelSelect.innerHTML = "";
-    ipSelect.innerHTML = '<option value="">IP Seçiniz</option>';
-
-    if (!brand || !brandModelMap[brand]) {
-      modelSelect.innerHTML = '<option value="">Model Seçiniz</option>';
-      modelSelect.disabled = true;
-      ipSelect.disabled = true;
-      return;
-    }
-
-    modelSelect.disabled = false;
+    modelSelect.innerHTML = '<option value="">Seçiniz</option>';
+    ipSelect.innerHTML = '<option value="">Seçiniz</option>';
+    modelSelect.disabled = true;
     ipSelect.disabled = true;
 
-    brandModelMap[brand].forEach(model => {
-      const option = document.createElement("option");
-      option.value = model;
-      option.textContent = model;
-      modelSelect.appendChild(option);
-    });
+    if (brand && brandModelMap[brand]) {
+      brandModelMap[brand].forEach(model => {
+        const option = document.createElement("option");
+        option.value = model;
+        option.textContent = model;
+        modelSelect.appendChild(option);
+      });
+      modelSelect.disabled = false;
+    }
   };
 
   window.updateIPs = function () {
     const model = document.getElementById("model").value;
     const ipSelect = document.getElementById("ip");
 
-    ipSelect.innerHTML = "";
+    ipSelect.innerHTML = '<option value="">Seçiniz</option>';
+    ipSelect.disabled = true;
 
-    if (!model || !modelIpMap[model]) {
-      ipSelect.innerHTML = '<option value="">IP Seçiniz</option>';
-      ipSelect.disabled = true;
+    if (model && modelIpMap[model]) {
+      modelIpMap[model].forEach(ip => {
+        const option = document.createElement("option");
+        option.value = ip;
+        option.textContent = ip;
+        ipSelect.appendChild(option);
+      });
+      ipSelect.disabled = false;
+    }
+  };
+
+  window.submitForm = async function () {
+    const product = document.getElementById("product").value;
+    const brand = document.getElementById("brand").value;
+    const model = document.getElementById("model").value;
+    const ip = document.getElementById("ip").value;
+    const features = document.getElementById("features").value;
+    const adet = parseInt(document.getElementById("adet").value);
+
+    if (!product || !brand || !model || !ip || !adet || adet < 1) {
+      alert("Lütfen tüm alanları doldurun.");
       return;
     }
 
-    ipSelect.disabled = false;
+    try {
+      const urunRef = collection(db, "urun_girisi");
+      const q = query(
+        urunRef,
+        where("product", "==", product),
+        where("brand", "==", brand),
+        where("model", "==", model),
+        where("ip", "==", ip)
+      );
 
-    modelIpMap[model].forEach(ip => {
-      const option = document.createElement("option");
-      option.value = ip;
-      option.textContent = ip;
-      ipSelect.appendChild(option);
-    });
-  };
+      const querySnapshot = await getDocs(q);
 
-   window.submitForm = async function () {
-  const product = document.getElementById("product").value;
-  const brand = document.getElementById("brand").value;
-  const model = document.getElementById("model").value;
-  const ip = document.getElementById("ip").value;
-  const features = document.getElementById("features").value;
-  const adet = parseInt(document.getElementById("adet").value);
+      if (!querySnapshot.empty) {
+        const docRef = querySnapshot.docs[0].ref;
+        const mevcutVeri = querySnapshot.docs[0].data();
+        const mevcutAdet = mevcutVeri.adet || 1;
 
-  if (!product || !brand || !model || !ip || !adet || adet < 1) {
-    alert("Lütfen tüm alanları eksiksiz doldurun ve adet 1 veya daha büyük olmalı.");
-    return;
-  }
+        await setDoc(docRef, {
+          ...mevcutVeri,
+          features: features,
+          adet: mevcutAdet + adet,
+          timestamp: new Date()
+        });
 
-  try {
-    const urunRef = collection(db, "urun_girisi");
-    const q = query(
-      urunRef,
-      where("product", "==", product),
-      where("brand", "==", brand),
-      where("model", "==", model),
-      where("ip", "==", ip)
-    );
+        alert("Ürün güncellendi.");
+      } else {
+        await addDoc(urunRef, {
+          product,
+          brand,
+          model,
+          ip,
+          features,
+          adet,
+          timestamp: new Date()
+        });
 
-    const querySnapshot = await getDocs(q);
+        alert("Yeni ürün eklendi.");
+      }
 
-    if (!querySnapshot.empty) {
-      // Ürün zaten varsa: adet sayısını artır
-      const docRef = querySnapshot.docs[0].ref;
-      const mevcutVeri = querySnapshot.docs[0].data();
-      const mevcutAdet = mevcutVeri.adet || 1;
-
-      await setDoc(docRef, {
-        ...mevcutVeri,
-        features: features,
-        adet: mevcutAdet + adet,
-        timestamp: new Date()
-      });
-
-      alert("Ürün zaten vardı, adet sayısı güncellendi!");
-    } else {
-      // Ürün yoksa: yeni belge olarak ekle
-      await addDoc(urunRef, {
-        product,
-        brand,
-        model,
-        ip,
-        features,
-        adet: adet,
-        timestamp: new Date()
-      });
-
-      alert("Yeni ürün başarıyla eklendi!");
+      location.reload();
+    } catch (e) {
+      alert("Hata oluştu: " + e.message);
     }
-
-    location.reload();
-  } catch (e) {
-    alert("Hata oluştu: " + e.message);
-  }
-};
-
+  };
 </script>
-
 </body>
 </html>

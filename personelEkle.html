@@ -109,7 +109,7 @@
 
     <label for="mudurluk">Müdürlük</label>
     <select id="mudurluk" onchange="filtreleSeflik()">
-      <option value="">-- Müdürlük Seçin --</option>
+      <option value="">Müdürlük Seçin </option>
       <option value="İnsan Kaynakları">İnsan Kaynakları</option>
       <option value="Teknik Hizmetler">Teknik Hizmetler</option>
       <option value="Mali Hizmetler">Mali Hizmetler</option>
@@ -117,7 +117,7 @@
 
     <label for="seflik">Şeflik</label>
     <select id="seflik" disabled>
-      <option value="">-- Önce Müdürlük Seçin --</option>
+      <option value="">-Önce Müdürlük Seçin</option>
     </select>
 
     <button onclick="personelEkle()">Ekle</button>
@@ -161,6 +161,7 @@
 
       seflikSelect.disabled = false;
 
+       seflikSelect.innerHTML = '<option value="">Seçiniz</option>';
       seflikler[secilenMudurluk].forEach(seflik => {
         const option = document.createElement("option");
         option.value = seflik;
