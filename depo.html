@@ -455,7 +455,7 @@ window.removeProduct = async function(id) {
     const quantity = productData.quantity || 1;
 
     // Hareket kaydı ekle
-    await addDoc(collection(db, "department_movements"), {
+    await addDoc(collection(db, "urun_girisi"), {
       department: "DEPO",
       productName: productName,
       quantity: quantity,
@@ -522,7 +522,7 @@ window.transferProduct = async function(id, name, quantity) {
   async function loadMovements() {
     movementTableBody.innerHTML = `<tr><td colspan="5" class="no-data">Yükleniyor...</td></tr>`;
 
-    const movementsRef = collection(db, "department_movements");
+    const movementsRef = collection(db, "urun_girisi");
     const q1 = query(movementsRef, orderBy("date", "desc"), limit(50));
     const movementsSnapshot = await getDocs(q1);
 

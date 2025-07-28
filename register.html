@@ -9,145 +9,164 @@
       box-sizing: border-box;
     }
 
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #b31217, #e52d27);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
+     body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #fef9f9, #f7eeee);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-    .register-container {
-      background: #fff;
-      padding: 50px 45px 45px;
-      border-radius: 24px;
-      border: 4px solid #fff; /* KIRMIZI KENARLAR */
-      box-shadow: 0 0 25px 8px  #fff; /* PARLAK KIRMIZI IŞIK */
-      width: 100%;
-      max-width: 430px;
-      text-align: center;
-      transition: box-shadow 0.3s ease;
-      position: relative;
-    }
+.register-container {
+  background: #fff;
+  padding: 40px 36px;
+  border-radius: 20px;
+  border: 2px solid #fbeaea;
+  box-shadow: 0 4px 18px rgba(179, 18, 23, 0.08);
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  transition: box-shadow 0.3s ease;
+}
 
-    .register-container:hover {
-      box-shadow: 0 0 35px 12px rgba(255, 0, 0, 0.7);
-    }
+.register-container:hover {
+  box-shadow: 0 0 22px rgba(179, 18, 23, 0.15);
+}
 
-    .register-logo {
-      width: 180px;
-      height: 180px;
-      margin: 0 auto 0px;
-      padding: 22px;
-      border-radius: 24px;
-      box-shadow:
-        0 0 18px 5px rgba(255, 255, 255, 0.9),
-        0 0 30px 10px rgba(255, 255, 255, 0.4);
-      display: block;
-      object-fit: contain;
-    }
+.register-logo {
+  width: 140px;
+  height: 140px;
+  margin-bottom: 18px;
+  border-radius: 20px;
+  object-fit: contain;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+  transition: box-shadow 0.3s ease;
+}
 
-    h2 {
-      margin-bottom: 30px;
-      color: #b31217;
-      font-weight: 700;
-      font-size: 30px;
-      letter-spacing: 1.2px;
-      text-transform: uppercase;
-      user-select: none;
-    }
+.register-logo:hover {
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.6);
+}
 
-    input {
-      width: 90%;
-      padding: 14px 20px; /* height küçüldü */
-      margin: 12px 0 14px;
-      border: 2px solid #ddd;
-      border-radius: 14px;
-      font-size: 16px;
-      font-weight: 500;
-      transition: border-color 0.25s ease, box-shadow 0.25s ease;
-      box-shadow: inset 0 2px 4px rgb(0 0 0 / 0.05);
-    }
-    input::placeholder {
-      color: #bbb;
-    }
-    input:focus {
-      border-color: #b31217;
-      box-shadow: 0 0 10px 3px rgba(179, 18, 23, 0.35);
-      outline: none;
-      background: #fff7f7;
-    }
-    button {
-      width: 45%;
-      padding: 16px;
-      background-color: #b31217;
-      color: white;
-      border: none;
-      border-radius: 16px;
-      font-size: 14px;
-      font-weight: 700;
-      margin-top: 30px; /* burayı artırdım */
-      cursor: pointer;
-      box-shadow: 0 6px 20px rgba(179, 18, 23, 0.45);
-      text-transform: uppercase;
-      letter-spacing: 1.1px;
-      transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    }
-    button:hover {
-      background-color: #8c0f13;
-      box-shadow: 0 8px 28px rgba(140, 15, 19, 0.65);
-    }
-    .message {
-      margin-top: 20px;
-      font-size: 16px;
-      font-weight: 600;
-      min-height: 22px;
-    }
-    .login-row {
-      margin-top: 14px;
-      font-size: 14px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
-    .login-link {
-      font-weight: 600;
-      color: #b31217;
-      text-decoration: underline;
-      cursor: pointer;
-      transition: color 0.3s ease;
-    }
-    .login-link:hover {
-      color: #8c0f13;
-    }
-    @media (max-width: 520px) {
-      .register-container {
-        padding: 40px 30px 35px;
-        max-width: 95%;
-      }
-      .register-logo {
-        width: 90px;
-        height: 90px;
-        padding: 18px;
-        margin-bottom: 28px;
-      }
-      h2 {
-        font-size: 26px;
-        letter-spacing: 1px;
-      }
-      input {
-        padding: 14px 16px;
-        font-size: 15px;
-      }
-      button {
-        padding: 14px;
-        font-size: 16px;
-      }
-    }
+h2 {
+  margin-bottom: 24px;
+  color: #b31217;
+  font-weight: 600;
+  font-size: 24px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+input {
+  width: 90%;
+  padding: 14px 18px;
+  margin: 10px 0 16px;
+  border: 1px solid #e4dada;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 500;
+  background-color: #fffefefe;
+  box-shadow: inset 0 2px 4px rgb(0 0 0 / 0.04);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+input::placeholder {
+  color: #bbb;
+}
+
+input:focus {
+  border-color: #d46a6a;
+  box-shadow: 0 0 6px rgba(179, 18, 23, 0.15);
+  background: #fffafa;
+  outline: none;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 22px;
+  background-color: #b31217;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(179, 18, 23, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+button:hover {
+  background-color: #991015;
+  box-shadow: 0 6px 20px rgba(179, 18, 23, 0.3);
+}
+
+.message {
+  margin-top: 20px;
+  font-size: 15px;
+  font-weight: 500;
+  min-height: 20px;
+  user-select: none;
+}
+
+.login-row {
+  margin-top: 18px;
+  font-size: 13px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  user-select: none;
+}
+
+.login-link {
+  font-weight: 600;
+  color: #b31217;
+  text-decoration: underline;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.login-link:hover {
+  color: #8c0f13;
+}
+
+@media (max-width: 520px) {
+  .register-container {
+    padding: 36px 28px;
+    max-width: 95%;
+  }
+
+  .register-logo {
+    width: 90px;
+    height: 90px;
+    padding: 14px;
+    margin-bottom: 20px;
+  }
+
+  h2 {
+    font-size: 22px;
+    letter-spacing: 0.8px;
+  }
+
+  input {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  button {
+    padding: 13px;
+    font-size: 15px;
+  }
+}
+
   </style>
 </head>
 <body>

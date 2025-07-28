@@ -91,7 +91,7 @@ table {
 }
 
 thead {
-  background-color: #f9eaea;
+  background-color: #fdf3f3;
   color: #333;
 }
 
@@ -124,7 +124,7 @@ tbody td {
 </head>
 <body>
 <header>
-  <h1>MÜDÜRLÜK STOK TAKİP</h1>
+  <h1>MÜDÜRLÜK ÜRÜN TAKİP</h1>
 </header>
 
 <!-- Müdürlük seçimi -->
@@ -150,7 +150,10 @@ tbody td {
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, getDocs, query, where, doc, deleteDoc, updateDoc, getDoc, setDoc, increment } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+  import { 
+    getFirestore, collection, getDocs, query, where, doc, 
+    deleteDoc, updateDoc, getDoc, setDoc, increment 
+  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyC6G7JfaTCSpvwkX4PXTTJ6I92LIpzkkxk",
@@ -187,7 +190,8 @@ tbody td {
       departmentSelect.appendChild(option);
     });
   }
-async function loadProductsByDepartment(department) {
+
+  async function loadProductsByDepartment(department) {
     const q = query(collection(db, "hareketler"), where("toDepartment", "==", department));
     const snapshot = await getDocs(q);
 
@@ -220,51 +224,62 @@ async function loadProductsByDepartment(department) {
       });
     });
   }
-  
-  async function deleteMovementAndRestoreStock(docId) {
-    const hareketRef = doc(db, "hareketler", docId);
-    const hareketSnap = await getDoc(hareketRef);
 
-    if (!hareketSnap.exists()) {
-      alert("Silinecek kayıt bulunamadı.");
-      return;
-    }
-
-    const hareketData = hareketSnap.data();
-    const productName = hareketData.productName;
-    const quantity = hareketData.quantity || 0;
-    const toDepartment = hareketData.toDepartment;
-
-    if (!productName || !toDepartment || quantity <= 0) {
-      alert("Eksik veya hatalı veri nedeniyle işlem yapılamıyor.");
-      return;
-    }
-
-    // Stoklar koleksiyonunda ilgili ürün + müdürlük için belge id'yi oluşturuyoruz
-    // Örnek: "Müdürlük_ÜrünAdı" gibi benzersiz id (dilersen farklı yapabilirsin)
-    const stokDocId = `${toDepartment}_${productName}`.replace(/\s+/g, "_").toLowerCase();
-    const stokRef = doc(db, "urun_girisi", stokDocId);
-    const stokSnap = await getDoc(stokRef);
-
-    if (stokSnap.exists()) {
-      // Var olan stok miktarını güncelle
-      await updateDoc(stokRef, {
-        quantity: increment(quantity)
-      });
-    } else {
-      // Yeni stok kaydı oluştur
-      await setDoc(stokRef, {
-        department: toDepartment,
-        productName: productName,
-        quantity: quantity
-      });
-    }
-
-    // Hareket kaydını sil
-    await deleteDoc(hareketRef);
-
-    alert("Kayıt silindi ve stoklara geri eklendi.");
+  function normalizeString(str) {
+    return str
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, "_")
+      .replace(/[^a-z0-9_]/g, "");
   }
+
+  async function deleteMovementAndRestoreStock(docId) {
+  const hareketRef = doc(db, "hareketler", docId);
+  const hareketSnap = await getDoc(hareketRef);
+
+  if (!hareketSnap.exists()) {
+    alert("Silinecek kayıt bulunamadı.");
+    return;
+  }
+
+  const hareketData = hareketSnap.data();
+
+  const fullProduct = hareketData.productName || hareketData.product || "";
+  const productType = fullProduct.split(" - ")[0].trim(); // "mouse"
+  const quantity = hareketData.quantity || hareketData.adet || 0;
+  const toDepartment = hareketData.toDepartment || hareketData.department || "";
+
+  if (!productType || !toDepartment || quantity <= 0) {
+    alert("Eksik veya hatalı veri nedeniyle işlem yapılamıyor.");
+    return;
+  }
+
+  const stokDocId = `${normalizeString(toDepartment)}_${normalizeString(productType)}`;
+  const stokRef = doc(db, "urun_girisi", stokDocId);
+  const stokSnap = await getDoc(stokRef);
+
+  if (stokSnap.exists()) {
+    await updateDoc(stokRef, {
+      adet: increment(quantity)
+    });
+  } else {
+    await setDoc(stokRef, {
+      department: toDepartment,
+      product: productType,
+      adet: quantity,
+      brand: hareketData.brand || "",
+      model: hareketData.model || "",
+      features: hareketData.features || "",
+      ip: hareketData.ip || "",
+      timestamp: hareketData.timestamp || new Date()
+    });
+  }
+
+  await deleteDoc(hareketRef);
+
+  alert("Kayıt silindi ve stoklara mouse türüne geri eklendi.");
+}
+
 
   loadDepartments();
 

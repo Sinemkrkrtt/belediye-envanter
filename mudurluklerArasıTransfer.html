@@ -221,7 +221,7 @@ tbody tr:hover {
       </div>
       <div class="form-group">
         <label>IP</label>
-        <input type="text" id="ip" placeholder="IP Adresi (Opsiyonel)" />
+        <input type="text" id="ip" placeholder="IP Adresi " />
       </div>
     </div>
 
@@ -257,10 +257,6 @@ tbody tr:hover {
         <label>Kişi</label>
         <select id="toPerson" disabled required></select>
       </div>
-      <div class="form-group">
-        <label>Adet</label>
-        <input type="number" id="quantity" placeholder="Adet" min="1" required />
-      </div>
     </div>
 
   </div>
@@ -283,7 +279,6 @@ tbody tr:hover {
     <th>Alıcı Kişi</th>
     <th>Ürün</th>
     <th>IP</th>
-    <th>Adet</th>
   </tr>
 </thead>
 
@@ -293,8 +288,7 @@ tbody tr:hover {
   </table>
 
 
-
-  <script type="module">
+ <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
  
@@ -354,7 +348,6 @@ tbody tr:hover {
     const toBranchSelect = document.getElementById("toBranch");
     const toPersonSelect = document.getElementById("toPerson");
 
-    const quantityInput = document.getElementById("quantity");
     const transferForm = document.getElementById("transferForm");
     const transferTableBody = document.getElementById("transferTableBody");
 
@@ -552,7 +545,6 @@ row.innerHTML = `
   <td>${data.toPerson || "-"}</td>
   <td>${productName}</td>
   <td>${data.ip || "-"}</td>
-  <td>${data.quantity || "-"}</td>
 `;
 transferTableBody.appendChild(row);
 
@@ -589,7 +581,7 @@ async function checkStock(productName, quantity) {
       const brand = brandSelect.value;
       const model = modelSelect.value;
       const ip = ipInput.value.trim() || "-";
-      const quantity = parseInt(quantityInput.value, 10);
+const quantity = 1;
 
       const fromDepartment = fromDepartmentSelect.value;
       const fromBranch = fromBranchSelect.value;
@@ -598,6 +590,7 @@ async function checkStock(productName, quantity) {
       const toDepartment = toDepartmentSelect.value;
       const toBranch = toBranchSelect.value;
       const toPerson = toPersonSelect.value;
+      
 
       if (!productType || !brand || !model || !fromDepartment || !fromBranch || !fromPerson || !toDepartment || !toBranch || !toPerson || !quantity) {
         alert("Lütfen tüm alanları eksiksiz doldurun!");
@@ -605,27 +598,31 @@ async function checkStock(productName, quantity) {
       }
 
       const productName = `${productType} - ${brand} - ${model}`;
+      
 
       // Stok kontrol (dilersen bu kısmı yorumlayabilirsin)
       const stokVarMi = await checkStock(productName, quantity);
-      if (!stokVarMi) {
-        alert("Yeterli stok yok veya ürün bulunamadı. Gönderim yapılamaz.");
-        return;
-      }
+    
 
       try {
-        await addDoc(collection(db, "hareketler"), {
-          date: Timestamp.now(),
-          fromDepartment,
-          fromBranch,
-          fromPerson,
-          toDepartment,
-          toBranch,
-          toPerson,
-          productName,
-          ip,
-          quantity
-        });
+      
+       await addDoc(collection(db, "hareketler"), {
+  date: Timestamp.now(),
+  fromDepartment,
+  fromBranch,
+  fromPerson,
+  toDepartment,
+  toBranch,
+  toPerson,
+  product: productType,
+  brand,
+  model,
+  ip,
+  quantity,
+  productName  // Bunu EKLEYİN!
+});
+
+
             // 🔄 Stok güncelle
             await updateStock(fromDepartment, productName, -quantity); // düş
             await updateStock(toDepartment, productName, quantity);   // ekle
@@ -645,11 +642,11 @@ async function checkStock(productName, quantity) {
         toDepartmentSelect.selectedIndex = 0;
 
         // Tabloyu güncelle
-        listeleHareketler();
-      } catch (error) {
+            listeleHareketler();
+        } catch (error) {
         console.error("Gönderim hatası:", error);
         alert("Gönderim sırasında hata oluştu.");
-      }
+        }
     });
     async function updateStock(department, productName, change) {
   const stokRef = collection(db, "stoklar");
@@ -680,14 +677,16 @@ async function checkStock(productName, quantity) {
   } else {
     // Yeni stok oluştur
     await addDoc(stokRef, {
-      department,
-      productName,
-      quantity: change < 0 ? 0 : change
-    });
+  department,
+  product: productType,
+  brand: brand,
+  model: model,
+  productName,
+  quantity: change < 0 ? 0 : change
+});
+
   }
 }
-
-
     // Sayfa açılır açılmaz personel verisini yükle ve listeyi göster
     await loadPersonData();
     await listeleHareketler();

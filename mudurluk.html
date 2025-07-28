@@ -325,7 +325,10 @@ table thead {
   snapshot.forEach(doc => {
     const data = doc.data();
     const tarih = data.date?.toDate().toLocaleString("tr-TR") || "-";
-    const [type, brand, model] = (data.productName || "- - -").split(" - ");
+   const type = data.product || "-";
+    const brand = data.brand || "-";
+    const model = data.model || "-";
+
 
     const row = document.createElement("tr");
     row.innerHTML = `
@@ -504,17 +507,20 @@ document.getElementById("movementForm").addEventListener("submit", async e => {
   }
 
   try {
-    // Hareketi kaydet
-    await addDoc(collection(db, "hareketler"), {
-      date: Timestamp.now(),
-      fromDepartment: "DEPO",
-      toDepartment,
-      toBranch,
-      toPerson,
-      productName,
-      quantity,
-      ip  // IP burada kayıt altına alınacak
-    });
+ await addDoc(collection(db, "hareketler"), {
+  date: Timestamp.now(),
+  fromDepartment: "DEPO",
+  toDepartment,
+  toBranch,
+  toPerson,
+  product: productType,
+  brand: brand,
+  model: model,
+  quantity,
+  ip
+});
+
+
 
     // Stok güncelleme
     const urunGirisRef = collection(db, "urun_girisi");
