@@ -1,5 +1,6 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
+
 <head>
   <meta charset="UTF-8" />
   <title>Ürün Giriş Sayfası</title>
@@ -62,7 +63,8 @@
       margin-top: 20px;
     }
 
-    select, input[type="text"] {
+    select,
+    input[type="text"] {
       width: 100%;
       padding: 12px 15px;
       border: 1.5px solid #ccc;
@@ -72,7 +74,8 @@
       background-color: #fff;
     }
 
-    select:focus, input[type="text"]:focus {
+    select:focus,
+    input[type="text"]:focus {
       border-color: #cc0000;
       box-shadow: 0 0 6px rgba(204, 0, 0, 0.3);
       outline: none;
@@ -118,39 +121,21 @@
         font-size: 24px;
       }
     }
-    .adet-container {
-  margin-top: 16px;
-  display: flex;
-  flex-direction: column;
-}
-
-.adet-container label {
-  font-weight: 600;
-  margin-bottom: 5px;
-  color: #333;
-}
-
-.adet-container input {
-  padding: 10px;
-  font-size: 16px;
-  border: 2px solid #ccc;
-  border-radius: 8px;
-  transition: border-color 0.3s ease;
-}
-
-.adet-container input:focus {
-  outline: none;
-  border-color: #007BFF;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-}
-
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
+
 <body>
 
   <div class="container">
@@ -165,32 +150,28 @@
           <option value="monitor">Monitör</option>
           <option value="klavye">Klavye</option>
           <option value="pc">Bilgisayar</option>
+          <option value="printer">Yazıcı</option>
+          <option value="scanner">Tarayıcı</option>
+          <option value="projector">Projeksiyon</option>
         </select>
 
         <label for="brand">Marka</label>
         <select id="brand" onchange="updateModels()">
-                     <option value="">Seçiniz</option>
           <option value="">Seçiniz</option>
         </select>
 
         <label for="model">Model</label>
         <select id="model" onchange="updateIPs()">
-                     <option value="">Seçiniz</option>
-          <option value="">Model Seçiniz</option>
+          <option value="">Seçiniz</option>
         </select>
 
         <label for="ip">IP Adresi</label>
         <select id="ip">
-                     <option value="">Seçiniz</option>
-          <option value="">IP Seçiniz</option>
+          <option value="">Seçiniz</option>
         </select>
-        <div class="adet-container">
-  <label for="adet">Adet</label>
-  <input type="number" id="adet" value="1" min="1" />
-</div>
-
       </div>
     </div>
+
 
     <div class="features-container">
       <label for="features">Ürün Özellikleri</label>
@@ -201,188 +182,271 @@
       <button onclick="submitForm()">Kaydet</button>
     </div>
   </div>
-<!-- FIREBASE JS -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, setDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-  import { getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyC6G7JfaTCSpvwkX4PXTTJ6I92LIpzkkxk",
-    authDomain: "belediyeenvanter.firebaseapp.com",
-    projectId: "belediyeenvanter",
-    storageBucket: "belediyeenvanter.appspot.com",
-    messagingSenderId: "1088833874170",
-    appId: "1:1088833874170:web:2c2c1c069a9880917b8143"
-  };
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, setDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+    const firebaseConfig = {
+      apiKey: "AIzaSyC6G7JfaTCSpvwkX4PXTTJ6I92LIpzkkxk",
+      authDomain: "belediyeenvanter.firebaseapp.com",
+      projectId: "belediyeenvanter",
+      storageBucket: "belediyeenvanter.appspot.com",
+      messagingSenderId: "1088833874170",
+      appId: "1:1088833874170:web:2c2c1c069a9880917b8143"
+    };
 
-  const productBrandMap = {
-    mouse: ["Logitech", "Razer", "Microsoft"],
-    monitor: ["Samsung", "LG", "Acer"],
-    klavye: ["Corsair", "SteelSeries", "Logitech"],
-    pc: ["Dell", "HP", "Asus"]
-  };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-  const brandModelMap = {
-    Logitech: ["M185", "MX Master 3", "G Pro"],
-    Razer: ["DeathAdder", "Naga", "Basilisk"],
-    Microsoft: ["Sculpt", "Arc", "Basic Optical"],
-    Samsung: ["U28E590", "Odyssey G7", "Smart Monitor M8"],
-    LG: ["27GN950", "Ultrafine", "32UN880"],
-    Acer: ["Nitro VG270", "Predator XB3", "R240HY"],
-    Corsair: ["K70", "K95", "Strafe"],
-    SteelSeries: ["Apex Pro", "Apex 7", "Apex 3"],
-    Dell: ["XPS 8930", "Inspiron 3880", "OptiPlex 7080"],
-    HP: ["Pavilion", "EliteDesk", "Omen 30L"],
-    Asus: ["ROG Strix", "TUF Gaming", "VivoPC"]
-  };
+    const productBrandMap = {
+      mouse: ["Logitech", "Razer", "Microsoft", "SteelSeries", "HP"],
+      monitor: ["Samsung", "LG", "Acer", "Dell", "BenQ"],
+      klavye: ["Corsair", "SteelSeries", "Logitech", "Razer", "Asus"],
+      pc: ["Dell", "HP", "Asus", "Lenovo", "MSI"],
+      printer: ["HP", "Canon", "Epson", "Brother", "Xerox"],
+      scanner: ["Canon", "Epson", "Fujitsu", "HP", "Plustek"],
+      projector: ["Epson", "BenQ", "Sony", "ViewSonic", "Optoma"]
+    };
 
-  const modelIpMap = {
-    "M185": ["192.168.1.101", "192.168.1.102"],
-    "MX Master 3": ["192.168.1.103"],
-    "DeathAdder": ["192.168.1.104", "192.168.1.105"],
-    "U28E590": ["192.168.1.201"],
-    "27GN950": ["192.168.1.202"],
-    "K70": ["192.168.1.301"],
-    "XPS 8930": ["192.168.1.401"]
-  };
+    const brandModelMap = {
+      // Mouse
+      Logitech: ["M185", "MX Master 3", "G Pro", "G502 Hero", "M720 Triathlon"],
+      Razer: ["DeathAdder", "Naga", "Basilisk", "Viper Ultimate"],
+      Microsoft: ["Sculpt", "Arc", "Basic Optical", "Modern Mobile"],
+      SteelSeries: ["Rival 600", "Sensei Ten", "Aerox 3"],
+      HP: ["X500", "Z3700", "OMEN Vector"],
 
-  const featuresInput = document.getElementById("features");
-  featuresInput.addEventListener("input", async () => {
-    const featureText = featuresInput.value;
-    try {
-      await setDoc(doc(db, "features_temp", "currentFeature"), {
-        features: featureText,
-        updatedAt: new Date()
-      });
-    } catch (e) {
-      console.error("Özellik güncellenemedi:", e);
-    }
-  });
+      // Monitor
+      Samsung: ["U28E590", "Odyssey G7", "Smart Monitor M8", "CRG9"],
+      LG: ["27GN950", "Ultrafine", "32UN880", "34GN850"],
+      Acer: ["Nitro VG270", "Predator XB3", "R240HY", "XV272U"],
+      Dell: ["U2720Q", "P2419H", "S2721DGF"],
+      BenQ: ["EX3501R", "PD3200U", "ZOWIE XL2546"],
 
-  window.updateBrands = function () {
-    const product = document.getElementById("product").value;
-    const brandSelect = document.getElementById("brand");
-    const modelSelect = document.getElementById("model");
-    const ipSelect = document.getElementById("ip");
+      // Klavye
+      Corsair: ["K70", "K95", "Strafe", "K60 Pro"],
+      Razer: ["BlackWidow", "Huntsman", "Cynosa"],
+      Asus: ["ROG Claymore", "TUF K3", "ROG Strix Scope"],
 
-    brandSelect.innerHTML = '<option value="">Seçiniz</option>';
-    modelSelect.innerHTML = '<option value="">Seçiniz</option>';
-    ipSelect.innerHTML = '<option value="">Seçiniz</option>';
-    brandSelect.disabled = true;
-    modelSelect.disabled = true;
-    ipSelect.disabled = true;
+      // PC
+      Dell: ["XPS 8930", "Inspiron 3880", "OptiPlex 7080", "Precision 3640"],
+      HP: ["Pavilion", "EliteDesk", "Omen 30L", "ProDesk 400"],
+      Asus: ["ROG Strix", "TUF Gaming", "VivoPC", "ExpertCenter"],
+      Lenovo: ["ThinkCentre M720", "IdeaCentre 5", "Legion T5"],
+      MSI: ["Trident 3", "Infinite A", "MEG Trident X"],
 
-    if (product && productBrandMap[product]) {
-      productBrandMap[product].forEach(brand => {
-        const option = document.createElement("option");
-        option.value = brand;
-        option.textContent = brand;
-        brandSelect.appendChild(option);
-      });
-      brandSelect.disabled = false;
-    }
-  };
+      // Printer
+      Canon: ["PIXMA G6020", "imageCLASS MF445dw", "MAXIFY GX6020"],
+      Epson: ["EcoTank L3150", "WorkForce WF-2850", "SureColor P600"],
+      Brother: ["HL-L2350DW", "MFC-J995DW", "DCP-L2550DW"],
+      Xerox: ["Phaser 6510", "WorkCentre 6515", "VersaLink B405"],
 
-  window.updateModels = function () {
-    const brand = document.getElementById("brand").value;
-    const modelSelect = document.getElementById("model");
-    const ipSelect = document.getElementById("ip");
+      // Scanner
+      Fujitsu: ["ScanSnap iX1500", "fi-7160", "SP-1120"],
+      Plustek: ["OpticSlim 1180", "SmartOffice PN2040", "Photo Scanner ePhoto Z300"],
 
-    modelSelect.innerHTML = '<option value="">Seçiniz</option>';
-    ipSelect.innerHTML = '<option value="">Seçiniz</option>';
-    modelSelect.disabled = true;
-    ipSelect.disabled = true;
+      // Projector
+      Epson: ["EH-TW7100", "EB-U42", "PowerLite 1781W"],
+      Sony: ["VPL-VW295ES", "VPL-HW45ES", "MP-CD1"],
+      ViewSonic: ["PX747-4K", "M1 Mini Plus", "PA503W"],
+      Optoma: ["HD146X", "UHD50X", "GT1080HDR"]
+    };
 
-    if (brand && brandModelMap[brand]) {
-      brandModelMap[brand].forEach(model => {
-        const option = document.createElement("option");
-        option.value = model;
-        option.textContent = model;
-        modelSelect.appendChild(option);
-      });
-      modelSelect.disabled = false;
-    }
-  };
+    const modelIpMap = {
+      // Logitech
+      "M185": ["192.168.1.101", "192.168.1.102"],
+      "MX Master 3": ["192.168.1.103", "192.168.1.104"],
+      "G502 Hero": ["192.168.1.105"],
 
-  window.updateIPs = function () {
-    const model = document.getElementById("model").value;
-    const ipSelect = document.getElementById("ip");
+      // Razer
+      "DeathAdder": ["192.168.1.110", "192.168.1.111"],
+      "Viper Ultimate": ["192.168.1.112"],
 
-    ipSelect.innerHTML = '<option value="">Seçiniz</option>';
-    ipSelect.disabled = true;
+      // Microsoft
+      "Sculpt": ["192.168.1.120"],
+      "Arc": ["192.168.1.121", "192.168.1.122"],
 
-    if (model && modelIpMap[model]) {
-      modelIpMap[model].forEach(ip => {
-        const option = document.createElement("option");
-        option.value = ip;
-        option.textContent = ip;
-        ipSelect.appendChild(option);
-      });
-      ipSelect.disabled = false;
-    }
-  };
+      // Samsung Monitors
+      "U28E590": ["192.168.1.201"],
+      "Odyssey G7": ["192.168.1.202", "192.168.1.203"],
+      "Smart Monitor M8": ["192.168.1.204"],
 
-  window.submitForm = async function () {
-    const product = document.getElementById("product").value;
-    const brand = document.getElementById("brand").value;
-    const model = document.getElementById("model").value;
-    const ip = document.getElementById("ip").value;
-    const features = document.getElementById("features").value;
-    const adet = parseInt(document.getElementById("adet").value);
+      // LG Monitors
+      "27GN950": ["192.168.1.210"],
+      "32UN880": ["192.168.1.211"],
 
-    if (!product || !brand || !model || !ip || !adet || adet < 1) {
-      alert("Lütfen tüm alanları doldurun.");
-      return;
-    }
+      // Corsair Klavye
+      "K70": ["192.168.1.301"],
+      "K95": ["192.168.1.302"],
 
-    try {
-      const urunRef = collection(db, "urun_girisi");
-      const q = query(
-        urunRef,
-        where("product", "==", product),
-        where("brand", "==", brand),
-        where("model", "==", model),
-        where("ip", "==", ip)
-      );
+      // Dell PC
+      "XPS 8930": ["192.168.1.401"],
+      "OptiPlex 7080": ["192.168.1.402"],
 
-      const querySnapshot = await getDocs(q);
+      // HP PC
+      "Omen 30L": ["192.168.1.410", "192.168.1.411"],
 
-      if (!querySnapshot.empty) {
-        const docRef = querySnapshot.docs[0].ref;
-        const mevcutVeri = querySnapshot.docs[0].data();
-        const mevcutAdet = mevcutVeri.adet || 1;
+      // Printer
+      "PIXMA G6020": ["192.168.1.501"],
+      "EcoTank L3150": ["192.168.1.502"],
+      "HL-L2350DW": ["192.168.1.503"],
+      "Phaser 6510": ["192.168.1.504"],
 
-        await setDoc(docRef, {
-          ...mevcutVeri,
-          features: features,
-          adet: mevcutAdet + adet,
-          timestamp: new Date()
+      // Scanner
+      "ScanSnap iX1500": ["192.168.1.601"],
+      "OpticSlim 1180": ["192.168.1.602"],
+
+      // Projector
+      "EH-TW7100": ["192.168.1.701"],
+      "PX747-4K": ["192.168.1.702"],
+      "HD146X": ["192.168.1.703"]
+    };
+
+
+    const featuresInput = document.getElementById("features");
+    featuresInput.addEventListener("input", async () => {
+      const featureText = featuresInput.value;
+      try {
+        await setDoc(doc(db, "features_temp", "currentFeature"), {
+          features: featureText,
+          updatedAt: new Date()
         });
+      } catch (e) {
+        console.error("Özellik güncellenemedi:", e);
+      }
+    });
 
-        alert("Ürün güncellendi.");
-      } else {
-        await addDoc(urunRef, {
-          product,
-          brand,
-          model,
-          ip,
-          features,
-          adet,
-          timestamp: new Date()
+    window.updateBrands = function () {
+      const product = document.getElementById("product").value;
+      const brandSelect = document.getElementById("brand");
+      const modelSelect = document.getElementById("model");
+      const ipSelect = document.getElementById("ip");
+
+      brandSelect.innerHTML = '<option value="">Seçiniz</option>';
+      modelSelect.innerHTML = '<option value="">Seçiniz</option>';
+      ipSelect.innerHTML = '<option value="">Seçiniz</option>';
+      brandSelect.disabled = true;
+      modelSelect.disabled = true;
+      ipSelect.disabled = true;
+
+      if (product && productBrandMap[product]) {
+        productBrandMap[product].forEach(brand => {
+          const option = document.createElement("option");
+          option.value = brand;
+          option.textContent = brand;
+          brandSelect.appendChild(option);
         });
+        brandSelect.disabled = false;
+      }
+    };
 
-        alert("Yeni ürün eklendi.");
+    window.updateModels = function () {
+      const brand = document.getElementById("brand").value;
+      const modelSelect = document.getElementById("model");
+      const ipSelect = document.getElementById("ip");
+
+      modelSelect.innerHTML = '<option value="">Seçiniz</option>';
+      ipSelect.innerHTML = '<option value="">Seçiniz</option>';
+      modelSelect.disabled = true;
+      ipSelect.disabled = true;
+
+      if (brand && brandModelMap[brand]) {
+        brandModelMap[brand].forEach(model => {
+          const option = document.createElement("option");
+          option.value = model;
+          option.textContent = model;
+          modelSelect.appendChild(option);
+        });
+        modelSelect.disabled = false;
+      }
+    };
+
+    window.updateIPs = function () {
+      const model = document.getElementById("model").value;
+      const ipSelect = document.getElementById("ip");
+
+      ipSelect.innerHTML = '<option value="">Seçiniz</option>';
+      ipSelect.disabled = true;
+
+      if (model && modelIpMap[model]) {
+        modelIpMap[model].forEach(ip => {
+          const option = document.createElement("option");
+          option.value = ip;
+          option.textContent = ip;
+          ipSelect.appendChild(option);
+        });
+        ipSelect.disabled = false;
+      }
+    };
+
+    function normalize(str) {
+      return (str ?? "").toString().trim().toLowerCase();
+    }
+
+    window.submitForm = async function () {
+      const product = normalize(document.getElementById("product").value);
+      const brand = normalize(document.getElementById("brand").value);
+      const model = normalize(document.getElementById("model").value);
+      const ip = normalize(document.getElementById("ip").value);
+
+      const features = document.getElementById("features").value;
+
+      if (!product || !brand || !model || !ip) {
+        alert("Lütfen tüm alanları doldurun.");
+        return;
       }
 
-      location.reload();
-    } catch (e) {
-      alert("Hata oluştu: " + e.message);
-    }
-  };
-</script>
+      try {
+        const urunRef = collection(db, "urun_girisi");
+        const q = query(
+          urunRef,
+          where("product", "==", product),
+          where("brand", "==", brand),
+          where("model", "==", model),
+          where("ip", "==", ip)
+        );
+
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          const docRef = querySnapshot.docs[0].ref;
+          const mevcutVeri = querySnapshot.docs[0].data();
+
+          await setDoc(docRef, {
+            ...mevcutVeri,
+            product,
+            brand,
+            model,
+            ip,
+            features,
+            adet: (mevcutVeri.adet || 0) + 1,
+            timestamp: new Date()
+          });
+
+          alert("Ürün güncellendi.");
+        } else {
+          await addDoc(urunRef, {
+            product,
+            brand,
+            model,
+            ip,
+            features,
+            adet: 1,
+            timestamp: new Date()
+          });
+
+          alert("Yeni ürün eklendi.");
+        }
+
+
+        location.reload();
+      } catch (e) {
+        alert("Hata oluştu: " + e.message);
+      }
+    };
+  </script>
 </body>
+
 </html>

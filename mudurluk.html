@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
   <meta charset="UTF-8" />
   <title>Ürün Gönderimi</title>
@@ -19,277 +20,395 @@
       margin: 0 auto;
     }
 
-   header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 60px;
-  background: #f8f9fa; /* Açık gri ton */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); /* Hafif gölge */
-  padding: 0 24px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  z-index: 100;
-  user-select: none;
-  border-bottom: 1px solid #e0e0e0; /* İnce alt çizgi */
-}
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: #f8f9fa;
+      /* Açık gri ton */
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      /* Hafif gölge */
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      z-index: 100;
+      user-select: none;
+      border-bottom: 1px solid #e0e0e0;
+      /* İnce alt çizgi */
+    }
 
-  header h1 {
-  margin: 0;
-  font-weight: 700;
-  font-size: 2.2rem;
-  color: transparent;
-  background: linear-gradient(90deg, #b31217, #e52d27); /* Kırmızı tonlarda geçişli yazı */
-  -webkit-background-clip: text;
-  background-clip: text;
-  letter-spacing: 2.5px;
-  font-family: 'Segoe UI', 'Poppins', sans-serif; /* Modern, şık fontlar */
-  user-select: none;
-  flex-grow: 1;
-  text-align: center;
+    header h1 {
+      margin: 0;
+      font-weight: 700;
+      font-size: 2.2rem;
+      color: transparent;
+      background: linear-gradient(90deg, #b31217, #e52d27);
+      /* Kırmızı tonlarda geçişli yazı */
+      -webkit-background-clip: text;
+      background-clip: text;
+      letter-spacing: 2.5px;
+      font-family: 'Segoe UI', 'Poppins', sans-serif;
+      /* Modern, şık fontlar */
+      user-select: none;
+      flex-grow: 1;
+      text-align: center;
 
-}
-
-   form {
-  margin-top: 40px;
-  background: #f7f3f3;
-  padding: 40px 40px;
-  border-radius: 20px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-  display: flex;
-  gap: 40px;
-  margin-bottom: 50px;
-  flex-wrap: wrap;
-  transition: all 0.3s ease-in-out;
-}
-
-.left-side, .right-side {
-  flex: 1 1 450px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-select,
-input[type=text],
-input[type=number] {
-  padding: 14px 18px;
-  border-radius: 12px;
-  border: 1.5px solid #d1d5db;
-  background: #f9fafb;
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: #111827;
-  transition: border-color 0.3s, background 0.3s;
-}
-
-select:focus,
-input:focus {
-  border-color: #b91c1c;
-  background: #fff;
-  outline: none;
-  box-shadow: 0 0 0 4px rgba(185, 28, 28, 0.15);
-}
-
-button {
-  display: block;               /* Ortalamak için */
-  margin: 30px auto 0;          /* Üstten biraz boşluk, otomatik yatay ortalama */
-  padding: 10px 34px;           /* Daha dar hale getirildi */
-  background: linear-gradient(135deg, #b91c1c, #ef4444);
-  color: #fff;
-  cursor: pointer;
-  border: none;
-  font-weight: 600;
-  font-size: 1.3rem;            /* Biraz daha küçük */
-  border-radius: 12px;
-  transition: all 0.25s ease;
-  box-shadow: 0 5px 15px rgba(185, 28, 28, 0.2);
-  margin-right: 10px;;
-}
-
-button:hover {
-  background: linear-gradient(135deg, #ef4444, #b91c1c);
-  box-shadow: 0 10px 20px rgba(185, 28, 28, 0.3);
-  transform: translateY(-2px);
-}
-
-
-.container h2 {
-  text-align: center;
-  color: #b31217;
-  margin-bottom: 20px;
-}
-
-table thead {
-  background: #eee;
-}
-
-
- .container {
-    width: 100vw; /* Tüm ekran genişliği */
-    margin-left: calc(-50vw + 50%);
-    background: #fff;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.05);
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.95rem;
-    table-layout: fixed;
-    word-wrap: break-word;
-  }
-
-  table th, table td {
-    border: 1px solid #ddd;
-    padding: 10px 12px;
-    text-align: left;
-    font-size: 0.95rem;
-  }
-
-  @media (max-width: 768px) {
-    .left-side, .right-side {
-      flex: 1 1 100%;
     }
 
     form {
-      flex-direction: column;
+      margin-top: 40px;
+      background: #f7f3f3;
+      padding: 40px 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+      display: flex;
+      gap: 40px;
+      margin-bottom: 50px;
+      flex-wrap: wrap;
+      transition: all 0.3s ease-in-out;
     }
-  }
 
+    .left-side,
+    .right-side {
+      flex: 1 1 450px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    select,
+    input[type=text],
+    input[type=number] {
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 1.5px solid #d1d5db;
+      background: #f9fafb;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #111827;
+      transition: border-color 0.3s, background 0.3s;
+    }
+
+    select:focus,
+    input:focus {
+      border-color: #b91c1c;
+      background: #fff;
+      outline: none;
+      box-shadow: 0 0 0 4px rgba(185, 28, 28, 0.15);
+    }
+
+    button {
+      display: block;
+      /* Ortalamak için */
+      margin: 30px auto 0;
+      /* Üstten biraz boşluk, otomatik yatay ortalama */
+      padding: 10px 34px;
+      /* Daha dar hale getirildi */
+      background: linear-gradient(135deg, #b91c1c, #ef4444);
+      color: #fff;
+      cursor: pointer;
+      border: none;
+      font-weight: 600;
+      font-size: 1.3rem;
+      /* Biraz daha küçük */
+      border-radius: 12px;
+      transition: all 0.25s ease;
+      box-shadow: 0 5px 15px rgba(185, 28, 28, 0.2);
+      margin-right: 10px;
+      ;
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #ef4444, #b91c1c);
+      box-shadow: 0 10px 20px rgba(185, 28, 28, 0.3);
+      transform: translateY(-2px);
+    }
+
+
+    .container h2 {
+      text-align: center;
+      color: #b31217;
+      margin-bottom: 20px;
+    }
+
+    table thead {
+      background: #eee;
+    }
+
+
+    .container {
+      width: 100vw;
+      /* Tüm ekran genişliği */
+      margin-left: calc(-50vw + 50%);
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.05);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+      table-layout: fixed;
+      word-wrap: break-word;
+    }
+
+    table th,
+    table td {
+      border: 1px solid #ddd;
+      padding: 10px 12px;
+      text-align: left;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 768px) {
+
+      .left-side,
+      .right-side {
+        flex: 1 1 100%;
+      }
+
+      form {
+        flex-direction: column;
+      }
+    }
   </style>
 </head>
+
 <body>
 
   <header>
-  <h1>MÜDÜRLÜK GÖNDERİMİ</h1>
-</header>
+    <h1>MÜDÜRLÜK GÖNDERİMİ</h1>
+  </header>
 
   <form id="movementForm">
-  <div class="left-side">
-    <select id="productType" required>
-      <option value="" disabled selected>Ürün Türü Seçiniz</option>
-      <option value="monitor">Monitor</option>
-      <option value="keyboard">Klavye</option>
-      <option value="mouse">Mouse</option>
-    </select>
+    <div class="left-side">
+      <select id="productType" required>
+        <option value="" disabled selected>Ürün Türü Seçiniz</option>
+        <option value="mouse">Mouse</option>
+        <option value="monitor">Monitör</option>
+        <option value="klavye">Klavye</option>
+        <option value="pc">Bilgisayar</option>
+        <option value="printer">Yazıcı</option>
+        <option value="scanner">Tarayıcı</option>
+        <option value="projector">Projeksiyon</option>
+      </select>
 
-    <select id="brand" disabled required>
-      <option value="" disabled selected>Marka Seçiniz</option>
-    </select>
+      <select id="brand" disabled required>
+        <option value="" disabled selected>Marka Seçiniz</option>
+      </select>
 
-    <select id="model" disabled required>
-      <option value="" disabled selected>Model Seçiniz</option>
-    </select>
+      <select id="model" disabled required>
+        <option value="" disabled selected>Model Seçiniz</option>
+      </select>
 
-    <input type="text" id="ip" placeholder="IP" autocomplete="off" required />
-  </div>
+      <input type="text" id="ip" placeholder="IP" autocomplete="off" required />
+    </div>
 
-  <div class="right-side">
-    <select id="department" required>
-      <option value="" disabled selected>Müdürlük Seçiniz</option>
-    </select>
+    <div class="right-side">
+      <select id="department" required>
+        <option value="" disabled selected>Müdürlük Seçiniz</option>
+      </select>
 
-    <select id="branch" disabled required>
-      <option value="" disabled selected>Şeflik Seçiniz</option>
-    </select>
+      <select id="branch" disabled required>
+        <option value="" disabled selected>Şeflik Seçiniz</option>
+      </select>
 
-    <select id="person" disabled required>
-      <option value="" disabled selected>Kişi Seçiniz</option>
-    </select>
+      <select id="person" disabled required>
+        <option value="" disabled selected>Kişi Seçiniz</option>
+      </select>
 
-    <!-- Miktar inputu kaldırıldı -->
+      <!-- Miktar inputu kaldırıldı -->
 
-    <button type="submit">Gönder</button>
-  </div>
-</form>
+      <button type="submit">Gönder</button>
+    </div>
+  </form>
 
 
   <div class="container">
-  <h2>Gönderilen Ürün Listesi</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Ürün</th>
-        <th>Marka</th>
-        <th>Model</th>
-        <th>IP</th>
-        <th>Tarih</th>
-        <th>Müdürlük</th>
-        <th>Şeflik</th>
-        <th>Kişi</th>
-      </tr>
-    </thead>
-    <tbody id="urunListesi">
-      <!-- Firebase'den gelen veriler buraya eklenecek -->
-    </tbody>
-  </table>
-</div>
+    <h2>Gönderilen Ürün Listesi</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Ürün</th>
+          <th>Marka</th>
+          <th>Model</th>
+          <th>IP</th>
+          <th>Tarih</th>
+          <th>Müdürlük</th>
+          <th>Şeflik</th>
+          <th>Kişi</th>
+        </tr>
+      </thead>
+      <tbody id="urunListesi">
+        <!-- Firebase'den gelen veriler buraya eklenecek -->
+      </tbody>
+    </table>
+  </div>
 
 
 
 
-<script type="module">
-  import {
-    initializeApp
-  } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-  import {
-    getFirestore,
-    collection,
-    getDocs,
-    addDoc,
-    doc,
-    updateDoc,
-    Timestamp
-  } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+  <script type="module">
+    import {
+      initializeApp
+    } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      getDocs,
+      addDoc,
+      doc,
+      updateDoc,
+      Timestamp
+    } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyC6G7JfaTCSpvwkX4PXTTJ6I92LIpzkkxk",
-    authDomain: "belediyeenvanter.firebaseapp.com",
-    projectId: "belediyeenvanter",
-    storageBucket: "belediyeenvanter.appspot.com",
-    messagingSenderId: "1088833874170",
-    appId: "1:1088833874170:web:2c2c1c069a9880917b8143"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyC6G7JfaTCSpvwkX4PXTTJ6I92LIpzkkxk",
+      authDomain: "belediyeenvanter.firebaseapp.com",
+      projectId: "belediyeenvanter",
+      storageBucket: "belediyeenvanter.appspot.com",
+      messagingSenderId: "1088833874170",
+      appId: "1:1088833874170:web:2c2c1c069a9880917b8143"
+    };
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-  const productTypeSelect = document.getElementById("productType");
-  const brandSelect = document.getElementById("brand");
-  const modelSelect = document.getElementById("model");
-  const departmentSelect = document.getElementById("department");
-  const branchSelect = document.getElementById("branch");
-  const personSelect = document.getElementById("person");
+    const productTypeSelect = document.getElementById("productType");
+    const brandSelect = document.getElementById("brand");
+    const modelSelect = document.getElementById("model");
+    const departmentSelect = document.getElementById("department");
+    const branchSelect = document.getElementById("branch");
+    const personSelect = document.getElementById("person");
 
-  const productData = {
-    monitor: {
-      Samsung: ["S24F350", "U28E590", "C27F398"],
-      LG: ["24MK600M", "27GL650F", "32QN600"],
-      Dell: ["P2419H", "U2719D", "S2721QS"]
-    },
-    keyboard: {
-      Logitech: ["K120", "K380", "MX Keys"],
-      Microsoft: ["Ergonomic", "Bluetooth Keyboard"],
-      Corsair: ["K70", "K95", "K68"]
-    },
-    mouse: {
-      Logitech: ["MX Master 3", "G502 Hero", "M185"],
-      Razer: ["DeathAdder", "Basilisk", "Naga"],
-      Microsoft: ["Classic IntelliMouse", "Arc Mouse"]
-    }
-  };
+    const productData = {
+      mouse: {
+        Logitech: ["M185", "MX Master 3", "G Pro", "G502 Hero", "M720 Triathlon"],
+        Razer: ["DeathAdder", "Naga", "Basilisk", "Viper Ultimate"],
+        Microsoft: ["Sculpt", "Arc", "Basic Optical", "Modern Mobile"],
+        SteelSeries: ["Rival 600", "Sensei Ten", "Aerox 3"],
+        HP: ["X500", "Z3700", "OMEN Vector"],
+      },
+      monitor: {
+        Samsung: ["U28E590", "Odyssey G7", "Smart Monitor M8", "CRG9"],
+        LG: ["27GN950", "Ultrafine", "32UN880", "34GN850"],
+        Acer: ["Nitro VG270", "Predator XB3", "R240HY", "XV272U"],
+        Dell: ["U2720Q", "P2419H", "S2721DGF"],
+        BenQ: ["EX3501R", "PD3200U", "ZOWIE XL2546"],
+      },
+      klavye: {
+        Corsair: ["K70", "K95", "Strafe", "K60 Pro"],
+        Razer: ["BlackWidow", "Huntsman", "Cynosa"],
+        Asus: ["ROG Claymore", "TUF K3", "ROG Strix Scope"],
+      },
+      pc: {
+        Dell: ["XPS 8930", "Inspiron 3880", "OptiPlex 7080", "Precision 3640"],
+        HP: ["Pavilion", "EliteDesk", "Omen 30L", "ProDesk 400"],
+        Asus: ["ROG Strix", "TUF Gaming", "VivoPC", "ExpertCenter"],
+        Lenovo: ["ThinkCentre M720", "IdeaCentre 5", "Legion T5"],
+        MSI: ["Trident 3", "Infinite A", "MEG Trident X"],
+      },
+      printer: {
+        Canon: ["PIXMA G6020", "imageCLASS MF445dw", "MAXIFY GX6020"],
+        Epson: ["EcoTank L3150", "WorkForce WF-2850", "SureColor P600"],
+        Brother: ["HL-L2350DW", "MFC-J995DW", "DCP-L2550DW"],
+        Xerox: ["Phaser 6510", "WorkCentre 6515", "VersaLink B405"],
+      },
+      scanner: {
+        Fujitsu: ["ScanSnap iX1500", "fi-7160", "SP-1120"],
+        Plustek: ["OpticSlim 1180", "SmartOffice PN2040", "Photo Scanner ePhoto Z300"],
+      },
+      projector: {
+        Epson: ["EH-TW7100", "EB-U42", "PowerLite 1781W"],
+        Sony: ["VPL-VW295ES", "VPL-HW45ES", "MP-CD1"],
+        ViewSonic: ["PX747-4K", "M1 Mini Plus", "PA503W"],
+        Optoma: ["HD146X", "UHD50X", "GT1080HDR"],
+      }
+    };
 
-  const personData = [];
+    const personData = [];
 
-   const seflikler = {
-      "İnsan Kaynakları": ["Personel Şefliği", "Eğitim Şefliği", "Sosyal İşler Şefliği"],
-      "Teknik Hizmetler": ["Bakım Şefliği", "İnşaat Şefliği", "Elektrik Şefliği"],
-      "Mali Hizmetler": ["Muhasebe Şefliği", "Bütçe Şefliği", "Satın Alma Şefliği"]
+    const seflikler = {
+      "İnsan Kaynakları": [
+        "Personel Şefliği",
+        "Eğitim Şefliği",
+        "Sosyal İşler Şefliği",
+        "Özlük İşleri Şefliği",
+        "Disiplin Şefliği",
+        "Performans ve Değerlendirme Şefliği"
+      ],
+      "Teknik Hizmetler": [
+        "Bakım Şefliği",
+        "İnşaat Şefliği",
+        "Elektrik Şefliği",
+        "Makine İkmal Şefliği",
+        "Altyapı Şefliği",
+        "Yol ve Asfalt Şefliği",
+        "Ulaşım Şefliği"
+      ],
+      "Mali Hizmetler": [
+        "Muhasebe Şefliği",
+        "Bütçe Şefliği",
+        "Satın Alma Şefliği",
+        "Gelirler Şefliği",
+        "Tahakkuk ve Tahsilat Şefliği",
+        "Strateji Geliştirme Şefliği"
+      ],
+      "Çevre Koruma ve Kontrol": [
+        "Temizlik İşleri Şefliği",
+        "Çevre Denetim Şefliği",
+        "Atık Yönetimi Şefliği",
+        "Park ve Bahçeler Şefliği",
+        "Veterinerlik Hizmetleri Şefliği"
+      ],
+      "Kültür ve Sosyal İşler": [
+        "Kültür Merkezi Şefliği",
+        "Kütüphane Şefliği",
+        "Sanat ve Etkinlikler Şefliği",
+        "Gençlik ve Spor Şefliği",
+        "Kadın ve Aile Hizmetleri Şefliği",
+        "Engelli Hizmetleri Şefliği"
+      ],
+      "Zabıta": [
+        "Trafik Zabıta Şefliği",
+        "Pazar Yerleri Denetim Şefliği",
+        "İşyeri Denetim Şefliği",
+        "Çevre ve Gürültü Denetim Şefliği",
+        "Nöbetçi Hizmetler Şefliği"
+      ],
+      "Bilgi İşlem": [
+        "Yazılım Geliştirme Şefliği",
+        "Sistem ve Ağ Şefliği",
+        "Veri Tabanı Yönetimi Şefliği",
+        "Siber Güvenlik Şefliği",
+        "E-Belediye Hizmetleri Şefliği"
+      ],
+      "İmar ve Şehircilik": [
+        "İmar Planlama Şefliği",
+        "Ruhsat ve Denetim Şefliği",
+        "Kentsel Dönüşüm Şefliği",
+        "Harita ve Kadastro Şefliği",
+        "Numarataj Şefliği"
+      ],
+      "Sağlık İşleri": [
+        "Halk Sağlığı Şefliği",
+        "Mezarlıklar Şefliği",
+        "Ambulans Hizmetleri Şefliği",
+        "Sağlık Denetim Şefliği",
+        "Poliklinik Hizmetleri Şefliği"
+      ],
+      "Destek Hizmetleri": [
+        "Araç Sevk ve İdare Şefliği",
+        "Depo ve Lojistik Şefliği",
+        "Satın Alma Destek Şefliği",
+        "Yemekhane Şefliği",
+        "Güvenlik Şefliği"
+      ]
     };
 
     function filtreleSeflik() {
@@ -318,20 +437,20 @@ table thead {
     window.filtreleSeflik = filtreleSeflik;
 
     async function listeleHareketler() {
-  const urunListesi = document.getElementById("urunListesi");
-  urunListesi.innerHTML = ""; // listeyi temizle
+      const urunListesi = document.getElementById("urunListesi");
+      urunListesi.innerHTML = ""; // listeyi temizle
 
-  const snapshot = await getDocs(collection(db, "hareketler"));
-  snapshot.forEach(doc => {
-    const data = doc.data();
-    const tarih = data.date?.toDate().toLocaleString("tr-TR") || "-";
-   const type = data.product || "-";
-    const brand = data.brand || "-";
-    const model = data.model || "-";
+      const snapshot = await getDocs(collection(db, "hareketler"));
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const tarih = data.date?.toDate().toLocaleString("tr-TR") || "-";
+        const type = data.product || "-";
+        const brand = data.brand || "-";
+        const model = data.model || "-";
 
 
-    const row = document.createElement("tr");
-    row.innerHTML = `
+        const row = document.createElement("tr");
+        row.innerHTML = `
       <td>${type || "-"}</td>
       <td>${brand || "-"}</td>
       <td>${model || "-"}</td>
@@ -341,228 +460,247 @@ table thead {
       <td>${data.toBranch || "-"}</td>
       <td>${data.toPerson || "-"}</td>
     `;
-    urunListesi.appendChild(row);
-  });
-}
-
- async function loadPersonData() {
-  const snapshot = await getDocs(collection(db, "personeller"));
-  snapshot.forEach(doc => {
-    const data = doc.data();
-    personData.push({
-      name: data.isimSoyisim,
-      department: data.mudurluk,
-      branch: data.seflik
-    });
-  });
-
-  // Eşsiz müdürlükleri getir
-  const departments = [...new Set(personData.map(p => p.department))];
-  departments.forEach(dep => {
-    const option = document.createElement("option");
-    option.value = dep;
-    option.textContent = dep;
-    departmentSelect.appendChild(option);
-  });
-}
-
-
-  departmentSelect.addEventListener("change", () => {
-    const selectedDep = departmentSelect.value;
-
-    const branches = [...new Set(
-      personData.filter(p => p.department === selectedDep).map(p => p.branch)
-    )];
-
-    branchSelect.innerHTML = `<option value="" disabled selected>Şeflik Seçiniz</option>`;
-    personSelect.innerHTML = `<option value="" disabled selected>Kişi Seçiniz</option>`;
-    personSelect.disabled = true;
-
-    branches.forEach(branch => {
-      const option = document.createElement("option");
-      option.value = branch;
-      option.textContent = branch;
-      branchSelect.appendChild(option);
-    });
-
-    branchSelect.disabled = false;
-  });
-
-  branchSelect.addEventListener("change", () => {
-    const selectedDep = departmentSelect.value;
-    const selectedBranch = branchSelect.value;
-
-    const people = personData
-      .filter(p => p.department === selectedDep && p.branch === selectedBranch)
-      .map(p => p.name);
-
-    personSelect.innerHTML = `<option value="" disabled selected>Kişi Seçiniz</option>`;
-
-    people.forEach(person => {
-      const option = document.createElement("option");
-      option.value = person;
-      option.textContent = person;
-      personSelect.appendChild(option);
-    });
-
-    personSelect.disabled = false;
-  });
-
-  // Ürün türü - marka - model alanları
-  productTypeSelect.addEventListener("change", () => {
-    const selectedType = productTypeSelect.value;
-    brandSelect.innerHTML = `<option value="" disabled selected>Marka Seçiniz</option>`;
-    modelSelect.innerHTML = `<option value="" disabled selected>Model Seçiniz</option>`;
-    modelSelect.disabled = true;
-
-    if (selectedType && productData[selectedType]) {
-      Object.keys(productData[selectedType]).forEach(brand => {
-        const option = document.createElement("option");
-        option.value = brand;
-        option.textContent = brand;
-        brandSelect.appendChild(option);
+        urunListesi.appendChild(row);
       });
-      brandSelect.disabled = false;
-    } else {
-      brandSelect.disabled = true;
-      modelSelect.disabled = true;
     }
-  });
 
-  brandSelect.addEventListener("change", () => {
-    const selectedType = productTypeSelect.value;
-    const selectedBrand = brandSelect.value;
-
-    modelSelect.innerHTML = `<option value="" disabled selected>Model Seçiniz</option>`;
-
-    if (selectedType && selectedBrand && productData[selectedType][selectedBrand]) {
-      productData[selectedType][selectedBrand].forEach(model => {
-        const option = document.createElement("option");
-        option.value = model;
-        option.textContent = model;
-        modelSelect.appendChild(option);
+    async function loadPersonData() {
+      const snapshot = await getDocs(collection(db, "personeller"));
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        personData.push({
+          name: data.isimSoyisim,
+          department: data.mudurluk,
+          branch: data.seflik
+        });
       });
-      modelSelect.disabled = false;
-    } else {
-      modelSelect.disabled = true;
+
+      // Eşsiz müdürlükleri getir
+      const departments = [...new Set(personData.map(p => p.department))];
+      departments.forEach(dep => {
+        const option = document.createElement("option");
+        option.value = dep;
+        option.textContent = dep;
+        departmentSelect.appendChild(option);
+      });
     }
-  });
-async function checkStock(productName, quantity) {
-  const stokRef = collection(db, "urun_girisi");
-  const snapshot = await getDocs(stokRef);
 
-  const [productRaw, brandRaw, modelRaw] = productName.split(" - ");
-  const product = productRaw?.trim();
-  const brand = brandRaw?.trim();
-  const model = modelRaw?.trim();
 
-  for (const docSnap of snapshot.docs) {
-    const data = docSnap.data();
+    departmentSelect.addEventListener("change", () => {
+      const selectedDep = departmentSelect.value;
 
-    if (
-      data.product?.trim() === product &&
-      data.brand?.trim() === brand &&
-      data.model?.trim() === model
-    ) {
-      const stokAdet = Number(data.adet) || 0; // ✅ BURADA düzeltme yapıldı
+      const branches = [...new Set(
+        personData.filter(p => p.department === selectedDep).map(p => p.branch)
+      )];
+
+      branchSelect.innerHTML = `<option value="" disabled selected>Şeflik Seçiniz</option>`;
+      personSelect.innerHTML = `<option value="" disabled selected>Kişi Seçiniz</option>`;
+      personSelect.disabled = true;
+
+      branches.forEach(branch => {
+        const option = document.createElement("option");
+        option.value = branch;
+        option.textContent = branch;
+        branchSelect.appendChild(option);
+      });
+
+      branchSelect.disabled = false;
+    });
+
+    branchSelect.addEventListener("change", () => {
+      const selectedDep = departmentSelect.value;
+      const selectedBranch = branchSelect.value;
+
+      const people = personData
+        .filter(p => p.department === selectedDep && p.branch === selectedBranch)
+        .map(p => p.name);
+
+      personSelect.innerHTML = `<option value="" disabled selected>Kişi Seçiniz</option>`;
+
+      people.forEach(person => {
+        const option = document.createElement("option");
+        option.value = person;
+        option.textContent = person;
+        personSelect.appendChild(option);
+      });
+
+      personSelect.disabled = false;
+    });
+
+    // Ürün türü - marka - model alanları
+    productTypeSelect.addEventListener("change", () => {
+      const selectedType = productTypeSelect.value;
+      brandSelect.innerHTML = `<option value="" disabled selected>Marka Seçiniz</option>`;
+      modelSelect.innerHTML = `<option value="" disabled selected>Model Seçiniz</option>`;
+      modelSelect.disabled = true;
+
+      if (selectedType && productData[selectedType]) {
+        Object.keys(productData[selectedType]).forEach(brand => {
+          const option = document.createElement("option");
+          option.value = brand;
+          option.textContent = brand;
+          brandSelect.appendChild(option);
+        });
+        brandSelect.disabled = false;
+      } else {
+        brandSelect.disabled = true;
+        modelSelect.disabled = true;
+      }
+    });
+
+    brandSelect.addEventListener("change", () => {
+      const selectedType = productTypeSelect.value;
+      const selectedBrand = brandSelect.value;
+
+      modelSelect.innerHTML = `<option value="" disabled selected>Model Seçiniz</option>`;
+
+      if (selectedType && selectedBrand && productData[selectedType][selectedBrand]) {
+        productData[selectedType][selectedBrand].forEach(model => {
+          const option = document.createElement("option");
+          option.value = model;
+          option.textContent = model;
+          modelSelect.appendChild(option);
+        });
+        modelSelect.disabled = false;
+      } else {
+        modelSelect.disabled = true;
+      }
+    }); async function checkStock(productType, brand, model, quantity) {
+      const stokRef = collection(db, "urun_girisi");
+      const snapshot = await getDocs(stokRef);
+
+      for (const docSnap of snapshot.docs) {
+        const data = docSnap.data();
+
+        const dbProduct = (data.product ?? "").toString().trim().toLowerCase();
+        const dbBrand = (data.brand ?? "").toString().trim().toLowerCase();
+        const dbModel = (data.model ?? "").toString().trim().toLowerCase();
+
+        const selectedProduct = productType.toString().trim().toLowerCase();
+        const selectedBrand = brand.toString().trim().toLowerCase();
+        const selectedModel = model.toString().trim().toLowerCase();
+
+        const match = dbProduct === selectedProduct &&
+          dbBrand === selectedBrand &&
+          dbModel === selectedModel;
+
+        console.log("DB:", dbProduct, dbBrand, dbModel, "| Seçilen:", selectedProduct, selectedBrand, selectedModel, "| Eşleşti mi?", match);
+
+        if (match) {
+          const mevcutStok = Number(data.adet) || 0;
+          return {
+            sufficient: mevcutStok >= quantity,
+            docId: docSnap.id,
+            currentQuantity: mevcutStok
+          };
+        }
+      }
+
+      console.warn("Hiç eşleşen ürün bulunamadı!");
       return {
-        sufficient: stokAdet >= quantity,
-        docId: docSnap.id,
-        currentQuantity: stokAdet
+        sufficient: false,
+        docId: null,
+        currentQuantity: 0
       };
     }
-  }
 
-  return {
-    sufficient: false,
-    docId: null,
-    currentQuantity: 0
-  };
-}
-document.getElementById("movementForm").addEventListener("submit", async e => {
-  e.preventDefault();
+    document.getElementById("movementForm").addEventListener("submit", async e => {
+      e.preventDefault();
 
-  const ip = document.getElementById("ip").value.trim();
-  if (!ip) {
-    alert("⚠️ Lütfen IP alanını boş bırakmayınız.");
-    return;
-  }
+      const ip = document.getElementById("ip").value.trim();
+      if (!ip) {
+        alert("⚠️ Lütfen IP alanını boş bırakmayınız.");
+        return;
+      }
 
-  const productType = productTypeSelect.value;
-  const brand = brandSelect.value;
-  const model = modelSelect.value;
-  const toDepartment = departmentSelect.value;
-  const toBranch = branchSelect.value;
-  const toPerson = personSelect.value;
-  const productName = `${productType} - ${brand} - ${model}`;
+      const productType = productTypeSelect.value;
+      const brand = brandSelect.value;
+      const model = modelSelect.value;
+      const toDepartment = departmentSelect.value;
+      const toBranch = branchSelect.value;
+      const toPerson = personSelect.value;
+      const productName = `${productType} - ${brand} - ${model}`;
 
-  const quantity = 1; // Miktar sabit 1
+      const quantity = 1; // Miktar sabit 1
 
-  // Stok kontrolü
-  const stokDurumu = await checkStock(productName, quantity);
+      const productTypeNorm = productType.toString().trim().toLowerCase();
+      const brandNorm = brand.toString().trim().toLowerCase();
+      const modelNorm = model.toString().trim().toLowerCase();
 
-  if (!stokDurumu.sufficient) {
-    alert("❌ Yeterli stok yok veya ürün bulunamadı. Gönderim yapılamaz.");
-    return;
-  }
+      const stokDurumu = await checkStock(productTypeNorm, brandNorm, modelNorm, quantity);
 
-  try {
- await addDoc(collection(db, "hareketler"), {
-  date: Timestamp.now(),
-  fromDepartment: "DEPO",
-  toDepartment,
-  toBranch,
-  toPerson,
-  product: productType,
-  brand: brand,
-  model: model,
-  quantity,
-  ip
-});
+
+      if (!stokDurumu.sufficient) {
+        alert(`❌ Yeterli stok yok veya ürün bulunamadı.`);
+        return;
+      }
+
+
+      try {
+        await addDoc(collection(db, "hareketler"), {
+          date: Timestamp.now(),
+          fromDepartment: "DEPO",
+          toDepartment,
+          toBranch,
+          toPerson,
+          product: productTypeNorm,
+          brand: brandNorm,
+          model: modelNorm,
+          quantity,
+          ip
+        });
 
 
 
-    // Stok güncelleme
-    const urunGirisRef = collection(db, "urun_girisi");
-    const snapshot = await getDocs(urunGirisRef);
 
-    for (const docSnap of snapshot.docs) {
-      const data = docSnap.data();
 
-      if (
-        data.product === productType &&
-        data.brand === brand &&
-        data.model === model
-      ) {
-        const yeniStok = (Number(data.adet) || 0) - quantity;
+        // Stok güncelleme
+        const urunGirisRef = collection(db, "urun_girisi");
+        const snapshot = await getDocs(urunGirisRef);
 
-        if (yeniStok < 0) {
-          alert("⚠️ Beklenmeyen stok hatası.");
-          return;
+        for (const docSnap of snapshot.docs) {
+          const data = docSnap.data();
+          function normalize(val) {
+            return (val ?? "").toString().trim().toLowerCase();
+          }
+
+          if (
+            normalize(data.product) === normalize(productType) &&
+            normalize(data.brand) === normalize(brand) &&
+            normalize(data.model) === normalize(model)
+          ) {
+            const yeniStok = (Number(data.adet) || 0) - quantity;
+            if (yeniStok < 0) { alert("⚠️ Beklenmeyen stok hatası."); return; }
+
+
+            const docRef = doc(db, "urun_girisi", docSnap.id);
+            await updateDoc(docRef, {
+              adet: yeniStok,
+              product: normalize(productType),
+              brand: normalize(brand),
+              model: normalize(model)
+            });
+
+            break;
+          }
         }
 
-        const docRef = doc(db, "urun_girisi", docSnap.id);
-        await updateDoc(docRef, { adet: yeniStok });
-        break;
+        alert("✅ Ürün başarıyla gönderildi ve stok güncellendi!");
+        e.target.reset();
+
+        brandSelect.disabled = true;
+        modelSelect.disabled = true;
+        branchSelect.disabled = true;
+        personSelect.disabled = true;
+
+      } catch (error) {
+        console.error("Gönderim hatası:", error);
+        alert("⚠️ Gönderim sırasında hata oluştu.");
       }
-    }
+    });
 
-    alert("✅ Ürün başarıyla gönderildi ve stok güncellendi!");
-    e.target.reset();
+    // Sayfa yüklenince diğer verileri çek
+    loadPersonData();
+    listeleHareketler();
 
-    brandSelect.disabled = true;
-    modelSelect.disabled = true;
-    branchSelect.disabled = true;
-    personSelect.disabled = true;
-
-  } catch (error) {
-    console.error("Gönderim hatası:", error);
-    alert("⚠️ Gönderim sırasında hata oluştu.");
-  }
-});
-
-// Sayfa yüklenince diğer verileri çek
-loadPersonData();
-listeleHareketler();
-
-</script>
+  </script>

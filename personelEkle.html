@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
   <meta charset="UTF-8" />
   <title>Personel Ekle</title>
@@ -17,7 +18,8 @@
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      align-items: center; /* Ortalamak için */
+      align-items: center;
+      /* Ortalamak için */
       padding: 60px 20px;
     }
 
@@ -30,7 +32,8 @@
       padding: 40px;
       width: 100%;
       max-width: 500px;
-      animation: fadeIn 0.5s ease; /* Animasyon eklendi */
+      animation: fadeIn 0.5s ease;
+      /* Animasyon eklendi */
     }
 
     h1 {
@@ -49,7 +52,8 @@
       margin-top: 20px;
     }
 
-    input, select {
+    input,
+    select {
       width: 100%;
       padding: 14px 16px;
       font-size: 15px;
@@ -59,7 +63,8 @@
       transition: all 0.3s ease;
     }
 
-    input:focus, select:focus {
+    input:focus,
+    select:focus {
       border-color: #d62828;
       box-shadow: 0 0 5px rgba(214, 40, 40, 0.3);
       outline: none;
@@ -95,11 +100,19 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
+
 <body>
   <div class="card">
     <h1>Personel Ekle</h1>
@@ -109,100 +122,180 @@
 
     <label for="mudurluk">Müdürlük</label>
     <select id="mudurluk" onchange="filtreleSeflik()">
-      <option value="">Müdürlük Seçin </option>
+      <option value="">Müdürlük Seçin</option>
       <option value="İnsan Kaynakları">İnsan Kaynakları</option>
       <option value="Teknik Hizmetler">Teknik Hizmetler</option>
       <option value="Mali Hizmetler">Mali Hizmetler</option>
+      <option value="Çevre Koruma ve Kontrol">Çevre Koruma ve Kontrol</option>
+      <option value="Kültür ve Sosyal İşler">Kültür ve Sosyal İşler</option>
+      <option value="Zabıta">Zabıta</option>
+      <option value="Bilgi İşlem">Bilgi İşlem</option>
+      <option value="İmar ve Şehircilik">İmar ve Şehircilik</option>
+      <option value="Sağlık İşleri">Sağlık İşleri</option>
+      <option value="Destek Hizmetleri">Destek Hizmetleri</option>
     </select>
 
     <label for="seflik">Şeflik</label>
     <select id="seflik" disabled>
-      <option value="">-Önce Müdürlük Seçin</option>
+      <option value="">Önce Müdürlük Seçin</option>
     </select>
 
     <button onclick="personelEkle()">Ekle</button>
-  </div>
 
 
- <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+      import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyC6G7JfaTCSpvwkX4PXTTJ6I92LIpzkkxk",
-      authDomain: "belediyeenvanter.firebaseapp.com",
-      projectId: "belediyeenvanter",
-      storageBucket: "belediyeenvanter.appspot.com",
-      messagingSenderId: "1088833874170",
-      appId: "1:1088833874170:web:2c2c1c069a9880917b8143"
-    };
+      const firebaseConfig = {
+        apiKey: "AIzaSyC6G7JfaTCSpvwkX4PXTTJ6I92LIpzkkxk",
+        authDomain: "belediyeenvanter.firebaseapp.com",
+        projectId: "belediyeenvanter",
+        storageBucket: "belediyeenvanter.appspot.com",
+        messagingSenderId: "1088833874170",
+        appId: "1:1088833874170:web:2c2c1c069a9880917b8143"
+      };
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
 
-    const seflikler = {
-      "İnsan Kaynakları": ["Personel Şefliği", "Eğitim Şefliği", "Sosyal İşler Şefliği"],
-      "Teknik Hizmetler": ["Bakım Şefliği", "İnşaat Şefliği", "Elektrik Şefliği"],
-      "Mali Hizmetler": ["Muhasebe Şefliği", "Bütçe Şefliği", "Satın Alma Şefliği"]
-    };
+      const seflikler = {
+        "İnsan Kaynakları": [
+          "Personel Şefliği",
+          "Eğitim Şefliği",
+          "Sosyal İşler Şefliği",
+          "Özlük İşleri Şefliği",
+          "Disiplin Şefliği",
+          "Performans ve Değerlendirme Şefliği"
+        ],
+        "Teknik Hizmetler": [
+          "Bakım Şefliği",
+          "İnşaat Şefliği",
+          "Elektrik Şefliği",
+          "Makine İkmal Şefliği",
+          "Altyapı Şefliği",
+          "Yol ve Asfalt Şefliği",
+          "Ulaşım Şefliği"
+        ],
+        "Mali Hizmetler": [
+          "Muhasebe Şefliği",
+          "Bütçe Şefliği",
+          "Satın Alma Şefliği",
+          "Gelirler Şefliği",
+          "Tahakkuk ve Tahsilat Şefliği",
+          "Strateji Geliştirme Şefliği"
+        ],
+        "Çevre Koruma ve Kontrol": [
+          "Temizlik İşleri Şefliği",
+          "Çevre Denetim Şefliği",
+          "Atık Yönetimi Şefliği",
+          "Park ve Bahçeler Şefliği",
+          "Veterinerlik Hizmetleri Şefliği"
+        ],
+        "Kültür ve Sosyal İşler": [
+          "Kültür Merkezi Şefliği",
+          "Kütüphane Şefliği",
+          "Sanat ve Etkinlikler Şefliği",
+          "Gençlik ve Spor Şefliği",
+          "Kadın ve Aile Hizmetleri Şefliği",
+          "Engelli Hizmetleri Şefliği"
+        ],
+        "Zabıta": [
+          "Trafik Zabıta Şefliği",
+          "Pazar Yerleri Denetim Şefliği",
+          "İşyeri Denetim Şefliği",
+          "Çevre ve Gürültü Denetim Şefliği",
+          "Nöbetçi Hizmetler Şefliği"
+        ],
+        "Bilgi İşlem": [
+          "Yazılım Geliştirme Şefliği",
+          "Sistem ve Ağ Şefliği",
+          "Veri Tabanı Yönetimi Şefliği",
+          "Siber Güvenlik Şefliği",
+          "E-Belediye Hizmetleri Şefliği"
+        ],
+        "İmar ve Şehircilik": [
+          "İmar Planlama Şefliği",
+          "Ruhsat ve Denetim Şefliği",
+          "Kentsel Dönüşüm Şefliği",
+          "Harita ve Kadastro Şefliği",
+          "Numarataj Şefliği"
+        ],
+        "Sağlık İşleri": [
+          "Halk Sağlığı Şefliği",
+          "Mezarlıklar Şefliği",
+          "Ambulans Hizmetleri Şefliği",
+          "Sağlık Denetim Şefliği",
+          "Poliklinik Hizmetleri Şefliği"
+        ],
+        "Destek Hizmetleri": [
+          "Araç Sevk ve İdare Şefliği",
+          "Depo ve Lojistik Şefliği",
+          "Satın Alma Destek Şefliği",
+          "Yemekhane Şefliği",
+          "Güvenlik Şefliği"
+        ]
+      };
 
-    function filtreleSeflik() {
-      const mudurlukSelect = document.getElementById("mudurluk");
-      const seflikSelect = document.getElementById("seflik");
-      const secilenMudurluk = mudurlukSelect.value;
 
-      seflikSelect.innerHTML = "";
+      function filtreleSeflik() {
+        const mudurlukSelect = document.getElementById("mudurluk");
+        const seflikSelect = document.getElementById("seflik");
+        const secilenMudurluk = mudurlukSelect.value;
 
-      if (!secilenMudurluk) {
-        seflikSelect.disabled = true;
-        seflikSelect.innerHTML = `<option value="">Önce Müdürlük Seçin</option>`;
-        return;
-      }
+        seflikSelect.innerHTML = "";
 
-      seflikSelect.disabled = false;
+        if (!secilenMudurluk) {
+          seflikSelect.disabled = true;
+          seflikSelect.innerHTML = `<option value="">Önce Müdürlük Seçin</option>`;
+          return;
+        }
 
-       seflikSelect.innerHTML = '<option value="">Seçiniz</option>';
-      seflikler[secilenMudurluk].forEach(seflik => {
-        const option = document.createElement("option");
-        option.value = seflik;
-        option.textContent = seflik;
-        seflikSelect.appendChild(option);
-      });
-    }
+        seflikSelect.disabled = false;
 
-    window.filtreleSeflik = filtreleSeflik;
-
-    async function personelEkle() {
-      const isimSoyisim = document.getElementById("isimSoyisim").value.trim();
-      const mudurluk = document.getElementById("mudurluk").value;
-      const seflik = document.getElementById("seflik").value;
-
-      if (!isimSoyisim || !mudurluk || !seflik) {
-        alert("Lütfen tüm alanları doldurun.");
-        return;
-      }
-
-      try {
-        await addDoc(collection(db, "personeller"), {
-          isimSoyisim,
-          mudurluk,
-          seflik,
-          eklenmeTarihi: new Date()
+        seflikSelect.innerHTML = '<option value="">Seçiniz</option>';
+        seflikler[secilenMudurluk].forEach(seflik => {
+          const option = document.createElement("option");
+          option.value = seflik;
+          option.textContent = seflik;
+          seflikSelect.appendChild(option);
         });
-        alert("Personel başarıyla eklendi!");
-
-        // Alanları temizle
-        document.getElementById("isimSoyisim").value = "";
-        document.getElementById("mudurluk").value = "";
-        document.getElementById("seflik").innerHTML = `<option value="">Önce Müdürlük Seçin</option>`;
-        document.getElementById("seflik").disabled = true;
-
-      } catch (e) {
-        alert("Personel eklenirken hata oluştu: " + e.message);
       }
-    }
 
-    window.personelEkle = personelEkle;
-  </script>
+      window.filtreleSeflik = filtreleSeflik;
+
+      async function personelEkle() {
+        const isimSoyisim = document.getElementById("isimSoyisim").value.trim();
+        const mudurluk = document.getElementById("mudurluk").value;
+        const seflik = document.getElementById("seflik").value;
+
+        if (!isimSoyisim || !mudurluk || !seflik) {
+          alert("Lütfen tüm alanları doldurun.");
+          return;
+        }
+
+        try {
+          await addDoc(collection(db, "personeller"), {
+            isimSoyisim,
+            mudurluk,
+            seflik,
+            eklenmeTarihi: new Date()
+          });
+          alert("Personel başarıyla eklendi!");
+
+          // Alanları temizle
+          document.getElementById("isimSoyisim").value = "";
+          document.getElementById("mudurluk").value = "";
+          document.getElementById("seflik").innerHTML = `<option value="">Önce Müdürlük Seçin</option>`;
+          document.getElementById("seflik").disabled = true;
+
+        } catch (e) {
+          alert("Personel eklenirken hata oluştu: " + e.message);
+        }
+      }
+
+      window.personelEkle = personelEkle;
+    </script>
 </body>
+
 </html>

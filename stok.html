@@ -1,202 +1,205 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
   <meta charset="UTF-8" />
   <title>Stok Durumu</title>
-   <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  margin-top: 30px;
-  overflow-x: hidden;
-  box-sizing: border-box;
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(to bottom right, #ffffff, #ffffff);
-  color: #333;
-}
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      margin-top: 30px;
+      overflow-x: hidden;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom right, #ffffff, #ffffff);
+      color: #333;
+    }
 
-  /* Header - Sade ve Naif Tasarım */
-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 60px;
-  background: #f8f9fa; /* Açık gri ton */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); /* Hafif gölge */
-  padding: 0 24px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  z-index: 100;
-  user-select: none;
-  border-bottom: 1px solid #e0e0e0; /* İnce alt çizgi */
-}
+    /* Header - Sade ve Naif Tasarım */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: #f8f9fa;
+      /* Açık gri ton */
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      /* Hafif gölge */
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      z-index: 100;
+      user-select: none;
+      border-bottom: 1px solid #e0e0e0;
+      /* İnce alt çizgi */
+    }
 
-  header h1 {
-  margin: 0;
-  font-weight: 700;
-  font-size: 2.2rem;
-  color: transparent;
-  background: linear-gradient(90deg, #b31217, #e52d27); /* Kırmızı tonlarda geçişli yazı */
-  -webkit-background-clip: text;
-  background-clip: text;
-  letter-spacing: 2.5px;
-  font-family: 'Segoe UI', 'Poppins', sans-serif; /* Modern, şık fontlar */
-  user-select: none;
-  flex-grow: 1;
-  text-align: center;
+    header h1 {
+      margin: 0;
+      font-weight: 700;
+      font-size: 2.2rem;
+      color: transparent;
+      background: linear-gradient(90deg, #b31217, #e52d27);
+      /* Kırmızı tonlarda geçişli yazı */
+      -webkit-background-clip: text;
+      background-clip: text;
+      letter-spacing: 2.5px;
+      font-family: 'Segoe UI', 'Poppins', sans-serif;
+      /* Modern, şık fontlar */
+      user-select: none;
+      flex-grow: 1;
+      text-align: center;
 
-}
-
-
-.search-container {
-  max-width: 600px;
-  margin: 90px auto 0;
-  padding: 0 20px;
-  display: flex;
-  justify-content: center;
-}
-
-.search-container input {
-  width: 100%;
-  padding: 14px 22px;
-  border: none;
-  border-radius: 14px;
-  font-size: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: box-shadow 0.3s ease;
-}
-
-.search-container input:focus {
-  outline: none;
-  box-shadow: 0 0 10px #ff3239aa;
-  border: 2px solid #b31217;
-}
-
-main {
-  max-width: 1600px;
-  margin: 40px auto;
-  padding: 20px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 35px;
-}
-.stok-card {
-  background: #fffdfd;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-  padding: 28px 24px;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  position: relative;
-  cursor: pointer;
-  overflow: hidden;
-  border: 1px solid #eee;
-}
-
-.stok-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(179, 18, 23, 0.12);
-}
-
-.stok-card::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 5px;
-  background: linear-gradient(90deg, #b31217, #e52d27);
-  border-radius: 16px 16px 0 0;
-  opacity: 0.7;
-}
-
-.stok-card h3 {
-  margin-top: 10px;
-  color: #b31217;
-  font-size: 1.25rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.stok-card h3::before {
-  content: "📦";
-  font-size: 1.25rem;
-}
-
-.stok-card p {
-  font-size: 14px;
-  margin: 8px 0;
-  color: #555;
-  line-height: 1.5;
-}
-
-.stok-card .detaylar {
-  margin-top: 12px;
-  padding-top: 8px;
-  border-top: 1px dashed #ddd;
-  display: none;
-  font-size: 13px;
-  color: #666;
-}
-
-.stok-card.open .detaylar {
-  display: block;
-}
-
-.no-data {
-  grid-column: 1 / -1;
-  text-align: center;
-  font-size: 18px;
-  color: #999;
-  margin-top: 50px;
-  font-style: italic;
-}
-
-.badge {
-  display: inline-block;
-  padding: 6px 14px;
-  font-size: 14px;
-  border-radius: 50px;
-  color: white;
-  font-weight: bold;
-}
-
-.badge.red {
-  background-color: #e53935;
-}
-
-.badge.orange {
-  background-color: #fb8c00;
-}
-
-.badge.green {
-  background-color: #43a047;
-}
-
-.detaylar p {
-  margin: 6px 0;
-  font-size: 14px;
-  color: #333;
-}
+    }
 
 
+    .search-container {
+      max-width: 600px;
+      margin: 90px auto 0;
+      padding: 0 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .search-container input {
+      width: 100%;
+      padding: 14px 22px;
+      border: none;
+      border-radius: 14px;
+      font-size: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      transition: box-shadow 0.3s ease;
+    }
+
+    .search-container input:focus {
+      outline: none;
+      box-shadow: 0 0 10px #ff3239aa;
+      border: 2px solid #b31217;
+    }
+
+    main {
+      max-width: 1600px;
+      margin: 40px auto;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 35px;
+    }
+
+    .stok-card {
+      background: #fffdfd;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      padding: 28px 24px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+      border: 1px solid #eee;
+    }
+
+    .stok-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(179, 18, 23, 0.12);
+    }
+
+    .stok-card::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, #b31217, #e52d27);
+      border-radius: 16px 16px 0 0;
+      opacity: 0.7;
+    }
+
+    .stok-card h3 {
+      margin-top: 10px;
+      color: #b31217;
+      font-size: 1.25rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stok-card h3::before {
+      content: "📦";
+      font-size: 1.25rem;
+    }
+
+    .stok-card p {
+      font-size: 14px;
+      margin: 8px 0;
+      color: #555;
+      line-height: 1.5;
+    }
+
+    .stok-card .detaylar {
+      margin-top: 12px;
+      padding-top: 8px;
+      border-top: 1px dashed #ddd;
+      display: none;
+      font-size: 13px;
+      color: #666;
+    }
+
+    .stok-card.open .detaylar {
+      display: block;
+    }
+
+    .no-data {
+      grid-column: 1 / -1;
+      text-align: center;
+      font-size: 18px;
+      color: #999;
+      margin-top: 50px;
+      font-style: italic;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 14px;
+      font-size: 14px;
+      border-radius: 50px;
+      color: white;
+      font-weight: bold;
+    }
+
+    .badge.red {
+      background-color: #e53935;
+    }
+
+    .badge.orange {
+      background-color: #fb8c00;
+    }
+
+    .badge.green {
+      background-color: #43a047;
+    }
+
+    .detaylar p {
+      margin: 6px 0;
+      font-size: 14px;
+      color: #333;
+    }
   </style>
 </head>
+
 <body>
 
- <header>
-  <h1>STOK DURUMU</h1>
-</header>
+  <header>
+    <h1>STOK DURUMU</h1>
+  </header>
 
   <!-- 🔍 Arama çubuğu -->
   <div class="search-container">
@@ -229,111 +232,118 @@ main {
     const searchInput = document.getElementById('searchInput');
 
 
-  let tumUrunler = [];
-let tumBelgeler = []; // 🔁 Detaylı veriler burada tutulur
+    let tumUrunler = [];
+    let tumBelgeler = []; // 🔁 Detaylı veriler burada tutulur
 
-async function stoklariGetir() {
-  const stokRef = collection(db, "urun_girisi");
-  const snapshot = await getDocs(stokRef);
+    async function stoklariGetir() {
+      const stokRef = collection(db, "urun_girisi");
+      const snapshot = await getDocs(stokRef);
 
-  stokListesi.innerHTML = '';
-  tumUrunler = [];
-  tumBelgeler = []; // resetle
+      stokListesi.innerHTML = '';
+      tumUrunler = [];
+      tumBelgeler = [];
 
-  if (snapshot.empty) {
-    stokListesi.innerHTML = `<div class="no-data">Stok verisi bulunamadı.</div>`;
-    return;
-  }
-
-  const urunMap = {};
-
-  snapshot.forEach(doc => {
-    const data = doc.data();
-    tumBelgeler.push(data); // 🔁 ekledik
-
-    const name = (data.product || '').toLowerCase();
-    const quantity = data.adet || 0;
-    const createdAt = data.createdAt?.toDate?.() || null;
-
-    if (!urunMap[name]) {
-      urunMap[name] = {
-        name: data.product || '',
-        quantity: quantity,
-        createdAt: createdAt
-      };
-    } else {
-      urunMap[name].quantity += quantity;
-      if (createdAt && urunMap[name].createdAt) {
-        urunMap[name].createdAt = new Date(
-          Math.min(urunMap[name].createdAt.getTime(), createdAt.getTime())
-        );
+      if (snapshot.empty) {
+        stokListesi.innerHTML = '';
+        return;
       }
+
+      const urunMap = {};
+
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        tumBelgeler.push(data);
+
+        const name = (data.product || '').toLowerCase();
+        const quantity = data.adet || 0;
+        const createdAt = data.createdAt?.toDate?.() || null;
+
+        if (quantity <= 0) return; // 🚫 adet 0 olanı ekleme
+
+        if (!urunMap[name]) {
+          urunMap[name] = {
+            name: data.product || '',
+            quantity: quantity,
+            createdAt: createdAt
+          };
+        } else {
+          urunMap[name].quantity += quantity;
+          if (createdAt && urunMap[name].createdAt) {
+            urunMap[name].createdAt = new Date(
+              Math.min(urunMap[name].createdAt.getTime(), createdAt.getTime())
+            );
+          }
+        }
+      });
+
+      tumUrunler = Object.values(urunMap);
+      urunleriGoster(tumUrunler);
     }
-  });
 
-  tumUrunler = Object.values(urunMap);
-  urunleriGoster(tumUrunler);
-}
+    function urunleriGoster(liste) {
+      stokListesi.innerHTML = '';
 
-function urunleriGoster(liste) {
-  stokListesi.innerHTML = '';
+      if (liste.length === 0) {
+        stokListesi.innerHTML = `<div class="no-data">Aradığınız kriterde ürün bulunamadı.</div>`;
+        return;
+      }
 
-  if (liste.length === 0) {
-    stokListesi.innerHTML = `<div class="no-data">Aradığınız kriterde ürün bulunamadı.</div>`;
-    return;
-  }
+      liste.forEach(data => {
+        if (data.quantity <= 0) return; // 🚫 toplam 0 ise ürün kartını gösterme
 
-  liste.forEach(data => {
-    const kart = document.createElement('div');
-    kart.className = 'stok-card';
+        const kart = document.createElement('div');
+        kart.className = 'stok-card';
 
-    kart.innerHTML = `
+        kart.innerHTML = `
       <h3>${data.name}</h3>
       <p><strong>Miktar:</strong> ${data.quantity}</p>
       <div class="detaylar" style="display: none; margin-top:10px;"></div>
     `;
 
-    kart.addEventListener('click', () => {
-      const detayDiv = kart.querySelector('.detaylar');
-      if (detayDiv.style.display === 'none') {
-        detayDiv.style.display = 'block';
-        detayDiv.innerHTML = '';
+        kart.addEventListener('click', () => {
+          const detayDiv = kart.querySelector('.detaylar');
+          if (detayDiv.style.display === 'none') {
+            detayDiv.style.display = 'block';
+            detayDiv.innerHTML = '';
 
-        const benzerUrunler = [];
-        // markaya ve modele göre filtrele
-        tumBelgeler.forEach(item => {
-          if ((item.product || '').toLowerCase() === data.name.toLowerCase()) {
-            benzerUrunler.push(item);
+            const benzerUrunler = [];
+            tumBelgeler.forEach(item => {
+              if ((item.product || '').toLowerCase() === data.name.toLowerCase()) {
+                if ((item.adet || 0) > 0) { // 🚫 adet 0 olanı detaylara ekleme
+                  benzerUrunler.push(item);
+                }
+              }
+            });
+
+            if (benzerUrunler.length > 0) {
+              const grouped = {};
+              benzerUrunler.forEach(item => {
+                const key = `${item.brand || 'Marka Yok'} - ${item.model || 'Model Yok'}`;
+                if (!grouped[key]) {
+                  grouped[key] = 0;
+                }
+                grouped[key] += item.adet || 0;
+              });
+
+              for (const key in grouped) {
+                if (grouped[key] > 0) { // 🚫 grup toplamı 0 ise yazma
+                  const p = document.createElement('p');
+                  p.textContent = `${key}: ${grouped[key]} adet`;
+                  detayDiv.appendChild(p);
+                }
+              }
+            } else {
+              detayDiv.textContent = 'Detaylı bilgi bulunamadı.';
+            }
+
+          } else {
+            detayDiv.style.display = 'none';
           }
         });
 
-        if (benzerUrunler.length > 0) {
-          const grouped = {};
-          benzerUrunler.forEach(item => {
-            const key = `${item.brand || 'Marka Yok'} - ${item.model || 'Model Yok'}`;
-            if (!grouped[key]) {
-              grouped[key] = 0;
-            }
-            grouped[key] += item.adet || 0;
-          });
-
-          for (const key in grouped) {
-            const p = document.createElement('p');
-            p.textContent = `${key}: ${grouped[key]} adet`;
-            detayDiv.appendChild(p);
-          }
-        } else {
-          detayDiv.textContent = 'Detaylı bilgi bulunamadı.';
-        }
-
-      } else {
-        detayDiv.style.display = 'none';
-      }
-    });
-
-    stokListesi.appendChild(kart);
-  });
-}
+        stokListesi.appendChild(kart);
+      });
+    }
 
 
     // 🔍 Arama filtreleme
@@ -349,4 +359,5 @@ function urunleriGoster(liste) {
   </script>
 
 </body>
+
 </html>

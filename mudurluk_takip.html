@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Müdürlük Stok Takip</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 20px;
+      background: #ffffff;
+      color: #a80000;
+      margin-top: 140px;
+    }
+
+    /* Header - Sade ve Naif Tasarım */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: #faf8f8;
+      /* Açık gri ton */
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      /* Hafif gölge */
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      z-index: 100;
+      user-select: none;
+      border-bottom: 1px solid #e0e0e0;
+      /* İnce alt çizgi */
+    }
+
+    header h1 {
+      margin: 0;
+      font-weight: 700;
+      font-size: 2.2rem;
+      color: transparent;
+      background: linear-gradient(90deg, #b31217, #e52d27);
+      /* Kırmızı tonlarda geçişli yazı */
+      -webkit-background-clip: text;
+      background-clip: text;
+      letter-spacing: 2.5px;
+      font-family: 'Segoe UI', 'Poppins', sans-serif;
+      /* Modern, şık fontlar */
+      user-select: none;
+      flex-grow: 1;
+      text-align: center;
+
+    }
+
+    label {
+      display: block;
+      margin: 0 auto;
+      max-width: 600px;
+      font-weight: 500;
+      font-size: 1rem;
+      color: #5a5a5a;
+    }
+
+    select {
+      display: block;
+      margin: 10px auto 25px;
+      width: 100%;
+      max-width: 600px;
+      padding: 10px 14px;
+      border: 1.5px solid #ccc;
+      border-radius: 8px;
+      background-color: #f9eaea;
+      color: #333;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    select:hover,
+    select:focus {
+      border-color: #ffeded;
+      background-color: #fcf1f1;
+      outline: none;
+    }
+
+    table {
+      border-collapse: collapse;
+      margin: 20px auto;
+      max-width: 90%;
+      /* ✅ Daha geniş görünüm */
+      width: 100%;
+      display: none;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      font-size: 1.05rem;
+      margin-top: 100px;
+    }
+
+    thead {
+      background-color: #fdf3f3;
+      color: #333;
+    }
+
+    thead th {
+      padding: 16px 14px;
+      /* ✅ Daha fazla boşluk */
+      font-weight: 600;
+      font-size: 1rem;
+      text-align: left;
+    }
+
+    tbody tr {
+      background-color: #fff;
+      transition: background-color 0.25s ease;
+    }
+
+    tbody tr:hover {
+      background-color: #f4f4f4;
+    }
+
+    tbody td {
+      padding: 14px 14px;
+      /* ✅ Satır yüksekliği arttı */
+      color: #444;
+      font-size: 1.05rem;
+      font-weight: 500;
+      border-top: 1px solid #eee;
+    }
+  </style>
+
+</head>
+
+<body>
+  <header>
+    <h1>MÜDÜRLÜK ÜRÜN TAKİP</h1>
+  </header>
+
+  <!-- Müdürlük seçimi -->
+
+  <select id="departmentSelect">
+    <option value=""> Müdürlük seçiniz.</option>
+  </select>
+
+  <!-- Ürünlerin gösterileceği tablo -->
+  <table id="productTable" aria-label="Müdürlük ürünleri">
+    <thead>
+      <tr>
+        <th>Ürün Adı</th>
+        <th>IP</th>
+        <th>Gönderen Müdürlük</th>
+        <th>Şeflik</th>
+        <th>Kişi</th> <!-- Buraya IP sütunu eklendi -->
+        <th>İşlem</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import {
+      getFirestore, collection, getDocs, query, where, doc,
+      deleteDoc, updateDoc, getDoc, setDoc, increment
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC6G7JfaTCSpvwkX4PXTTJ6I92LIpzkkxk",
+      authDomain: "belediyeenvanter.firebaseapp.com",
+      projectId: "belediyeenvanter",
+      storageBucket: "belediyeenvanter.appspot.com",
+      messagingSenderId: "1088833874170",
+      appId: "1:1088833874170:web:2e2c1c069a9880917b8143"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const departmentSelect = document.getElementById("departmentSelect");
+    const productTable = document.getElementById("productTable");
+    const tableBody = productTable.querySelector("tbody");
+
+    async function loadDepartments() {
+      const q = query(collection(db, "hareketler"));
+      const snapshot = await getDocs(q);
+      const departments = new Set();
+
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        if (data.toDepartment) {
+          departments.add(data.toDepartment);
+        }
+      });
+
+      [...departments].sort().forEach(dept => {
+        const option = document.createElement("option");
+        option.value = dept;
+        option.textContent = dept;
+        departmentSelect.appendChild(option);
+      });
+    }
+
+    async function loadProductsByDepartment(department) {
+      const q = query(collection(db, "hareketler"), where("toDepartment", "==", department));
+      const snapshot = await getDocs(q);
+
+      tableBody.innerHTML = "";
+
+      snapshot.forEach(docSnap => {
+        const data = docSnap.data();
+        const row = document.createElement("tr");
+        row.innerHTML = `
+        <td>${data.productName || "-"}</td>
+        <td>${data.ip || "-"}</td>
+        <td>${data.fromDepartment || "-"}</td>
+        <td>${data.toBranch || "-"}</td>
+        <td>${data.toPerson || "-"}</td>
+        <td><button data-id="${docSnap.id}" class="deleteBtn">Sil</button></td>
+      `;
+        tableBody.appendChild(row);
+      });
+
+      productTable.style.display = snapshot.empty ? "none" : "table";
+
+      // Sil butonlarına event listener ekle
+      document.querySelectorAll(".deleteBtn").forEach(button => {
+        button.addEventListener("click", async (e) => {
+          const docId = e.target.getAttribute("data-id");
+          if (confirm("Bu hareket kaydını silmek ve stoğa geri eklemek istediğinize emin misiniz?")) {
+            await deleteMovementAndRestoreStock(docId);
+            loadProductsByDepartment(departmentSelect.value);
+          }
+        });
+      });
+    }
+
+    function normalizeString(str) {
+      return str
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "_")
+        .replace(/[^a-z0-9_]/g, "");
+    }
+
+    async function deleteMovementAndRestoreStock(docId) {
+      const hareketRef = doc(db, "hareketler", docId);
+      const hareketSnap = await getDoc(hareketRef);
+
+      if (!hareketSnap.exists()) {
+        alert("Silinecek kayıt bulunamadı.");
+        return;
+      }
+
+      const hareketData = hareketSnap.data();
+
+      const fullProduct = hareketData.productName || hareketData.product || "";
+      const productType = fullProduct.split(" - ")[0].trim(); // "mouse"
+      const quantity = hareketData.quantity || hareketData.adet || 0;
+      const toDepartment = hareketData.toDepartment || hareketData.department || "";
+
+      if (!productType || !toDepartment || quantity <= 0) {
+        alert("Eksik veya hatalı veri nedeniyle işlem yapılamıyor.");
+        return;
+      }
+
+      const stokDocId = `${normalizeString(toDepartment)}_${normalizeString(productType)}`;
+      const stokRef = doc(db, "urun_girisi", stokDocId);
+      const stokSnap = await getDoc(stokRef);
+
+      if (stokSnap.exists()) {
+        await updateDoc(stokRef, {
+          adet: increment(quantity)
+        });
+      } else {
+        await setDoc(stokRef, {
+          department: toDepartment,
+          product: productType,
+          adet: quantity,
+          brand: hareketData.brand || "",
+          model: hareketData.model || "",
+          features: hareketData.features || "",
+          ip: hareketData.ip || "",
+          timestamp: hareketData.timestamp || new Date()
+        });
+      }
+
+      await deleteDoc(hareketRef);
+
+      alert("Kayıt silindi ve stoklara mouse türüne geri eklendi.");
+    }
+
+
+    loadDepartments();
+
+    departmentSelect.addEventListener("change", (e) => {
+      const selectedDepartment = e.target.value;
+      if (selectedDepartment) {
+        loadProductsByDepartment(selectedDepartment);
+      } else {
+        productTable.style.display = "none";
+        tableBody.innerHTML = "";
+      }
+    });
+  </script>

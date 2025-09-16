@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <header>
+    <h1>MÜDÜRLÜK STOKLARI</h1>
+  </header>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      padding: 20px;
+      background-color: #fef2f2;
+      color: #333;
+      margin-top: 80px;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: #faf8f8;
+      /* Açık gri ton */
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      /* Hafif gölge */
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      z-index: 100;
+      user-select: none;
+      border-bottom: 1px solid #e0e0e0;
+      /* İnce alt çizgi */
+    }
+
+    header h1 {
+      margin: 0;
+      font-weight: 700;
+      font-size: 2.2rem;
+      color: transparent;
+      background: linear-gradient(90deg, #b31217, #e52d27);
+      /* Kırmızı tonlarda geçişli yazı */
+      -webkit-background-clip: text;
+      background-clip: text;
+      letter-spacing: 2.5px;
+      font-family: 'Segoe UI', 'Poppins', sans-serif;
+      /* Modern, şık fontlar */
+      user-select: none;
+      flex-grow: 1;
+      text-align: center;
+
+    }
+
+    .department {
+      background: #ca0202;
+      color: white;
+      padding: 14px 18px;
+      margin-bottom: 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 24px;
+      font-weight: 600;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: background 0.3s, transform 0.2s;
+
+      /* Metni ortalamak için eklenenler */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+
+    .department:hover {
+      background: #ff6464;
+      transform: translateY(-2px);
+    }
+
+    .products {
+      background-color: #fff1f2;
+      margin: 0 0 20px 10px;
+      padding: 12px 18px;
+      border-radius: 10px;
+      display: none;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .product-item {
+      padding: 6px 0;
+      border-bottom: 1px dashed #fca5a5;
+    }
+
+    .product-item:last-child {
+      border-bottom: none;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-5px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .department {
+        font-size: 16px;
+        padding: 10px;
+      }
+
+      .products {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="departmentsContainer">Yükleniyor...</div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      getDocs
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC6G7JfaTCSpvwkX4PXTTJ6I92LIpzkkxk",
+      authDomain: "belediyeenvanter.firebaseapp.com",
+      projectId: "belediyeenvanter",
+      storageBucket: "belediyeenvanter.appspot.com",
+      messagingSenderId: "1088833874170",
+      appId: "1:1088833874170:web:2c2c1c069a9880917b8143"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const departmentsContainer = document.getElementById("departmentsContainer");
+
+    function normalize(str) {
+      return (str ?? "").toString().trim().toLowerCase();
+    }
+    async function loadData() {
+      const hareketlerSnapshot = await getDocs(collection(db, "hareketler"));
+      const stoklarSnapshot = await getDocs(collection(db, "stoklar"));
+
+      const data = {};
+
+      // 🔁 HAREKETLER
+      hareketlerSnapshot.forEach(doc => {
+        const item = doc.data();
+        const fromDepartment = item["fromDepartment"] || "Bilinmeyen Müdürlük";
+        const toDepartment = item["toDepartment"] || "Bilinmeyen Müdürlük";
+        const product = item["product"];
+        const brand = item["brand"];
+        const model = item["model"];
+        const fromPerson = item["fromPerson"] || "Bilinmeyen Kişi";
+        const toPerson = item["toPerson"] || "Bilinmeyen Kişi";
+        const quantity = item["quantity"] || 1;
+
+        if (!product || !brand || !model || !quantity || quantity <= 0) return;
+
+        const productKey = `${brand} - ${model} (${product})`;
+
+        // Gönderici: stoktan düş
+        // Gönderici: stoktan düş
+        if (!data[fromDepartment]) data[fromDepartment] = {};
+        if (!data[fromDepartment][productKey]) {
+          data[fromDepartment][productKey] = { adet: 0, kisiler: new Map() };
+        }
+        const senderMap = data[fromDepartment][productKey].kisiler;
+        const mevcutAdet = senderMap.get(fromPerson) || 0;
+        senderMap.set(fromPerson, Math.max(mevcutAdet - quantity, 0));
+        data[fromDepartment][productKey].adet = [...senderMap.values()].reduce((a, b) => a + b, 0);
+
+
+        // Alıcı: ekle
+        if (!data[toDepartment]) data[toDepartment] = {};
+        if (!data[toDepartment][productKey]) {
+          data[toDepartment][productKey] = { adet: 0, kisiler: new Map() };
+        }
+        const receiverMap = data[toDepartment][productKey].kisiler;
+        receiverMap.set(toPerson, (receiverMap.get(toPerson) || 0) + quantity);
+        data[toDepartment][productKey].adet = [...receiverMap.values()].reduce((a, b) => a + b, 0);
+      });
+
+      // 📦 STOKLAR: istersen ayrı tablo göster, burada hareketler zaten yeterli
+
+      renderDepartments(data);
+    }
+
+    function renderDepartments(data) {
+      departmentsContainer.innerHTML = "";
+
+      Object.keys(data).forEach(department => {
+        if (normalize(department) === "depo") return;
+        const departmentDiv = document.createElement("div");
+        departmentDiv.className = "department";
+        departmentDiv.textContent = department;
+
+        const productsDiv = document.createElement("div");
+        productsDiv.className = "products";
+
+        Object.entries(data[department]).forEach(([productKey, info]) => {
+          // Eğer toplam adet 0 ise ürünü göstermiyoruz
+          if (info.adet <= 0) return;
+
+          const productDiv = document.createElement("div");
+          productDiv.className = "product-item";
+
+          // Sadece adet > 0 olan kişileri al
+          const kisiler = [...info.kisiler.entries()]
+            .filter(([person, adet]) => adet > 0)
+            .map(([person]) => person)
+            .join(", ");
+
+          productDiv.textContent = `${productKey}: ${info.adet} adet` + (kisiler ? ` | Kullanan: ${kisiler}` : "");
+          productsDiv.appendChild(productDiv);
+        });
+
+        departmentDiv.addEventListener("click", () => {
+          productsDiv.style.display = productsDiv.style.display === "none" ? "block" : "none";
+        });
+
+        departmentsContainer.appendChild(departmentDiv);
+        departmentsContainer.appendChild(productsDiv);
+      });
+    }
+
+    loadData().catch(err => {
+      departmentsContainer.innerHTML = "Veri yüklenemedi: " + err.message;
+      console.error(err);
+    });
+  </script>
+
+</body>
+
+</html>

@@ -1,23 +1,20 @@
-
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
   <meta charset="UTF-8" />
   <title>Depo Yönetimi Paneli</title>
 
   <!-- FontAwesome CDN -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"
-  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <style>
     /* Reset ve Temel */
     * {
       box-sizing: border-box;
     }
+
     body {
       margin: 0;
       font-family: 'Poppins', Arial, sans-serif;
@@ -28,44 +25,50 @@
       flex-direction: column;
     }
 
-   /* Header - Sade ve Naif Tasarım */
-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 60px;
-  background: #f8f9fa; /* Açık gri ton */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); /* Hafif gölge */
-  padding: 0 24px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  z-index: 100;
-  user-select: none;
-  border-bottom: 1px solid #e0e0e0; /* İnce alt çizgi */
-}
+    /* Header - Sade ve Naif Tasarım */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: #f8f9fa;
+      /* Açık gri ton */
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      /* Hafif gölge */
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      z-index: 100;
+      user-select: none;
+      border-bottom: 1px solid #e0e0e0;
+      /* İnce alt çizgi */
+    }
 
-  header h1 {
-  margin: 0;
-  font-weight: 700;
-  font-size: 2.2rem;
-  color: transparent;
-  background: linear-gradient(90deg, #b31217, #e52d27); /* Kırmızı tonlarda geçişli yazı */
-  -webkit-background-clip: text;
-  background-clip: text;
-  letter-spacing: 2.5px;
-  font-family: 'Segoe UI', 'Poppins', sans-serif; /* Modern, şık fontlar */
-  user-select: none;
-  flex-grow: 1;
-  text-align: center;
+    header h1 {
+      margin: 0;
+      font-weight: 700;
+      font-size: 2.2rem;
+      color: transparent;
+      background: linear-gradient(90deg, #b31217, #e52d27);
+      /* Kırmızı tonlarda geçişli yazı */
+      -webkit-background-clip: text;
+      background-clip: text;
+      letter-spacing: 2.5px;
+      font-family: 'Segoe UI', 'Poppins', sans-serif;
+      /* Modern, şık fontlar */
+      user-select: none;
+      flex-grow: 1;
+      text-align: center;
 
-}
+    }
 
     /* Ana içerik container */
     main.container {
       flex-grow: 1;
-      margin-top: 150px; /* header alanı bırak */
+      margin-top: 150px;
+      /* header alanı bırak */
       width: 100%;
       max-width: 1800px;
       margin-left: auto;
@@ -80,149 +83,153 @@ header {
 
     /* Kartlar üstte */
     .cards-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
-  user-select: none;
-}
+      display: flex;
+      justify-content: space-between;
+      gap: 30px;
+      flex-wrap: wrap;
+      user-select: none;
+    }
 
-.cards-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center; /* Ortalar */
-  gap: 20px; /* Kartlar arası boşluk */
-  margin-top: 30px;
-}
+    .cards-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      /* Ortalar */
+      gap: 20px;
+      /* Kartlar arası boşluk */
+      margin-top: 30px;
+    }
 
-.card {
-  background: #ffffff;
-  border: 1.5px solid #f3f4f6;
-  border-radius: 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-  padding: 40px 30px;
-  width: 23%; /* Dörtlü düzene uygun */
-  min-width: 250px;
-  text-align: center;
-  cursor: pointer;
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    border-color 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
+    .card {
+      background: #ffffff;
+      border: 1.5px solid #f3f4f6;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      padding: 40px 30px;
+      width: 28%;
+      /* Dörtlü düzene uygun */
+      min-width: 250px;
+      text-align: center;
+      cursor: pointer;
+      transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
 
-@media (max-width: 1100px) {
-  .card {
-    width: 45%;
-  }
-}
+    @media (max-width: 1100px) {
+      .card {
+        width: 45%;
+      }
+    }
 
-@media (max-width: 600px) {
-  .card {
-    width: 90%;
-  }
-}
+    @media (max-width: 600px) {
+      .card {
+        width: 90%;
+      }
+    }
 
-.card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 24px rgba(179, 18, 23, 0.12);
-  border-color: #fca5a5;
-  background-color: #fffafa;
-}
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 24px rgba(179, 18, 23, 0.12);
+      border-color: #fca5a5;
+      background-color: #fffafa;
+    }
 
-.card i {
-  font-size: 38px;
-  color: #dc2626;
-  margin-bottom: 18px;
-}
+    .card i {
+      font-size: 38px;
+      color: #dc2626;
+      margin-bottom: 18px;
+    }
 
-.card h2 {
-  margin: 0;
-  font-weight: 600;
-  font-size: 20px;
-  color: #b91c1c;
-  letter-spacing: 0.4px;
-}
+    .card h2 {
+      margin: 0;
+      font-weight: 600;
+      font-size: 20px;
+      color: #b91c1c;
+      letter-spacing: 0.4px;
+    }
 
-.card:hover i {
-  color: #991b1b;
-}
+    .card:hover i {
+      color: #991b1b;
+    }
 
-  /* Tablo */
-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 10px;
-  background: transparent;
-  font-size: 1rem;
-  user-select: none;
-  table-layout: fixed;
-}
+    /* Tablo */
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 10px;
+      background: transparent;
+      font-size: 1rem;
+      user-select: none;
+      table-layout: fixed;
+    }
 
-thead tr {
-  background: #f3f4f6;
-  color: #374151;
-  font-weight: 600;
-  font-size: 1rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
+    thead tr {
+      background: #f3f4f6;
+      color: #374151;
+      font-weight: 600;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
 
-thead th {
-  padding: 16px 20px;
-  text-align: left;
-  word-break: break-word;
-}
+    thead th {
+      padding: 16px 20px;
+      text-align: left;
+      word-break: break-word;
+    }
 
-tbody tr {
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  cursor: default;
-}
+    tbody tr {
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      cursor: default;
+    }
 
-tbody tr:hover {
-  background: #fef2f2;
-  transform: scale(1.005);
-}
+    tbody tr:hover {
+      background: #fef2f2;
+      transform: scale(1.005);
+    }
 
-tbody td {
-  padding: 16px 20px;
-  vertical-align: middle;
-  color: #374151;
-  font-weight: 500;
-  word-break: break-word;
-}
+    tbody td {
+      padding: 16px 20px;
+      vertical-align: middle;
+      color: #374151;
+      font-weight: 500;
+      word-break: break-word;
+    }
 
-tbody tr:hover td:first-child {
-  border-left: 4px solid #ef4444;
-}
+    tbody tr:hover td:first-child {
+      border-left: 4px solid #ef4444;
+    }
 
-/* Zarif buton */
-.btn-cikis {
-  background-color: #ef4444;
-  color: white;
-  border: none;
-  padding: 6px 10px;
-  font-weight: 600;
-  font-size: 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  user-select: none;
-}
+    /* Zarif buton */
+    .btn-cikis {
+      background-color: #ef4444;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      font-weight: 600;
+      font-size: 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      user-select: none;
+    }
 
-.btn-cikis:hover {
-  background-color: #dc2626;
-  transform: translateY(-1px);
-}
-</style>
+    .btn-cikis:hover {
+      background-color: #dc2626;
+      transform: translateY(-1px);
+    }
+  </style>
 </head>
+
 <body>
   <header>
     <h1>DEPO YÖNETİMİ</h1>
@@ -237,11 +244,6 @@ tbody tr:hover td:first-child {
         <h2>Ürün Girişi</h2>
       </div>
 
-      <div class="card" onclick="window.location.href='elleUrunGirme.html'">
-        <i class="fas fa-warehouse"></i>
-        <h2>Elle Ürün Girme</h2>
-      </div>
-
       <div class="card" onclick="window.location.href='personelEkle.html'">
         <i class="fas fa-user-plus"></i>
         <h2>Personel Ekle</h2>
@@ -254,346 +256,352 @@ tbody tr:hover td:first-child {
     </div>
 
     <!-- Ürün Tablosu -->
-   <table>
-  <thead>
-  <tr>
-    <th>Ürün Adı</th>
-    <th>Marka</th>
-    <th>Model</th>
-    <th>IP</th>
-    <th>Adet</th>
+    <table>
+      <thead>
+        <tr>
+          <th>Ürün Adı</th>
+          <th>Marka</th>
+          <th>Model</th>
+          <th>IP</th>
+          <th>Adet</th>
 
-    <th>Kayıt Tarihi</th> <!-- ✅ Yeni kolon -->
-    
-    <th style="width: 130px;">Sil</th>
-  </tr>
-</thead>
-  <tbody id="productTable">
+          <th>Kayıt Tarihi</th> <!-- ✅ Yeni kolon -->
+
+          <th style="width: 130px;">Sil</th>
+        </tr>
+      </thead>
+      <tbody id="productTable">
       </tbody>
     </table>
 
   </main>
 
-<script type="module">
-import { updateDoc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
-import { setDoc,serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-  import { getDoc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
-  
+  <script type="module">
+    import { updateDoc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+    import { setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+    import { getDoc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
-  import { 
-    getFirestore, collection, addDoc, getDocs, deleteDoc, doc, 
-    query, orderBy, limit 
-  } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyC6G7JfaTCSpvwkX4PXTTJ6I92LIpzkkxk",
-    authDomain: "belediyeenvanter.firebaseapp.com",
-    projectId: "belediyeenvanter",
-    storageBucket: "belediyeenvanter.appspot.com",
-    messagingSenderId: "1088833874170",
-    appId: "1:1088833874170:web:2c2c1c069a9880917b8143"
-  };
+    import {
+      getFirestore, collection, addDoc, getDocs, deleteDoc, doc,
+      query, orderBy, limit
+    } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC6G7JfaTCSpvwkX4PXTTJ6I92LIpzkkxk",
+      authDomain: "belediyeenvanter.firebaseapp.com",
+      projectId: "belediyeenvanter",
+      storageBucket: "belediyeenvanter.appspot.com",
+      messagingSenderId: "1088833874170",
+      appId: "1:1088833874170:web:2c2c1c069a9880917b8143"
+    };
 
     function toggleForm(type) {
-  const formEkle = document.getElementById('formEkle');
-  const formSil = document.getElementById('formSil');
-  const ekleIcon = document.getElementById('ekleIcon');
-  const silIcon = document.getElementById('silIcon');
+      const formEkle = document.getElementById('formEkle');
+      const formSil = document.getElementById('formSil');
+      const ekleIcon = document.getElementById('ekleIcon');
+      const silIcon = document.getElementById('silIcon');
 
-  if (type === 'ekle') {
-    const visible = formEkle.style.display === 'block';
-    formEkle.style.display = visible ? 'none' : 'block';
-    formSil.style.display = 'none';
-    ekleIcon.textContent = visible ? '+' : '-';
-    silIcon.textContent = '+';
-  } else if (type === 'sil') {
-    const visible = formSil.style.display === 'block';
-    formSil.style.display = visible ? 'none' : 'block';
-    formEkle.style.display = 'none';
-    silIcon.textContent = visible ? '+' : '-';
-    ekleIcon.textContent = '+';
-  }
-}
-
-  function personelEkle() {
-    const ad = document.getElementById('personelAdi').value.trim();
-    const soyad = document.getElementById('personelSoyadi').value.trim();
-
-    if (!ad || !soyad) {
-      alert("Ad ve soyad girilmelidir.");
-      return;
-    }
-
-    alert(`Personel eklendi: ${ad} ${soyad}`);
-    document.getElementById('personelAdi').value = '';
-    document.getElementById('personelSoyadi').value = '';
-  }
-
-  function personelSil() {
-    const id = document.getElementById('personelIdSil').value.trim();
-    if (!id) {
-      alert("Lütfen ID veya ad giriniz.");
-      return;
-    }
-
-    alert(`Personel silindi: ${id}`);
-    document.getElementById('personelIdSil').value = '';
-  }
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  const productTable = document.getElementById("productTable");
-  const movementTableBody = document.getElementById("movementTableBody");
-
-  window.addProduct = async function() {
-  const name = document.getElementById("productName").value.trim();
-  const quantity = parseInt(document.getElementById("productQty").value);
-
-  if (!name || !quantity || quantity <= 0) {
-    alert("Lütfen geçerli ürün adı ve miktarı girin.");
-    return;
-  }
-
-  try {
-    const urunGirisiRef = collection(db, "urun_girisi");
-    const querySnapshot = await getDocs(urunGirisiRef);
-    let existingProductDoc = null;
-
-    querySnapshot.forEach((docSnap) => {
-      const data = docSnap.data();
-      if (data.product && data.product.toLowerCase() === name.toLowerCase()) {
-        existingProductDoc = { id: docSnap.id, data };
+      if (type === 'ekle') {
+        const visible = formEkle.style.display === 'block';
+        formEkle.style.display = visible ? 'none' : 'block';
+        formSil.style.display = 'none';
+        ekleIcon.textContent = visible ? '+' : '-';
+        silIcon.textContent = '+';
+      } else if (type === 'sil') {
+        const visible = formSil.style.display === 'block';
+        formSil.style.display = visible ? 'none' : 'block';
+        formEkle.style.display = 'none';
+        silIcon.textContent = visible ? '+' : '-';
+        ekleIcon.textContent = '+';
       }
-    });
-
-    if (existingProductDoc) {
-      // Ürün zaten varsa, miktarını artır
-      const updatedQty = existingProductDoc.data.quantity + quantity;
-      await setDoc(doc(db, "urun_girisi", existingProductDoc.id), {
-        ...existingProductDoc.data,
-        quantity: updatedQty,
-        createdAt: existingProductDoc.data.createdAt || new Date()
-      });
-    } else {
-      // Yoksa yeni ürün olarak ekle
-      await addDoc(urunGirisiRef, {
-        product: name,
-        quantity: quantity,
-       createdAt: serverTimestamp()
-      });
     }
 
-    alert("Ürün eklendi!");
-    document.getElementById("productName").value = "";
-    document.getElementById("productQty").value = "";
-    loadProducts();
-    loadMovements();
+    function personelEkle() {
+      const ad = document.getElementById('personelAdi').value.trim();
+      const soyad = document.getElementById('personelSoyadi').value.trim();
 
-  } catch (error) {
-    alert("Hata oluştu: " + error.message);
-    console.error(error);
-  }
-};
-
-async function loadProducts() {
-  try {
-    const querySnapshot = await getDocs(collection(db, "urun_girisi"));
-    productTable.innerHTML = "";
-
-    if (querySnapshot.empty) {
-      productTable.innerHTML = `<tr><td colspan="8" class="no-data">Henüz ürün eklenmemiş.</td></tr>`;
-      return;
-    }
-
-    querySnapshot.forEach((docSnap) => {
-      const data = docSnap.data();
-
-      let kayitTarihi = "";
-      const timestampField = data.createdAt || data.timestamp;
-
-      if (timestampField) {
-        kayitTarihi = timestampField.toDate 
-          ? timestampField.toDate().toLocaleDateString("tr-TR") 
-          : new Date(timestampField).toLocaleDateString("tr-TR");
+      if (!ad || !soyad) {
+        alert("Ad ve soyad girilmelidir.");
+        return;
       }
 
-      const row = document.createElement("tr");
-      row.innerHTML = `
+      alert(`Personel eklendi: ${ad} ${soyad}`);
+      document.getElementById('personelAdi').value = '';
+      document.getElementById('personelSoyadi').value = '';
+    }
+
+    function personelSil() {
+      const id = document.getElementById('personelIdSil').value.trim();
+      if (!id) {
+        alert("Lütfen ID veya ad giriniz.");
+        return;
+      }
+
+      alert(`Personel silindi: ${id}`);
+      document.getElementById('personelIdSil').value = '';
+    }
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const productTable = document.getElementById("productTable");
+    const movementTableBody = document.getElementById("movementTableBody");
+
+    window.addProduct = async function () {
+      const name = document.getElementById("productName").value.trim();
+      const quantity = parseInt(document.getElementById("productQty").value);
+
+      if (!name || !quantity || quantity <= 0) {
+        alert("Lütfen geçerli ürün adı ve miktarı girin.");
+        return;
+      }
+
+      try {
+        const urunGirisiRef = collection(db, "urun_girisi");
+        const querySnapshot = await getDocs(urunGirisiRef);
+        let existingProductDoc = null;
+
+        querySnapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          if (data.product && data.product.toLowerCase() === name.toLowerCase()) {
+            existingProductDoc = { id: docSnap.id, data };
+          }
+        });
+
+        if (existingProductDoc) {
+          // Ürün zaten varsa, miktarını artır
+          const updatedQty = existingProductDoc.data.quantity + quantity;
+          await setDoc(doc(db, "urun_girisi", existingProductDoc.id), {
+            ...existingProductDoc.data,
+            quantity: updatedQty,
+            createdAt: existingProductDoc.data.createdAt || new Date()
+          });
+        } else {
+          // Yoksa yeni ürün olarak ekle
+          await addDoc(urunGirisiRef, {
+            product: name,
+            quantity: quantity,
+            createdAt: serverTimestamp()
+          });
+        }
+
+        alert("Ürün eklendi!");
+        document.getElementById("productName").value = "";
+        document.getElementById("productQty").value = "";
+        loadProducts();
+        loadMovements();
+
+      } catch (error) {
+        alert("Hata oluştu: " + error.message);
+        console.error(error);
+      }
+    };
+
+    async function loadProducts() {
+      try {
+        const querySnapshot = await getDocs(collection(db, "urun_girisi"));
+        productTable.innerHTML = "";
+
+        if (querySnapshot.empty) {
+          productTable.innerHTML = `<tr><td colspan="8" class="no-data">Henüz ürün eklenmemiş.</td></tr>`;
+          return;
+        }
+
+        querySnapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+
+          // 🚫 Eğer ürün adı yoksa veya adet/quantity boş ya da 0 ise SKIP
+          const quantity = data.adet || data.quantity || 0;
+          if (!data.product || quantity <= 0) {
+            return; // tabloya ekleme
+          }
+
+          let kayitTarihi = "";
+          const timestampField = data.createdAt || data.timestamp;
+
+          if (timestampField) {
+            kayitTarihi = timestampField.toDate
+              ? timestampField.toDate().toLocaleDateString("tr-TR")
+              : new Date(timestampField).toLocaleDateString("tr-TR");
+          }
+
+          const row = document.createElement("tr");
+          row.innerHTML = `
         <td>${data.product || "-"}</td>
         <td>${data.brand || "-"}</td>
         <td>${data.model || "-"}</td>
         <td>${data.ip || "-"}</td>
-        <td>${data.adet || data.quantity || "-"}</td>
+        <td>${quantity}</td>
         <td>${kayitTarihi}</td>
         <td class="actions">
           <button class="btn-cikis" onclick="removeProduct('${docSnap.id}')">Çıkış Yap</button>
         </td>
       `;
-      productTable.appendChild(row);
-    });
-  } catch (error) {
-    console.error("loadProducts hatası:", error);
-  }
-}
-
-window.removeProduct = async function(id) {
-  try {
-    const productRef = doc(db, "urun_girisi", id);
-    const productSnap = await getDoc(productRef);
-
-    if (!productSnap.exists()) {
-      alert("Ürün bulunamadı.");
-      return;
+          productTable.appendChild(row);
+        });
+      } catch (error) {
+        console.error("loadProducts hatası:", error);
+      }
     }
 
-    const productData = productSnap.data();
+    window.removeProduct = async function (id) {
+      try {
+        const productRef = doc(db, "urun_girisi", id);
+        const productSnap = await getDoc(productRef);
 
-    // Ürün adı ve miktar doğru alanlardan alınmalı, Firestore alan isimlerine göre
-    const productName = productData.product || productData.name || "İsimsiz Ürün";
-    const quantity = productData.quantity || 1;
+        if (!productSnap.exists()) {
+          alert("Ürün bulunamadı.");
+          return;
+        }
 
-    // Hareket kaydı ekle
-    await addDoc(collection(db, "urun_girisi"), {
-      department: "DEPO",
-      productName: productName,
-      quantity: quantity,
-      type: "out",
-      date: new Date()
-      
-    });
+        const productData = productSnap.data();
 
-    // Ürünü sil
-    await deleteDoc(productRef);
+        // Ürün adı ve miktar doğru alanlardan alınmalı, Firestore alan isimlerine göre
+        const productName = productData.product || productData.name || "İsimsiz Ürün";
+        const quantity = productData.quantity || 1;
 
-    alert("Ürün çıkarıldı.");
-    loadProducts();
-    loadMovements();
-  } catch (error) {
-    alert("Hata oluştu: " + error.message);
-    console.error(error);
-  }
-};
+        // Hareket kaydı ekle
+        await addDoc(collection(db, "urun_girisi"), {
+          department: "DEPO",
+          productName: productName,
+          quantity: quantity,
+          type: "out",
+          date: new Date()
+
+        });
+
+        // Ürünü sil
+        await deleteDoc(productRef);
+
+        alert("Ürün çıkarıldı.");
+        loadProducts();
+        loadMovements();
+      } catch (error) {
+        alert("Hata oluştu: " + error.message);
+        console.error(error);
+      }
+    };
 
 
 
-window.transferProduct = async function(id, name, quantity) {
-  const to = prompt("Hangi müdürlüğe göndermek istiyorsunuz?");
-  if (!to || !to.trim()) return;
+    window.transferProduct = async function (id, name, quantity) {
+      const to = prompt("Hangi müdürlüğe göndermek istiyorsunuz?");
+      if (!to || !to.trim()) return;
 
-  const transferAmount = prompt(`Kaç adet göndermek istiyorsunuz? (Stok: ${quantity})`);
-  const qty = parseInt(transferAmount);
+      const transferAmount = prompt(`Kaç adet göndermek istiyorsunuz? (Stok: ${quantity})`);
+      const qty = parseInt(transferAmount);
 
-  if (!qty || qty <= 0 || qty > quantity) {
-    alert("Geçerli bir miktar girilmedi.");
-    return;
-  }
+      if (!qty || qty <= 0 || qty > quantity) {
+        alert("Geçerli bir miktar girilmedi.");
+        return;
+      }
 
-  try {
-    // Transfer kaydı ekle
-    await addDoc(collection(db, "transfers"), {
-      productName: name,
-      quantity: qty,
-      fromDepartment: "DEPO",
-      toDepartment: to.trim().toUpperCase(),
-      date: new Date()
-    });
+      try {
+        // Transfer kaydı ekle
+        await addDoc(collection(db, "transfers"), {
+          productName: name,
+          quantity: qty,
+          fromDepartment: "DEPO",
+          toDepartment: to.trim().toUpperCase(),
+          date: new Date()
+        });
 
-    const productRef = doc(db, "products", id);
-    if (qty === quantity) {
-      await deleteDoc(productRef);
-    } else {
-      await updateDoc(productRef, {
-        quantity: quantity - qty
+        const productRef = doc(db, "products", id);
+        if (qty === quantity) {
+          await deleteDoc(productRef);
+        } else {
+          await updateDoc(productRef, {
+            quantity: quantity - qty
+          });
+        }
+
+        alert("Transfer başarıyla tamamlandı.");
+        loadProducts();
+        loadMovements();
+      } catch (error) {
+        console.error(error);
+        alert("Transfer sırasında hata oluştu: " + error.message);
+      }
+    };
+
+
+    async function loadMovements() {
+      movementTableBody.innerHTML = `<tr><td colspan="5" class="no-data">Yükleniyor...</td></tr>`;
+
+      const movementsRef = collection(db, "urun_girisi");
+      const q1 = query(movementsRef, orderBy("date", "desc"), limit(50));
+      const movementsSnapshot = await getDocs(q1);
+
+      const transfersRef = collection(db, "transfers");
+      const q2 = query(transfersRef, orderBy("date", "desc"), limit(50));
+      const transfersSnapshot = await getDocs(q2);
+
+      let combined = [];
+      const getDate = (data) => {
+        if (data?.date?.toDate) return data.date.toDate();
+        return new Date(data.date || Date.now());
+      };
+
+      movementsSnapshot.forEach(doc => {
+        const data = doc.data();
+        if (data.department === department) {
+          if (!productStocks[data.productName]) {
+            productStocks[data.productName] = {
+              totalIn: 0,
+              totalOut: 0,
+              lastDate: getDate(data),
+              lastType: data.type
+            };
+          }
+          if (data.type === "in") productStocks[data.productName].totalIn += data.quantity;
+          else if (data.type === "out") productStocks[data.productName].totalOut += data.quantity;
+
+          if (getDate(data) > productStocks[data.productName].lastDate) {
+            productStocks[data.productName].lastDate = getDate(data);
+            productStocks[data.productName].lastType = data.type;
+          }
+        }
       });
-    }
 
-    alert("Transfer başarıyla tamamlandı.");
+      transfersSnapshot.forEach(doc => {
+        const data = doc.data();
+        if (data.fromDepartment === department) {
+          if (!productStocks[data.productName]) {
+            productStocks[data.productName] = {
+              totalIn: 0,
+              totalOut: 0,
+              lastDate: getDate(data),
+              lastType: "transfer_out"
+            };
+          }
+          productStocks[data.productName].totalOut += data.quantity;
+          if (getDate(data) > productStocks[data.productName].lastDate) {
+            productStocks[data.productName].lastDate = getDate(data);
+            productStocks[data.productName].lastType = "transfer_out";
+          }
+        }
+        if (data.toDepartment === department) {
+          if (!productStocks[data.productName]) {
+            productStocks[data.productName] = {
+              totalIn: 0,
+              totalOut: 0,
+              lastDate: getDate(data),
+              lastType: "transfer_in"
+            };
+          }
+          productStocks[data.productName].totalIn += data.quantity;
+          if (getDate(data) > productStocks[data.productName].lastDate) {
+            productStocks[data.productName].lastDate = getDate(data);
+            productStocks[data.productName].lastType = "transfer_in";
+          }
+        }
+      });
+
+    }
+    // Sayfa açılır açılmaz verileri yükle
     loadProducts();
     loadMovements();
-  } catch (error) {
-    console.error(error);
-    alert("Transfer sırasında hata oluştu: " + error.message);
-  }
-};
-
-
-  async function loadMovements() {
-    movementTableBody.innerHTML = `<tr><td colspan="5" class="no-data">Yükleniyor...</td></tr>`;
-
-    const movementsRef = collection(db, "urun_girisi");
-    const q1 = query(movementsRef, orderBy("date", "desc"), limit(50));
-    const movementsSnapshot = await getDocs(q1);
-
-    const transfersRef = collection(db, "transfers");
-    const q2 = query(transfersRef, orderBy("date", "desc"), limit(50));
-    const transfersSnapshot = await getDocs(q2);
-
-    let combined = [];
-const getDate = (data) => {
-  if (data?.date?.toDate) return data.date.toDate();
-  return new Date(data.date || Date.now());
-};
-
-movementsSnapshot.forEach(doc => {
-  const data = doc.data();
-  if (data.department === department) {
-    if (!productStocks[data.productName]) {
-      productStocks[data.productName] = {
-        totalIn: 0,
-        totalOut: 0,
-        lastDate: getDate(data),
-        lastType: data.type
-      };
-    }
-    if (data.type === "in") productStocks[data.productName].totalIn += data.quantity;
-    else if (data.type === "out") productStocks[data.productName].totalOut += data.quantity;
-
-    if (getDate(data) > productStocks[data.productName].lastDate) {
-      productStocks[data.productName].lastDate = getDate(data);
-      productStocks[data.productName].lastType = data.type;
-    }
-  }
-});
-
-transfersSnapshot.forEach(doc => {
-  const data = doc.data();
-  if (data.fromDepartment === department) {
-    if (!productStocks[data.productName]) {
-      productStocks[data.productName] = {
-        totalIn: 0,
-        totalOut: 0,
-        lastDate: getDate(data),
-        lastType: "transfer_out"
-      };
-    }
-    productStocks[data.productName].totalOut += data.quantity;
-    if (getDate(data) > productStocks[data.productName].lastDate) {
-      productStocks[data.productName].lastDate = getDate(data);
-      productStocks[data.productName].lastType = "transfer_out";
-    }
-  }
-  if (data.toDepartment === department) {
-    if (!productStocks[data.productName]) {
-      productStocks[data.productName] = {
-        totalIn: 0,
-        totalOut: 0,
-        lastDate: getDate(data),
-        lastType: "transfer_in"
-      };
-    }
-    productStocks[data.productName].totalIn += data.quantity;
-    if (getDate(data) > productStocks[data.productName].lastDate) {
-      productStocks[data.productName].lastDate = getDate(data);
-      productStocks[data.productName].lastType = "transfer_in";
-    }
-}
-});
-
-  }
-  // Sayfa açılır açılmaz verileri yükle
-  loadProducts();
-  loadMovements();
 
   </script>

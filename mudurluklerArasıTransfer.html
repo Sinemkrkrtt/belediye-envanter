@@ -1,695 +1,763 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
   <meta charset="UTF-8" />
   <title>Müdürlükler Arası Transfer</title>
   <style>
-   body {
-  max-width: 1300px;
-  margin: 70px auto 30px;
-  padding: 0 15px;
-  font-family: 'Poppins', sans-serif;
-  background: #f9fbfc;
-  color: #333;
-}
+    body {
+      max-width: 1300px;
+      margin: 70px auto 30px;
+      padding: 0 15px;
+      font-family: 'Poppins', sans-serif;
+      background: #f9fbfc;
+      color: #333;
+    }
 
- header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 60px;
-  background: #f8f9fa; /* Açık gri ton */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); /* Hafif gölge */
-  padding: 0 24px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  z-index: 100;
-  user-select: none;
-  border-bottom: 1px solid #e0e0e0; /* İnce alt çizgi */
-}
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: #f8f9fa;
+      /* Açık gri ton */
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      /* Hafif gölge */
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      z-index: 100;
+      user-select: none;
+      border-bottom: 1px solid #e0e0e0;
+      /* İnce alt çizgi */
+    }
 
-  header h1 {
-  margin: 0;
-  font-weight: 700;
-  font-size: 2.2rem;
-  color: transparent;
-  background: linear-gradient(90deg, #b31217, #e52d27); /* Kırmızı tonlarda geçişli yazı */
-  -webkit-background-clip: text;
-  background-clip: text;
-  letter-spacing: 2.5px;
-  font-family: 'Segoe UI', 'Poppins', sans-serif; /* Modern, şık fontlar */
-  user-select: none;
-  flex-grow: 1;
-  text-align: center;
+    header h1 {
+      margin: 0;
+      font-weight: 700;
+      font-size: 2.2rem;
+      color: transparent;
+      background: linear-gradient(90deg, #b31217, #e52d27);
+      /* Kırmızı tonlarda geçişli yazı */
+      -webkit-background-clip: text;
+      background-clip: text;
+      letter-spacing: 2.5px;
+      font-family: 'Segoe UI', 'Poppins', sans-serif;
+      /* Modern, şık fontlar */
+      user-select: none;
+      flex-grow: 1;
+      text-align: center;
 
-}
-form {
-  margin-top: 90px;
-  background: #f7f3f3;
-  padding: 30px 32px;
-  border-radius: 14px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  transition: 0.3s ease;
-}
+    }
 
-.form-columns {
-  display: flex;
-  gap: 30px;
-  flex-wrap: wrap;
-}
+    form {
+      margin-top: 90px;
+      background: #f7f3f3;
+      padding: 30px 32px;
+      border-radius: 14px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      transition: 0.3s ease;
+    }
 
-.form-column {
-  flex: 1;
-  min-width: 250px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
+    .form-columns {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
 
-.form-column h3 {
-  margin-bottom: 6px;
-  font-size: 1rem;
-  color: #444;
-  font-weight: 600;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 6px;
-}
+    .form-column {
+      flex: 1;
+      min-width: 250px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-}
+    .form-column h3 {
+      margin-bottom: 6px;
+      font-size: 1rem;
+      color: #444;
+      font-weight: 600;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 6px;
+    }
 
-.form-group label {
-  font-size: 0.88rem;
-  margin-bottom: 6px;
-  color: #555;
-}
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
 
-select,
-input[type="text"],
-input[type="number"] {
-  padding: 10px 14px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  background: #fdfdfd;
-  transition: 0.2s ease-in-out;
-}
+    .form-group label {
+      font-size: 0.88rem;
+      margin-bottom: 6px;
+      color: #555;
+    }
 
-select:focus,
-input:focus {
-  outline: none;
-  border-color: #888;
-  background: #fff;
-  box-shadow: 0 0 0 2px rgba(179, 18, 23, 0.1);
-}
+    select,
+    input[type="text"],
+    input[type="number"] {
+      padding: 10px 14px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      background: #fdfdfd;
+      transition: 0.2s ease-in-out;
+    }
 
-button {
-  align-self: flex-end;
-  padding: 10px 28px;
-  background: #b31217;
-  color: #fff;
-  font-weight: 500;
-  font-size: 1rem;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
+    select:focus,
+    input:focus {
+      outline: none;
+      border-color: #888;
+      background: #fff;
+      box-shadow: 0 0 0 2px rgba(179, 18, 23, 0.1);
+    }
 
-button:hover {
-  background: #9c0f14;
-  box-shadow: 0 2px 10px rgba(179, 18, 23, 0.15);
-}
+    button {
+      align-self: flex-end;
+      padding: 10px 28px;
+      background: #b31217;
+      color: #fff;
+      font-weight: 500;
+      font-size: 1rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
 
-.container h2 {
-  text-align: center;
-  color: #b31217;
-  margin-bottom: 20px;
-}
+    button:hover {
+      background: #9c0f14;
+      box-shadow: 0 2px 10px rgba(179, 18, 23, 0.15);
+    }
 
-table thead {
-  background: #eee;
-}
+    .container h2 {
+      text-align: center;
+      color: #b31217;
+      margin-bottom: 20px;
+    }
 
-
- .container {
-    width:98vw; /* Tüm ekran genişliği */
-    margin-left: calc(-50vw + 50%);
-    background: #fff;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.05);
-  }
-
- table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.95rem;
-    table-layout: fixed;
-    word-wrap: break-word;
-  }
-
-  table th, table td {
-    border: 1px solid #ddd;
-    padding: 10px 12px;
-    text-align: left;
-    font-size: 0.95rem;
-  }
+    table thead {
+      background: #eee;
+    }
 
 
-th {
-  background: #f9f9f9;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-size: 0.8rem;
-  color: #666;
-}
+    .container {
+      width: 98vw;
+      /* Tüm ekran genişliği */
+      margin-left: calc(-50vw + 50%);
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.05);
+    }
 
-tbody tr:hover {
-  background: #f6f6f6;
-}
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+      table-layout: fixed;
+      word-wrap: break-word;
+    }
 
-@media (max-width: 768px) {
-  .form-columns {
-    flex-direction: column;
-  }
+    table th,
+    table td {
+      border: 1px solid #ddd;
+      padding: 10px 12px;
+      text-align: left;
+      font-size: 0.95rem;
+    }
 
-  button {
-    align-self: stretch;
-  }
-}
 
+    th {
+      background: #f9f9f9;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-size: 0.8rem;
+      color: #666;
+    }
+
+    tbody tr:hover {
+      background: #f6f6f6;
+    }
+
+    @media (max-width: 768px) {
+      .form-columns {
+        flex-direction: column;
+      }
+
+      button {
+        align-self: stretch;
+      }
+    }
   </style>
 </head>
+
 <body>
   <header>
     <h1>Müdürlükler Arası Transfer</h1>
   </header>
-<form id="transferForm">
-  <div class="form-columns">
-    
-    <!-- Sol Sütun: Ürün Bilgisi -->
-    <div class="form-column">
-      <h3>Ürün Bilgisi</h3>
-      <div class="form-group">
-        <label>Tür</label>
-        <select id="productType" required>
-          <option value="" disabled selected>Seçin</option>
-          <option value="monitor">Monitör</option>
-          <option value="keyboard">Klavye</option>
-          <option value="mouse">Mouse</option>
-        </select>
+  <form id="transferForm">
+    <div class="form-columns">
+
+      <!-- Sol Sütun: Ürün Bilgisi -->
+      <div class="form-column">
+        <h3>Ürün Bilgisi</h3>
+        <div class="form-group">
+          <label>Tür</label>
+          <select id="productType" required>
+            <option value="" disabled selected>Seçin</option>
+            <option value="mouse">Mouse</option>
+            <option value="monitor">Monitör</option>
+            <option value="klavye">Klavye</option>
+            <option value="pc">Bilgisayar</option>
+            <option value="printer">Yazıcı</option>
+            <option value="scanner">Tarayıcı</option>
+            <option value="projector">Projeksiyon</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Marka</label>
+          <select id="brand" disabled required>
+            <option value="" disabled selected>Seçin</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Model</label>
+          <select id="model" disabled required>
+            <option value="" disabled selected>Seçin</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>IP</label>
+          <input type="text" id="ip" placeholder="IP Adresi " />
+        </div>
       </div>
-      <div class="form-group">
-        <label>Marka</label>
-        <select id="brand" disabled required>
-          <option value="" disabled selected>Seçin</option>
-        </select>
+
+      <!-- Orta Sütun: Gönderen Bilgileri -->
+      <div class="form-column">
+        <h3>Gönderen</h3>
+        <div class="form-group">
+          <label>Müdürlük</label>
+          <select id="fromDepartment" disabled required></select>
+        </div>
+        <div class="form-group">
+          <label>Şeflik</label>
+          <select id="fromBranch" disabled required></select>
+        </div>
+        <div class="form-group">
+          <label>Kişi</label>
+          <select id="fromPerson" disabled required></select>
+        </div>
       </div>
-      <div class="form-group">
-        <label>Model</label>
-        <select id="model" disabled required>
-          <option value="" disabled selected>Seçin</option>
-        </select>
+
+      <!-- Sağ Sütun: Alıcı Bilgileri -->
+      <div class="form-column">
+        <h3>Alıcı</h3>
+        <div class="form-group">
+          <label>Müdürlük</label>
+          <select id="toDepartment" disabled required></select>
+        </div>
+        <div class="form-group">
+          <label>Şeflik</label>
+          <select id="toBranch" disabled required></select>
+        </div>
+        <div class="form-group">
+          <label>Kişi</label>
+          <select id="toPerson" disabled required></select>
+        </div>
       </div>
-      <div class="form-group">
-        <label>IP</label>
-        <input type="text" id="ip" placeholder="IP Adresi " />
-      </div>
+
     </div>
 
-    <!-- Orta Sütun: Gönderen Bilgileri -->
-    <div class="form-column">
-      <h3>Gönderen</h3>
-      <div class="form-group">
-        <label>Müdürlük</label>
-        <select id="fromDepartment" disabled required></select>
-      </div>
-      <div class="form-group">
-        <label>Şeflik</label>
-        <select id="fromBranch" disabled required></select>
-      </div>
-      <div class="form-group">
-        <label>Kişi</label>
-        <select id="fromPerson" disabled required></select>
-      </div>
-    </div>
+    <button type="submit">Transfer Et</button>
+  </form>
 
-    <!-- Sağ Sütun: Alıcı Bilgileri -->
-    <div class="form-column">
-      <h3>Alıcı</h3>
-      <div class="form-group">
-        <label>Müdürlük</label>
-        <select id="toDepartment" disabled required></select>
-      </div>
-      <div class="form-group">
-        <label>Şeflik</label>
-        <select id="toBranch" disabled required></select>
-      </div>
-      <div class="form-group">
-        <label>Kişi</label>
-        <select id="toPerson" disabled required></select>
-      </div>
-    </div>
+  <div class="container">
+    <h2>Müdürlükler Arası Transferler</h2>
 
-  </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Tarih</th>
+          <th>Gönderen Müdürlük</th>
+          <th>Gönderen Şeflik</th>
+          <th>Gönderen Kişi</th>
+          <th>Alıcı Müdürlük</th>
+          <th>Alıcı Şeflik</th>
+          <th>Alıcı Kişi</th>
+          <th>Ürün</th>
+          <th>IP</th>
+        </tr>
+      </thead>
 
-  <button type="submit">Transfer Et</button>
-</form>
-
- <div class="container">
-<h2>Müdürlükler Arası Transferler</h2>
-
-  <table>
-   <thead>
-  <tr>
-    <th>Tarih</th>
-    <th>Gönderen Müdürlük</th>
-    <th>Gönderen Şeflik</th>
-    <th>Gönderen Kişi</th>
-    <th>Alıcı Müdürlük</th>
-    <th>Alıcı Şeflik</th>
-    <th>Alıcı Kişi</th>
-    <th>Ürün</th>
-    <th>IP</th>
-  </tr>
-</thead>
-
-    <tbody id="transferTableBody">
-      <tr><td colspan="6">Yükleniyor...</td></tr>
-    </tbody>
-  </table>
+      <tbody id="transferTableBody">
+        <tr>
+          <td colspan="6">Yükleniyor...</td>
+        </tr>
+      </tbody>
+    </table>
 
 
- <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
- 
-    import {
-      getFirestore,
-      collection,
-      getDocs,
-      addDoc,
-      Timestamp,
-      query,
-      orderBy
-    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+      import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    // Firebase yapılandırma
-    const firebaseConfig = {
-      apiKey: "AIzaSyC6G7JfaTCSpvwkX4PXTTJ6I92LIpzkkxk",
-      authDomain: "belediyeenvanter.firebaseapp.com",
-      projectId: "belediyeenvanter",
-      storageBucket: "belediyeenvanter.appspot.com",
-      messagingSenderId: "1088833874170",
-      appId: "1:1088833874170:web:2c2c1c069a9880917b8143"
-    };
+      import {
+        getFirestore,
+        collection,
+        getDocs,
+        addDoc,
+        Timestamp,
+        query,
+        orderBy
+      } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
+      // Firebase yapılandırma
+      const firebaseConfig = {
+        apiKey: "AIzaSyC6G7JfaTCSpvwkX4PXTTJ6I92LIpzkkxk",
+        authDomain: "belediyeenvanter.firebaseapp.com",
+        projectId: "belediyeenvanter",
+        storageBucket: "belediyeenvanter.appspot.com",
+        messagingSenderId: "1088833874170",
+        appId: "1:1088833874170:web:2c2c1c069a9880917b8143"
+      };
 
-    // Ürün verisi (Tür → Marka → Model)
-    const productData = {
-      monitor: {
-        Samsung: ["S24F350", "U28E590", "C27F398"],
-        LG: ["24MK600M", "27GL650F", "32QN600"],
-        Dell: ["P2419H", "U2719D", "S2721QS"]
-      },
-      keyboard: {
-        Logitech: ["K120", "K380", "MX Keys"],
-        Microsoft: ["Ergonomic", "Bluetooth Keyboard"],
-        Corsair: ["K70", "K95", "K68"]
-      },
-      mouse: {
-        Logitech: ["MX Master 3", "G502 Hero", "M185"],
-        Razer: ["DeathAdder", "Basilisk", "Naga"],
-        Microsoft: ["Classic IntelliMouse", "Arc Mouse"]
-      }
-    };
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
 
-    // DOM elemanları
-    const productTypeSelect = document.getElementById("productType");
-    const brandSelect = document.getElementById("brand");
-    const modelSelect = document.getElementById("model");
-    const ipInput = document.getElementById("ip");
+      const productData = {
+        mouse: {
+          Logitech: ["M185", "MX Master 3", "G Pro", "G502 Hero", "M720 Triathlon"],
+          Razer: ["DeathAdder", "Naga", "Basilisk", "Viper Ultimate"],
+          Microsoft: ["Sculpt", "Arc", "Basic Optical", "Modern Mobile"],
+          SteelSeries: ["Rival 600", "Sensei Ten", "Aerox 3"],
+          HP: ["X500", "Z3700", "OMEN Vector"],
+        },
+        monitor: {
+          Samsung: ["U28E590", "Odyssey G7", "Smart Monitor M8", "CRG9"],
+          LG: ["27GN950", "Ultrafine", "32UN880", "34GN850"],
+          Acer: ["Nitro VG270", "Predator XB3", "R240HY", "XV272U"],
+          Dell: ["U2720Q", "P2419H", "S2721DGF"],
+          BenQ: ["EX3501R", "PD3200U", "ZOWIE XL2546"],
+        },
+        klavye: {
+          Corsair: ["K70", "K95", "Strafe", "K60 Pro"],
+          Razer: ["BlackWidow", "Huntsman", "Cynosa"],
+          Asus: ["ROG Claymore", "TUF K3", "ROG Strix Scope"],
+        },
+        pc: {
+          Dell: ["XPS 8930", "Inspiron 3880", "OptiPlex 7080", "Precision 3640"],
+          HP: ["Pavilion", "EliteDesk", "Omen 30L", "ProDesk 400"],
+          Asus: ["ROG Strix", "TUF Gaming", "VivoPC", "ExpertCenter"],
+          Lenovo: ["ThinkCentre M720", "IdeaCentre 5", "Legion T5"],
+          MSI: ["Trident 3", "Infinite A", "MEG Trident X"],
+        },
+        printer: {
+          Canon: ["PIXMA G6020", "imageCLASS MF445dw", "MAXIFY GX6020"],
+          Epson: ["EcoTank L3150", "WorkForce WF-2850", "SureColor P600"],
+          Brother: ["HL-L2350DW", "MFC-J995DW", "DCP-L2550DW"],
+          Xerox: ["Phaser 6510", "WorkCentre 6515", "VersaLink B405"],
+        },
+        scanner: {
+          Fujitsu: ["ScanSnap iX1500", "fi-7160", "SP-1120"],
+          Plustek: ["OpticSlim 1180", "SmartOffice PN2040", "Photo Scanner ePhoto Z300"],
+        },
+        projector: {
+          Epson: ["EH-TW7100", "EB-U42", "PowerLite 1781W"],
+          Sony: ["VPL-VW295ES", "VPL-HW45ES", "MP-CD1"],
+          ViewSonic: ["PX747-4K", "M1 Mini Plus", "PA503W"],
+          Optoma: ["HD146X", "UHD50X", "GT1080HDR"],
+        }
+      };
+      // DOM elemanları
+      const productTypeSelect = document.getElementById("productType");
+      const brandSelect = document.getElementById("brand");
+      const modelSelect = document.getElementById("model");
+      const ipInput = document.getElementById("ip");
 
-    const fromDepartmentSelect = document.getElementById("fromDepartment");
-    const fromBranchSelect = document.getElementById("fromBranch");
-    const fromPersonSelect = document.getElementById("fromPerson");
+      const fromDepartmentSelect = document.getElementById("fromDepartment");
+      const fromBranchSelect = document.getElementById("fromBranch");
+      const fromPersonSelect = document.getElementById("fromPerson");
 
-    const toDepartmentSelect = document.getElementById("toDepartment");
-    const toBranchSelect = document.getElementById("toBranch");
-    const toPersonSelect = document.getElementById("toPerson");
+      const toDepartmentSelect = document.getElementById("toDepartment");
+      const toBranchSelect = document.getElementById("toBranch");
+      const toPersonSelect = document.getElementById("toPerson");
 
-    const transferForm = document.getElementById("transferForm");
-    const transferTableBody = document.getElementById("transferTableBody");
+      const transferForm = document.getElementById("transferForm");
+      const transferTableBody = document.getElementById("transferTableBody");
 
-    // Personel verisi tutacak
-    const personData = [];
+      // Personel verisi tutacak
+      const personData = [];
 
-    // Ürün türüne göre marka ve model doldur
-    productTypeSelect.addEventListener("change", () => {
-      const selectedType = productTypeSelect.value;
+      // Ürün türüne göre marka ve model doldur
+      productTypeSelect.addEventListener("change", () => {
+        const selectedType = productTypeSelect.value;
 
-      brandSelect.innerHTML = `<option value="" disabled selected>Marka Seçin</option>`;
-      modelSelect.innerHTML = `<option value="" disabled selected>Model Seçin</option>`;
-      modelSelect.disabled = true;
-
-      if (selectedType && productData[selectedType]) {
-        Object.keys(productData[selectedType]).forEach(brand => {
-          const option = document.createElement("option");
-          option.value = brand;
-          option.textContent = brand;
-          brandSelect.appendChild(option);
-        });
-        brandSelect.disabled = false;
-      } else {
-        brandSelect.disabled = true;
+        brandSelect.innerHTML = `<option value="" disabled selected>Marka Seçin</option>`;
+        modelSelect.innerHTML = `<option value="" disabled selected>Model Seçin</option>`;
         modelSelect.disabled = true;
-      }
-    });
 
-    // Marka seçilince modelleri doldur
-    brandSelect.addEventListener("change", () => {
-      const selectedType = productTypeSelect.value;
-      const selectedBrand = brandSelect.value;
+        if (selectedType && productData[selectedType]) {
+          Object.keys(productData[selectedType]).forEach(brand => {
+            const option = document.createElement("option");
+            option.value = brand;
+            option.textContent = brand;
+            brandSelect.appendChild(option);
+          });
+          brandSelect.disabled = false;
+        } else {
+          brandSelect.disabled = true;
+          modelSelect.disabled = true;
+        }
+      });
 
-      modelSelect.innerHTML = `<option value="" disabled selected>Model Seçin</option>`;
+      // Marka seçilince modelleri doldur
+      brandSelect.addEventListener("change", () => {
+        const selectedType = productTypeSelect.value;
+        const selectedBrand = brandSelect.value;
 
-      if (selectedType && selectedBrand && productData[selectedType][selectedBrand]) {
-        productData[selectedType][selectedBrand].forEach(model => {
-          const option = document.createElement("option");
-          option.value = model;
-          option.textContent = model;
-          modelSelect.appendChild(option);
+        modelSelect.innerHTML = `<option value="" disabled selected>Model Seçin</option>`;
+
+        if (selectedType && selectedBrand && productData[selectedType][selectedBrand]) {
+          productData[selectedType][selectedBrand].forEach(model => {
+            const option = document.createElement("option");
+            option.value = model;
+            option.textContent = model;
+            modelSelect.appendChild(option);
+          });
+          modelSelect.disabled = false;
+        } else {
+          modelSelect.disabled = true;
+        }
+      });
+
+      // Personel verisini Firebase'den çek ve dropdownları doldur
+      async function loadPersonData() {
+        personData.length = 0; // önce temizle
+        fromDepartmentSelect.innerHTML = `<option value="" disabled selected>Müdürlük</option>`;
+        toDepartmentSelect.innerHTML = `<option value="" disabled selected>Müdürlük</option>`;
+
+        const snapshot = await getDocs(collection(db, "personeller"));
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          personData.push({
+            name: data.isimSoyisim,
+            department: data.mudurluk,
+            branch: data.seflik
+          });
         });
-        modelSelect.disabled = false;
-      } else {
-        modelSelect.disabled = true;
-      }
-    });
 
-    // Personel verisini Firebase'den çek ve dropdownları doldur
-    async function loadPersonData() {
-      personData.length = 0; // önce temizle
-      fromDepartmentSelect.innerHTML = `<option value="" disabled selected>Müdürlük</option>`;
-      toDepartmentSelect.innerHTML = `<option value="" disabled selected>Müdürlük</option>`;
+        // Müdürlükleri eşsiz olarak çek
+        const departments = [...new Set(personData.map(p => p.department))];
+        departments.forEach(dep => {
+          const option1 = document.createElement("option");
+          option1.value = dep;
+          option1.textContent = dep;
+          fromDepartmentSelect.appendChild(option1);
 
-      const snapshot = await getDocs(collection(db, "personeller"));
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        personData.push({
-          name: data.isimSoyisim,
-          department: data.mudurluk,
-          branch: data.seflik
+          const option2 = document.createElement("option");
+          option2.value = dep;
+          option2.textContent = dep;
+          toDepartmentSelect.appendChild(option2);
         });
-      });
 
-      // Müdürlükleri eşsiz olarak çek
-      const departments = [...new Set(personData.map(p => p.department))];
-      departments.forEach(dep => {
-        const option1 = document.createElement("option");
-        option1.value = dep;
-        option1.textContent = dep;
-        fromDepartmentSelect.appendChild(option1);
-
-        const option2 = document.createElement("option");
-        option2.value = dep;
-        option2.textContent = dep;
-        toDepartmentSelect.appendChild(option2);
-      });
-
-      fromDepartmentSelect.disabled = false;
-      toDepartmentSelect.disabled = false;
-      fromBranchSelect.disabled = true;
-      toBranchSelect.disabled = true;
-      fromPersonSelect.disabled = true;
-      toPersonSelect.disabled = true;
-    }
-
-    // Müdürlük değişince şeflikleri getir (Gönderen)
-    fromDepartmentSelect.addEventListener("change", () => {
-      const selectedDep = fromDepartmentSelect.value;
-
-      const branches = [...new Set(personData.filter(p => p.department === selectedDep).map(p => p.branch))];
-
-      fromBranchSelect.innerHTML = `<option value="" disabled selected>Şeflik Seçin</option>`;
-      fromPersonSelect.innerHTML = `<option value="" disabled selected>Kişi Seçin</option>`;
-      fromPersonSelect.disabled = true;
-
-      branches.forEach(branch => {
-        const option = document.createElement("option");
-        option.value = branch;
-        option.textContent = branch;
-        fromBranchSelect.appendChild(option);
-      });
-
-      fromBranchSelect.disabled = false;
-    });
-
-    // Şeflik değişince kişileri getir (Gönderen)
-    fromBranchSelect.addEventListener("change", () => {
-      const selectedDep = fromDepartmentSelect.value;
-      const selectedBranch = fromBranchSelect.value;
-
-      const people = personData.filter(p => p.department === selectedDep && p.branch === selectedBranch).map(p => p.name);
-
-      fromPersonSelect.innerHTML = `<option value="" disabled selected>Kişi Seçin</option>`;
-      people.forEach(person => {
-        const option = document.createElement("option");
-        option.value = person;
-        option.textContent = person;
-        fromPersonSelect.appendChild(option);
-      });
-
-      fromPersonSelect.disabled = false;
-    });
-
-    // Müdürlük değişince şeflikleri getir (Alıcı)
-    toDepartmentSelect.addEventListener("change", () => {
-      const selectedDep = toDepartmentSelect.value;
-
-      const branches = [...new Set(personData.filter(p => p.department === selectedDep).map(p => p.branch))];
-
-      toBranchSelect.innerHTML = `<option value="" disabled selected>Şeflik Seçin</option>`;
-      toPersonSelect.innerHTML = `<option value="" disabled selected>Kişi Seçin</option>`;
-      toPersonSelect.disabled = true;
-
-      branches.forEach(branch => {
-        const option = document.createElement("option");
-        option.value = branch;
-        option.textContent = branch;
-        toBranchSelect.appendChild(option);
-      });
-
-      toBranchSelect.disabled = false;
-    });
-
-    // Şeflik değişince kişileri getir (Alıcı)
-    toBranchSelect.addEventListener("change", () => {
-      const selectedDep = toDepartmentSelect.value;
-      const selectedBranch = toBranchSelect.value;
-
-      const people = personData.filter(p => p.department === selectedDep && p.branch === selectedBranch).map(p => p.name);
-
-      toPersonSelect.innerHTML = `<option value="" disabled selected>Kişi Seçin</option>`;
-      people.forEach(person => {
-        const option = document.createElement("option");
-        option.value = person;
-        option.textContent = person;
-        toPersonSelect.appendChild(option);
-      });
-
-      toPersonSelect.disabled = false;
-    });
-
-    // Firestore'dan transfer geçmişini listele
-    async function listeleHareketler() {
-  transferTableBody.innerHTML = `<tr><td colspan="6">Yükleniyor...</td></tr>`;
-
-  const hareketlerCol = collection(db, "hareketler");
-  const q = query(hareketlerCol, orderBy("date", "desc"));
-  const snapshot = await getDocs(q);
-
-  if (snapshot.empty) {
-    transferTableBody.innerHTML = `<tr><td colspan="6">Kayıt bulunamadı.</td></tr>`;
-    return;
-  }
-
-  transferTableBody.innerHTML = "";
-
-  snapshot.forEach(doc => {
-    const data = doc.data();
-
-    // Aynı müdürlükten aynı müdürlüğe olan transferleri atla
-    if (data.fromDepartment === data.toDepartment) return;
-
-    const tarih = data.date?.toDate().toLocaleString("tr-TR") || "-";
-    const productName = data.productName || "-";
-
-   const row = document.createElement("tr");
-row.innerHTML = `
-  <td>${tarih}</td>
-  <td>${data.fromDepartment || "-"}</td>
-  <td>${data.fromBranch || "-"}</td>
-  <td>${data.fromPerson || "-"}</td>
-  <td>${data.toDepartment || "-"}</td>
-  <td>${data.toBranch || "-"}</td>
-  <td>${data.toPerson || "-"}</td>
-  <td>${productName}</td>
-  <td>${data.ip || "-"}</td>
-`;
-transferTableBody.appendChild(row);
-
-  });
-}
-
-    // Stok kontrol fonksiyonu (örnek, koleksiyonda productName ve quantity var varsayalım)
-   function normalize(str) {
-  return str.toLowerCase().replace(/\s+/g, "").trim();
-}
-async function checkStock(productName, quantity) {
-  const stokRef = collection(db, "hareketler");
-  const snapshot = await getDocs(stokRef);
-
-  let totalStock = 0;
-
-  snapshot.forEach(doc => {
-    const data = doc.data();
-    if (data.productName === productName) {
-      totalStock += data.quantity;
-    }
-  });
-
-  console.log("Toplam stok:", totalStock, "İstenen:", quantity);
-  return totalStock >= quantity;
-}
-
-
-    // Form gönderim işlemi
-    transferForm.addEventListener("submit", async e => {
-      e.preventDefault();
-
-      const productType = productTypeSelect.value;
-      const brand = brandSelect.value;
-      const model = modelSelect.value;
-      const ip = ipInput.value.trim() || "-";
-const quantity = 1;
-
-      const fromDepartment = fromDepartmentSelect.value;
-      const fromBranch = fromBranchSelect.value;
-      const fromPerson = fromPersonSelect.value;
-
-      const toDepartment = toDepartmentSelect.value;
-      const toBranch = toBranchSelect.value;
-      const toPerson = toPersonSelect.value;
-      
-
-      if (!productType || !brand || !model || !fromDepartment || !fromBranch || !fromPerson || !toDepartment || !toBranch || !toPerson || !quantity) {
-        alert("Lütfen tüm alanları eksiksiz doldurun!");
-        return;
-      }
-
-      const productName = `${productType} - ${brand} - ${model}`;
-      
-
-      // Stok kontrol (dilersen bu kısmı yorumlayabilirsin)
-      const stokVarMi = await checkStock(productName, quantity);
-    
-
-      try {
-      
-       await addDoc(collection(db, "hareketler"), {
-  date: Timestamp.now(),
-  fromDepartment,
-  fromBranch,
-  fromPerson,
-  toDepartment,
-  toBranch,
-  toPerson,
-  product: productType,
-  brand,
-  model,
-  ip,
-  quantity,
-  productName  // Bunu EKLEYİN!
-});
-
-
-            // 🔄 Stok güncelle
-            await updateStock(fromDepartment, productName, -quantity); // düş
-            await updateStock(toDepartment, productName, quantity);   // ekle
-
-        alert("Ürün başarıyla gönderildi!");
-        transferForm.reset();
-
-        brandSelect.disabled = true;
-        modelSelect.disabled = true;
+        fromDepartmentSelect.disabled = false;
+        toDepartmentSelect.disabled = false;
         fromBranchSelect.disabled = true;
-        fromPersonSelect.disabled = true;
         toBranchSelect.disabled = true;
+        fromPersonSelect.disabled = true;
+        toPersonSelect.disabled = true;
+      }
+
+      // Müdürlük değişince şeflikleri getir (Gönderen)
+      fromDepartmentSelect.addEventListener("change", () => {
+        const selectedDep = fromDepartmentSelect.value;
+
+        const branches = [...new Set(personData.filter(p => p.department === selectedDep).map(p => p.branch))];
+
+        fromBranchSelect.innerHTML = `<option value="" disabled selected>Şeflik Seçin</option>`;
+        fromPersonSelect.innerHTML = `<option value="" disabled selected>Kişi Seçin</option>`;
+        fromPersonSelect.disabled = true;
+
+        branches.forEach(branch => {
+          const option = document.createElement("option");
+          option.value = branch;
+          option.textContent = branch;
+          fromBranchSelect.appendChild(option);
+        });
+
+        fromBranchSelect.disabled = false;
+      });
+
+      // Şeflik değişince kişileri getir (Gönderen)
+      fromBranchSelect.addEventListener("change", () => {
+        const selectedDep = fromDepartmentSelect.value;
+        const selectedBranch = fromBranchSelect.value;
+
+        const people = personData.filter(p => p.department === selectedDep && p.branch === selectedBranch).map(p => p.name);
+
+        fromPersonSelect.innerHTML = `<option value="" disabled selected>Kişi Seçin</option>`;
+        people.forEach(person => {
+          const option = document.createElement("option");
+          option.value = person;
+          option.textContent = person;
+          fromPersonSelect.appendChild(option);
+        });
+
+        fromPersonSelect.disabled = false;
+      });
+
+      // Müdürlük değişince şeflikleri getir (Alıcı)
+      toDepartmentSelect.addEventListener("change", () => {
+        const selectedDep = toDepartmentSelect.value;
+
+        const branches = [...new Set(personData.filter(p => p.department === selectedDep).map(p => p.branch))];
+
+        toBranchSelect.innerHTML = `<option value="" disabled selected>Şeflik Seçin</option>`;
+        toPersonSelect.innerHTML = `<option value="" disabled selected>Kişi Seçin</option>`;
         toPersonSelect.disabled = true;
 
-        // Müdürlük dropdownları sıfırla ama açık kalsın
-        fromDepartmentSelect.selectedIndex = 0;
-        toDepartmentSelect.selectedIndex = 0;
+        branches.forEach(branch => {
+          const option = document.createElement("option");
+          option.value = branch;
+          option.textContent = branch;
+          toBranchSelect.appendChild(option);
+        });
 
-        // Tabloyu güncelle
-            listeleHareketler();
-        } catch (error) {
-        console.error("Gönderim hatası:", error);
-        alert("Gönderim sırasında hata oluştu.");
+        toBranchSelect.disabled = false;
+      });
+
+      // Şeflik değişince kişileri getir (Alıcı)
+      toBranchSelect.addEventListener("change", () => {
+        const selectedDep = toDepartmentSelect.value;
+        const selectedBranch = toBranchSelect.value;
+
+        const people = personData.filter(p => p.department === selectedDep && p.branch === selectedBranch).map(p => p.name);
+
+        toPersonSelect.innerHTML = `<option value="" disabled selected>Kişi Seçin</option>`;
+        people.forEach(person => {
+          const option = document.createElement("option");
+          option.value = person;
+          option.textContent = person;
+          toPersonSelect.appendChild(option);
+        });
+
+        toPersonSelect.disabled = false;
+      });
+
+      // Firestore'dan transfer geçmişini listele
+      async function listeleHareketler() {
+        transferTableBody.innerHTML = `<tr><td colspan="6">Yükleniyor...</td></tr>`;
+
+        const hareketlerCol = collection(db, "hareketler");
+        const q = query(hareketlerCol, orderBy("date", "desc"));
+        const snapshot = await getDocs(q);
+
+        if (snapshot.empty) {
+          transferTableBody.innerHTML = `<tr><td colspan="6">Kayıt bulunamadı.</td></tr>`;
+          return;
         }
-    });
-    async function updateStock(department, productName, change) {
-  const stokRef = collection(db, "stoklar");
-  const snapshot = await getDocs(stokRef);
 
-  let stokDoc = null;
-  let stokId = null;
+        transferTableBody.innerHTML = "";
 
-  // Stok varsa bul
-  snapshot.forEach(doc => {
-    const data = doc.data();
-    if (
-      normalize(data.productName) === normalize(productName) &&
-      normalize(data.department) === normalize(department)
-    ) {
-      stokDoc = data;
-      stokId = doc.id;
-    }
-  });
+        snapshot.forEach(doc => {
+          const data = doc.data();
 
-  if (stokDoc) {
-    // Güncelle
-    const newQty = (stokDoc.quantity || 0) + change;
-    await setDoc(doc(db, "stoklar", stokId), {
-      ...stokDoc,
-      quantity: newQty < 0 ? 0 : newQty
-    });
-  } else {
-    // Yeni stok oluştur
-    await addDoc(stokRef, {
-  department,
-  product: productType,
-  brand: brand,
-  model: model,
-  productName,
-  quantity: change < 0 ? 0 : change
-});
+          // ❌ Aynı müdürlüğe yapılan transferleri gösterme
+          if (data.fromDepartment === data.toDepartment) return;
 
-  }
-}
-    // Sayfa açılır açılmaz personel verisini yükle ve listeyi göster
-    await loadPersonData();
-    await listeleHareketler();
-  </script>
+          // ❌ Depo’dan gelen veya Depo’ya giden hareketleri gösterme
+          if (
+            normalize(data.fromDepartment) === "depo" ||
+            normalize(data.toDepartment) === "depo"
+          ) {
+            return;
+          }
+
+          const tarih = data.date?.toDate().toLocaleString("tr-TR") || "-";
+          const productName = data.productName || "-";
+
+          const row = document.createElement("tr");
+          row.innerHTML = `
+      <td>${tarih}</td>
+      <td>${data.fromDepartment || "-"}</td>
+      <td>${data.fromBranch || "-"}</td>
+      <td>${data.fromPerson || "-"}</td>
+      <td>${data.toDepartment || "-"}</td>
+      <td>${data.toBranch || "-"}</td>
+      <td>${data.toPerson || "-"}</td>
+      <td>${productName}</td>
+      <td>${data.ip || "-"}</td>
+    `;
+          transferTableBody.appendChild(row);
+        });
+      }
+
+      // Stok kontrol fonksiyonu (örnek, koleksiyonda productName ve quantity var varsayalım)
+      function normalize(str) {
+        return (str ?? "").toString().trim().toLowerCase();
+      }
+
+      async function checkStock(productType, brand, model, department, quantity) {
+        const hareketRef = collection(db, "hareketler");
+        const snapshot = await getDocs(hareketRef);
+
+        let availableStock = 0;
+
+        snapshot.forEach(docSnap => {
+          const data = docSnap.data();
+
+          if (
+            normalize(data.product) === normalize(productType) &&
+            normalize(data.brand) === normalize(brand) &&
+            normalize(data.model) === normalize(model)
+          ) {
+            // Eğer bu departmandan çıkış yapıldıysa stok düş
+            if (normalize(data.fromDepartment) === normalize(department)) {
+              availableStock -= (data.quantity || 0);
+            }
+
+            // Eğer bu departmana giriş yapıldıysa stok ekle
+            if (normalize(data.toDepartment) === normalize(department)) {
+              availableStock += (data.quantity || 0);
+            }
+          }
+        });
+
+        console.log("Stok:", availableStock, "İstenen:", quantity);
+        return availableStock >= quantity;
+      }
+
+
+
+
+      // Form gönderim işlemi
+      transferForm.addEventListener("submit", async e => {
+        e.preventDefault();
+
+        const productType = productTypeSelect.value;
+        const brand = brandSelect.value;
+        const model = modelSelect.value;
+        const ip = ipInput.value.trim() || "-";
+        const quantity = 1;
+
+        const fromDepartment = fromDepartmentSelect.value;
+        const fromBranch = fromBranchSelect.value;
+        const fromPerson = fromPersonSelect.value;
+
+        const toDepartment = toDepartmentSelect.value;
+        const toBranch = toBranchSelect.value;
+        const toPerson = toPersonSelect.value;
+
+
+        if (!productType || !brand || !model || !fromDepartment || !fromBranch || !fromPerson || !toDepartment || !toBranch || !toPerson || !quantity) {
+          alert("Lütfen tüm alanları eksiksiz doldurun!");
+          return;
+        }
+
+        const productName = `${productType} - ${brand} - ${model}`;
+
+
+        // stok kontrolü
+        const stokVarMi = await checkStock(productType, brand, model, fromDepartment, quantity);
+
+        if (!stokVarMi) {
+          alert("Göndermek istediğiniz ürün bu müdürlük stoklarında bulunmuyor!");
+          return;
+        }
+
+        try {
+
+          await addDoc(collection(db, "hareketler"), {
+            date: Timestamp.now(),
+            fromDepartment,
+            fromBranch,
+            fromPerson,
+            toDepartment,
+            toBranch,
+            toPerson,
+            product: productType,
+            brand,
+            model,
+            ip,
+            quantity,
+            productName  // Bunu EKLEYİN!
+          });
+
+
+          // 🔄 Stok güncelle
+          await updateStock(fromDepartment, productType, brand, model, productName, -quantity);
+          await updateStock(toDepartment, productType, brand, model, productName, quantity);
+
+          alert("Ürün başarıyla gönderildi!");
+          transferForm.reset();
+
+          brandSelect.disabled = true;
+          modelSelect.disabled = true;
+          fromBranchSelect.disabled = true;
+          fromPersonSelect.disabled = true;
+          toBranchSelect.disabled = true;
+          toPersonSelect.disabled = true;
+
+          // Müdürlük dropdownları sıfırla ama açık kalsın
+          fromDepartmentSelect.selectedIndex = 0;
+          toDepartmentSelect.selectedIndex = 0;
+
+          // Tabloyu güncelle
+          listeleHareketler();
+        } catch (error) {
+          console.error("Gönderim hatası:", error);
+          alert("Gönderim sırasında hata oluştu.");
+        }
+      });
+      async function updateStock(department, productType, brand, model, productName, change) {
+        const stokRef = collection(db, "stoklar");
+        const snapshot = await getDocs(stokRef);
+
+        let stokDoc = null;
+        let stokId = null;
+
+        snapshot.forEach(docSnap => {
+          const data = docSnap.data();
+          if (
+            normalize(data.product) === normalize(productType) &&
+            normalize(data.brand) === normalize(brand) &&
+            normalize(data.model) === normalize(model) &&
+            normalize(data.department) === normalize(department)   // ✅ department da eşleşsin
+          ) {
+            stokDoc = data;
+            stokId = docSnap.id;
+          }
+        });
+
+        if (stokDoc) {
+          const newQty = (stokDoc.quantity || 0) + change;
+          await setDoc(doc(db, "stoklar", stokId), {
+            ...stokDoc,
+            quantity: newQty < 0 ? 0 : newQty
+          });
+        } else {
+          await addDoc(stokRef, {
+            department,
+            product: productType,
+            brand,
+            model,
+            productName,
+            quantity: change < 0 ? 0 : change
+          });
+        }
+      }
+
+
+      // Sayfa açılır açılmaz personel verisini yükle ve listeyi göster
+      await loadPersonData();
+      await listeleHareketler();
+    </script>
 </body>
+
 </html>

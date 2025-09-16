@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
   <meta charset="UTF-8" />
   <title>Elle Ürün Girişi</title>
@@ -124,11 +125,19 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
+
 <body>
 
   <div class="card">
@@ -147,9 +156,6 @@
 
         <label for="ip">IP Adresi</label>
         <input type="text" id="ip" placeholder="Örnek: 192.168.1.10" />
-
-        <label for="adet">Adet</label>
-        <input type="number" id="adet" placeholder="Örnek: 1, 5, 10" />
       </div>
     </div>
 
@@ -160,104 +166,95 @@
     </div>
   </div>
 
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      getDocs,
+      query,
+      where,
+      setDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  getDocs,
-  query,
-  where,
-  setDoc,
-  doc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    const firebaseConfig = {
+      apiKey: "AIzaSyC6G7JfaTCSpvwkX4PXTTJ6I92LIpzkkxk",
+      authDomain: "belediyeenvanter.firebaseapp.com",
+      projectId: "belediyeenvanter",
+      storageBucket: "belediyeenvanter.appspot.com",
+      messagingSenderId: "1088833874170",
+      appId: "1:1088833874170:web:2c2c1c069a9880917b8143"
+    };
 
-const firebaseConfig = {
-  apiKey: "AIzaSyC6G7JfaTCSpvwkX4PXTTJ6I92LIpzkkxk",
-  authDomain: "belediyeenvanter.firebaseapp.com",
-  projectId: "belediyeenvanter",
-  storageBucket: "belediyeenvanter.appspot.com",
-  messagingSenderId: "1088833874170",
-  appId: "1:1088833874170:web:2c2c1c069a9880917b8143"
-};
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+    window.submitManualForm = async function () {
+      const product = document.getElementById("product").value.trim();
+      const brand = document.getElementById("brand").value.trim();
+      const model = document.getElementById("model").value.trim();
+      const ip = document.getElementById("ip").value.trim();
+      const features = document.getElementById("features").value.trim();
 
-window.submitManualForm = async function () {
-  const product = document.getElementById("product").value.trim();
-  const brand = document.getElementById("brand").value.trim();
-  const model = document.getElementById("model").value.trim();
-  const ip = document.getElementById("ip").value.trim();
-  const adetInput = document.getElementById("adet").value.trim();
-  const features = document.getElementById("features").value.trim();
+      if (!product) {
+        alert("Ürün adı mutlaka seçilmeli.");
+        return;
+      }
 
-  if (!product || !adetInput) {
-    alert("Ürün adı ve adet mutlaka girilmeli.");
-    return;
-  }
+      try {
+        const urunRef = collection(db, "urun_girisi");
 
-  const adet = parseInt(adetInput);
-  if (isNaN(adet) || adet <= 0) {
-    alert("Adet geçerli bir sayı olmalı.");
-    return;
-  }
+        const q = query(
+          urunRef,
+          where("product", "==", product),
+          where("brand", "==", brand),
+          where("model", "==", model),
+          where("ip", "==", ip)
+        );
 
-  try {
-    const urunRef = collection(db, "urun_girisi");
+        const querySnapshot = await getDocs(q);
 
-    const q = query(
-      urunRef,
-      where("product", "==", product),
-      where("brand", "==", brand),
-      where("model", "==", model),
-      where("ip", "==", ip)
-    );
+        if (!querySnapshot.empty) {
+          const docRef = querySnapshot.docs[0].ref;
+          const mevcutVeri = querySnapshot.docs[0].data();
+          const mevcutAdet = mevcutVeri.adet || 0;
 
-    const querySnapshot = await getDocs(q);
+          await setDoc(
+            docRef,
+            {
+              ...mevcutVeri,
+              features: features,
+              adet: mevcutAdet + 1, // her eklemede 1 artır
+              createdAt: mevcutVeri.createdAt || new Date()
+            },
+            { merge: true }
+          );
 
-    if (!querySnapshot.empty) {
-      const docRef = querySnapshot.docs[0].ref;
-      const mevcutVeri = querySnapshot.docs[0].data();
-      const mevcutAdet = mevcutVeri.adet || 0;
+          alert("Ürün zaten vardı, adet sayısı 1 artırıldı!");
+        } else {
+          await addDoc(urunRef, {
+            product,
+            brand,
+            model,
+            ip,
+            features,
+            adet: 1, // yeni ürünse varsayılan 1
+            createdAt: new Date()
+          });
 
-      await setDoc(
-        docRef,
-        {
-          ...mevcutVeri,
-          features: features,
-          adet: mevcutAdet + adet,
-          createdAt: mevcutVeri.createdAt || new Date()
-        },
-        { merge: true }
-      );
+          alert("Yeni ürün başarıyla kaydedildi!");
+        }
 
-      alert("Ürün zaten vardı, adet sayısı güncellendi!");
-    } else {
-      await addDoc(urunRef, {
-        product,
-        brand,
-        model,
-        ip,
-        features,
-        adet: adet,
-        createdAt: new Date()
-      });
+        document.querySelectorAll("input, textarea").forEach(e => e.value = "");
+        getUrunler();
+      } catch (error) {
+        console.error("Kayıt hatası:", error);
+      }
+    };
 
-      alert("Yeni ürün başarıyla kaydedildi!");
-    }
-
-    document.querySelectorAll("input, textarea").forEach(e => e.value = "");
-    getUrunler();
-  } catch (error) {
-    console.error("Kayıt hatası:", error);
-  }
-};
-
-
-  getUrunler(); // sayfa açıldığında ürünleri göster
-</script>
+    getUrunler(); // sayfa açıldığında ürünleri göster
+  </script>
 </body>
+
 </html>

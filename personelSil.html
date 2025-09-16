@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
   <meta charset="UTF-8" />
   <title>Personel Sil</title>
@@ -49,7 +50,8 @@
       margin-top: 20px;
     }
 
-    input, select {
+    input,
+    select {
       width: 100%;
       padding: 14px 16px;
       font-size: 15px;
@@ -59,7 +61,8 @@
       transition: all 0.3s ease;
     }
 
-    input:focus, select:focus {
+    input:focus,
+    select:focus {
       border-color: #d62828;
       box-shadow: 0 0 5px rgba(214, 40, 40, 0.3);
       outline: none;
@@ -95,25 +98,40 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   </style>
 </head>
+
 <body>
 
   <div class="card">
     <h1>Personel Sil</h1>
 
     <label for="adSoyad">Ad Soyad</label>
-    <input type="text" id="adSoyad" placeholder="Ad ve Soyadı birlikte girin" />
+    <input type="text" id="adSoyad" placeholder="Personelin adı ve Soyadı" />
 
     <label for="mudurluk">Müdürlük</label>
     <select id="mudurluk" onchange="filtreleSeflik()">
-      <option value="">Müdürlük Seçin </option>
+      <option value="">Müdürlük Seçin</option>
       <option value="İnsan Kaynakları">İnsan Kaynakları</option>
       <option value="Teknik Hizmetler">Teknik Hizmetler</option>
       <option value="Mali Hizmetler">Mali Hizmetler</option>
+      <option value="Çevre Koruma ve Kontrol">Çevre Koruma ve Kontrol</option>
+      <option value="Kültür ve Sosyal İşler">Kültür ve Sosyal İşler</option>
+      <option value="Zabıta">Zabıta</option>
+      <option value="Bilgi İşlem">Bilgi İşlem</option>
+      <option value="İmar ve Şehircilik">İmar ve Şehircilik</option>
+      <option value="Sağlık İşleri">Sağlık İşleri</option>
+      <option value="Destek Hizmetleri">Destek Hizmetleri</option>
     </select>
 
     <label for="seflik">Şeflik</label>
@@ -148,10 +166,83 @@
     const db = getFirestore(app);
 
     const seflikler = {
-      "İnsan Kaynakları": ["Personel Şefliği", "Eğitim Şefliği", "Sosyal İşler Şefliği"],
-      "Teknik Hizmetler": ["Bakım Şefliği", "İnşaat Şefliği", "Elektrik Şefliği"],
-      "Mali Hizmetler": ["Muhasebe Şefliği", "Bütçe Şefliği", "Satın Alma Şefliği"]
+      "İnsan Kaynakları": [
+        "Personel Şefliği",
+        "Eğitim Şefliği",
+        "Sosyal İşler Şefliği",
+        "Özlük İşleri Şefliği",
+        "Disiplin Şefliği",
+        "Performans ve Değerlendirme Şefliği"
+      ],
+      "Teknik Hizmetler": [
+        "Bakım Şefliği",
+        "İnşaat Şefliği",
+        "Elektrik Şefliği",
+        "Makine İkmal Şefliği",
+        "Altyapı Şefliği",
+        "Yol ve Asfalt Şefliği",
+        "Ulaşım Şefliği"
+      ],
+      "Mali Hizmetler": [
+        "Muhasebe Şefliği",
+        "Bütçe Şefliği",
+        "Satın Alma Şefliği",
+        "Gelirler Şefliği",
+        "Tahakkuk ve Tahsilat Şefliği",
+        "Strateji Geliştirme Şefliği"
+      ],
+      "Çevre Koruma ve Kontrol": [
+        "Temizlik İşleri Şefliği",
+        "Çevre Denetim Şefliği",
+        "Atık Yönetimi Şefliği",
+        "Park ve Bahçeler Şefliği",
+        "Veterinerlik Hizmetleri Şefliği"
+      ],
+      "Kültür ve Sosyal İşler": [
+        "Kültür Merkezi Şefliği",
+        "Kütüphane Şefliği",
+        "Sanat ve Etkinlikler Şefliği",
+        "Gençlik ve Spor Şefliği",
+        "Kadın ve Aile Hizmetleri Şefliği",
+        "Engelli Hizmetleri Şefliği"
+      ],
+      "Zabıta": [
+        "Trafik Zabıta Şefliği",
+        "Pazar Yerleri Denetim Şefliği",
+        "İşyeri Denetim Şefliği",
+        "Çevre ve Gürültü Denetim Şefliği",
+        "Nöbetçi Hizmetler Şefliği"
+      ],
+      "Bilgi İşlem": [
+        "Yazılım Geliştirme Şefliği",
+        "Sistem ve Ağ Şefliği",
+        "Veri Tabanı Yönetimi Şefliği",
+        "Siber Güvenlik Şefliği",
+        "E-Belediye Hizmetleri Şefliği"
+      ],
+      "İmar ve Şehircilik": [
+        "İmar Planlama Şefliği",
+        "Ruhsat ve Denetim Şefliği",
+        "Kentsel Dönüşüm Şefliği",
+        "Harita ve Kadastro Şefliği",
+        "Numarataj Şefliği"
+      ],
+      "Sağlık İşleri": [
+        "Halk Sağlığı Şefliği",
+        "Mezarlıklar Şefliği",
+        "Ambulans Hizmetleri Şefliği",
+        "Sağlık Denetim Şefliği",
+        "Poliklinik Hizmetleri Şefliği"
+      ],
+      "Destek Hizmetleri": [
+        "Araç Sevk ve İdare Şefliği",
+        "Depo ve Lojistik Şefliği",
+        "Satın Alma Destek Şefliği",
+        "Yemekhane Şefliği",
+        "Güvenlik Şefliği"
+      ]
     };
+
 
     window.filtreleSeflik = function () {
       const mudurluk = document.getElementById("mudurluk").value;
@@ -165,7 +256,7 @@
       }
 
       seflikSelect.disabled = false;
-       seflikSelect.innerHTML = '<option value="">Seçiniz</option>';
+      seflikSelect.innerHTML = '<option value="">Seçiniz</option>';
       seflikler[mudurluk].forEach(seflik => {
         const option = document.createElement("option");
         option.value = seflik;
@@ -185,12 +276,12 @@
       }
 
       try {
-  const q = query(
-  collection(db, "personeller"),
-  where("isimSoyisim", "==", adSoyad),
-  where("mudurluk", "==", mudurluk),
-  where("seflik", "==", seflik)
-);
+        const q = query(
+          collection(db, "personeller"),
+          where("isimSoyisim", "==", adSoyad),
+          where("mudurluk", "==", mudurluk),
+          where("seflik", "==", seflik)
+        );
 
 
 
@@ -220,4 +311,5 @@
     };
   </script>
 </body>
+
 </html>
